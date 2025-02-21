@@ -92,7 +92,7 @@ export default function Technologies() {
 					>
 						<Card className="bg-black/5 relative mx-4 mt-3 w-auto max-w-4xl overflow-hidden bg-opacity-20 backdrop-blur-[1px] py-0.5 border border-[#999a9e]/75 rounded-md transition-all duration-300 ease-in-out hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 slider-fade">
 							<video
-								className="absolute inset-0 w-full h-full object-cover opacity-25 scale-[1.5] -z-10"
+								className="absolute inset-0 w-full h-full object-cover opacity-25 scale-[1.25] -z-10"
 								autoPlay
 								loop
 								muted

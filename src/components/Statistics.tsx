@@ -242,6 +242,7 @@ export default function Statistics() {
 							loop
 							muted
 							playsInline
+							disablePictureInPicture
 						>
 							<source src="/assets/about.mp4" type="video/mp4" />
 						</video>
@@ -277,7 +278,7 @@ export default function Statistics() {
 											icon="material-symbols:info-outline-rounded"
 											className="w-4 h-4 -ml-1 text-white/60 hover:text-white/80 transition-colors duration-200 self-center cursor-help"
 										/>
-										<div className="pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block z-50">
+										<div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:block">
 											<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-xl">
 												All GitHub activity across public repositories
 											</div>
