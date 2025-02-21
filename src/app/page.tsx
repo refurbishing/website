@@ -1,6 +1,6 @@
+import Background from "@/components/Background";
 import Header from "@/components/Header";
 import Time from "@/components/Time";
-import Layout from "@/app/layout";
 import Cat from "@/components/Cat";
 import Technologies from "@/components/Technologies";
 import CardComponent from "@/components/Card";
@@ -14,19 +14,20 @@ import Statistics from "@/components/Statistics";
 
 export default function Home() {
 	return (
-		<Layout>
-				<Header />
-				<Time />
-				<CardComponent />
-				<MusicPlayer />
-				<Technologies />
-				<About />
-				<Statistics />
-				<Projects />
-				<Cat />
+		<>
+			<Background />
+			<Header />
+			<Time />
+			<CardComponent />
+			<MusicPlayer />
+			<Technologies />
+			<About />
+			<Statistics />
+			<Projects />
+			<Cat />
 			<Footer />
 			<Analytics />
 			<SpeedInsights />
-		</Layout>
+		</>
 	);
 }

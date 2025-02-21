@@ -12,28 +12,6 @@ body {
 	overflow-x: hidden;
 }
 
-body::before {
-	content: "";
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 100vw;
-	height: 100vh;
-	background-image: url("/assets/background.svg");
-	background-size: 300%;
-	background-position: center;
-	background-repeat: no-repeat;
-	animation: wobble 30s ease-in-out infinite;
-	filter: brightness(1.2);
-}
-
-@media (min-width: 768px) {
-	body::before {
-		background-size: cover;
-	}
-}
-
 .skeleton-bg {
 	@apply bg-[#141415];
 }

@@ -235,7 +235,16 @@ export default function Statistics() {
 					animate={isInView && { opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, ease: "easeInOut" }}
 				>
-					<Card className="w-full max-w-[95vw] md:w-auto bg-black bg-opacity-25 backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-md relative overflow-visible z-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 hover:scale-[1.02] hover:backdrop-blur-none">
+					<Card className="bg-black/5 w-full max-w-[95vw] md:w-auto backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-md relative overflow-hidden z-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 hover:scale-[1.02] hover:backdrop-blur-none">
+						<video
+							className="absolute inset-0 w-full h-full object-cover opacity-35 -z-10 scale-[1.5]"
+							autoPlay
+							loop
+							muted
+							playsInline
+						>
+							<source src="/assets/about.mp4" type="video/mp4" />
+						</video>
 						<CardHeader className="px-2 md:px-4 pt-2 md:pt-4 flex gap-3 justify-between items-center relative z-[-1]">
 							<div className="flex items-center gap-3">
 								<motion.div
