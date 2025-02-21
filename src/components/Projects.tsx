@@ -95,8 +95,9 @@ export default function Projects() {
 								loop
 								muted
 								playsInline
+								preload="auto"
 							>
-								<source src="/assets/about.mp4" type="video/mp4" />
+								<source src="/assets/card.mp4" type="video/mp4" />
 							</video>
 							<CardHeader className="px-4 pt-4 flex gap-3 justify-between">
 								<div className="flex gap-2.5 items-center">

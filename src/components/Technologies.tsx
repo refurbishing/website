@@ -97,8 +97,9 @@ export default function Technologies() {
 								loop
 								muted
 								playsInline
+								preload="auto"
 							>
-								<source src="/assets/about.mp4" type="video/mp4" />
+								<source src="/assets/card.mp4" type="video/mp4" />
 							</video>
 							<CardBody className="overflow-visible px-0">
 								<div

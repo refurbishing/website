@@ -243,8 +243,9 @@ export default function Statistics() {
 							muted
 							playsInline
 							disablePictureInPicture
+							preload="auto"
 						>
-							<source src="/assets/about.mp4" type="video/mp4" />
+							<source src="/assets/card.mp4" type="video/mp4" />
 						</video>
 						<CardHeader className="px-2 md:px-4 pt-2 md:pt-4 flex gap-3 justify-between items-center relative z-[-1]">
 							<div className="flex items-center gap-3">

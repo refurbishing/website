@@ -43,8 +43,9 @@ export default function About() {
 							loop
 							muted
 							playsInline
+							preload="auto"
 						>
-							<source src="/assets/about.mp4" type="video/mp4" />
+							<source src="/assets/card.mp4" type="video/mp4" />
 						</video>
 						<div className="relative z-10">
 							<CardHeader className="flex flex-col sm:flex-row items-center gap-4">

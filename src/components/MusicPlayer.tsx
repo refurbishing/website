@@ -375,6 +375,8 @@ export default function MusicPlayer() {
 					muted
 					playsInline
 					disablePictureInPicture
+					preload="auto"
+
 				>
 					<source src="/assets/banner.mp4" type="video/mp4" />
 				</video>
