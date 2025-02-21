@@ -36,7 +36,7 @@ export default function About() {
 					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
 					transition={{ duration: 0.5, ease: "easeInOut" }}
 				>
-					<Card className="backdrop-blur-[1.5px] bg-black/25 mt-4 mx-auto py-4 w-[95%] min-w-[320px] max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl px-4 sm:px-6 border border-[#999a9e]/75 rounded-md relative z-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-[1.02] hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 hover:backdrop-blur-none will-change-transform overflow-hidden origin-center">
+					<Card className="backdrop-blur-[1.5px] bg-black/5 mt-4 mx-auto py-4 w-[95%] min-w-[320px] max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl px-4 sm:px-6 border border-[#999a9e]/75 rounded-md relative z-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-[1.02] hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 hover:backdrop-blur-none will-change-transform overflow-hidden origin-center">
 						<video
 							className="absolute inset-0 w-full h-full object-cover opacity-45 -z-10"
 							autoPlay
