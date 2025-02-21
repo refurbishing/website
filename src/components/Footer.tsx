@@ -13,7 +13,16 @@ export function Footer() {
 			<div className="flex-grow" />
 			<div className="w-4/5 h-[2px] mb-2 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full relative" />
 			<h1 className="md:text-base text-xs lg:text-sm font-bold text-center text-white relative mb-3 z-10">
-				Made with NextJS, TailwindCSS
+			© 2025&nbsp;
+				<a 
+					href="https://github.com/refurbishing" 
+					target="_blank" 
+					rel="noopener noreferrer" 
+					className="hover:text-gray-300"
+				>
+					Cortex
+				</a>
+				&nbsp;All rights reserved • Made with NextJS & TailwindCSS
 			</h1>
 		</motion.footer>
 	);

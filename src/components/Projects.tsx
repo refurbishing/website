@@ -90,7 +90,7 @@ export default function Projects() {
 					>
 						<Card className="bg-black/5 backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-md relative z-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 hover:scale-[1.02] hover:backdrop-blur-none">
 							<video
-								className="absolute inset-0 w-full h-full object-cover opacity-25 -z-10 rounded-md scale-[1.5]"
+								className="absolute inset-0 w-full h-full object-cover opacity-35 -z-10 rounded-md scale-[1.5]"
 								autoPlay
 								loop
 								muted

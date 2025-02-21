@@ -92,7 +92,7 @@ export default function Statistics() {
 					animate={isInView && { opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, ease: "easeInOut" }}
 				>
-					<Card className="w-full max-w-[95vw] md:w-auto bg-black bg-opacity-25 backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-md">
+					<Card className="w-full max-w-[95vw] md:w-auto bg-black/5 backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-md">
 						<CardHeader className="px-2 md:px-4 pt-2 md:pt-4 flex gap-3 justify-between items-center">
 							<div className="flex items-center gap-3">
 								<div className="h-7 w-64 bg-white/10 animate-pulse rounded-2xl" />
@@ -152,7 +152,7 @@ export default function Statistics() {
 					animate={isInView && { opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, ease: "easeInOut" }}
 				>
-					<Card className="w-full max-w-[95vw] md:w-auto bg-black bg-opacity-25 backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-md">
+					<Card className="w-full max-w-[95vw] md:w-auto bg-black/5 backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-md">
 						<CardHeader className="px-2 md:px-4 pt-2 md:pt-4 flex gap-3 justify-between items-center">
 							<div className="flex items-center gap-3">
 								<div className="h-7 w-64 bg-white/10 rounded-2xl" />

@@ -8,7 +8,10 @@ export async function GET() {
 		const now = Date.now();
 		if (lastRequestTime && now - lastRequestTime < RATE_LIMIT_WINDOW) {
 			if (lastSuccessfulResponse) {
-				return NextResponse.json(lastSuccessfulResponse);
+				return NextResponse.json({
+					...lastSuccessfulResponse,
+					cached: false,
+				});
 			}
 		} else {
 			lastSuccessfulResponse = null;
@@ -62,6 +65,7 @@ export async function GET() {
 			contributions: contributionsData.contributions,
 			total: contributionsData.total.lastYear,
 			languages: aggregatedLanguages,
+			cached: true,
 		};
 
 		return NextResponse.json(lastSuccessfulResponse);
@@ -69,7 +73,10 @@ export async function GET() {
 		console.error("API Error:", error);
 		const now = Date.now();
 		if (lastSuccessfulResponse && now - lastRequestTime < RATE_LIMIT_WINDOW) {
-			return NextResponse.json(lastSuccessfulResponse);
+			return NextResponse.json({
+				...lastSuccessfulResponse,
+				cached: false,
+			});
 		}
 		lastSuccessfulResponse = null;
 		return NextResponse.json(

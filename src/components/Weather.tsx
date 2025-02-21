@@ -18,18 +18,6 @@ import {
 	LucideIcon,
 } from "lucide-react";
 
-interface WeatherData {
-	temp: string;
-	condition: string;
-}
-
-interface WeatherState extends WeatherData {
-	error: string | null;
-	lastUpdated: Date | null;
-}
-
-const REFRESH_INTERVAL = 300000;
-
 const WEATHER_ICONS: Record<string, { icon: LucideIcon; color: string }> = {
 	clear: { icon: Sun, color: "text-yellow-300" },
 	sunny: { icon: SunMedium, color: "text-yellow-300" },
@@ -77,11 +65,14 @@ const WeatherSkeleton = () => {
 };
 
 const Weather = () => {
-	const [weatherState, setWeatherState] = useState<WeatherState>({
+	const [weatherState, setWeatherState] = useState<{
+		temp: string;
+		condition: string;
+		error: string | null;
+	}>({
 		temp: "",
 		condition: "",
 		error: null,
-		lastUpdated: null,
 	});
 	const [loading, setLoading] = useState(true);
 	const [windowWidth, setWindowWidth] = useState(0);
@@ -96,17 +87,15 @@ const Weather = () => {
 	const fetchWeather = async () => {
 		try {
 			setLoading(true);
-			const response = await fetch("https://wttr.in/Honduras?format=%t|%C");
+			const response = await fetch("/api/weather");
 			if (!response.ok) throw new Error("Weather service unavailable");
 
-			const data = await response.text();
-			const [temp, condition] = data.split("|");
+			const data = await response.json();
 
 			setWeatherState({
-				temp: temp.replace("+", "").trim(),
-				condition: condition.trim(),
+				temp: data.temp,
+				condition: data.condition,
 				error: null,
-				lastUpdated: new Date(),
 			});
 		} catch (error) {
 			console.error("Error fetching weather:", error);
@@ -121,8 +110,6 @@ const Weather = () => {
 
 	useEffect(() => {
 		fetchWeather();
-		const interval = setInterval(fetchWeather, REFRESH_INTERVAL);
-		return () => clearInterval(interval);
 	}, []);
 
 	const showIconOnly = windowWidth < 415;

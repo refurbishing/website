@@ -198,9 +198,17 @@ export default function MusicPlayer() {
 			const wasPlaying = isPlaying;
 			setSlideDirection(-1);
 			setIsAudioLoading(true);
-			setCurrentSongIndex(
-				(prevIndex) => (prevIndex - 1 + songs.length) % songs.length,
-			);
+			
+			if (audioRef.current && currentTime <= 2.5) {
+				setCurrentSongIndex(
+					(prevIndex) => (prevIndex - 1 + songs.length) % songs.length,
+				);
+			} else {
+				if (audioRef.current?.currentTime !== undefined) {
+					audioRef.current.currentTime = 0;
+				}
+			}
+
 			if (wasPlaying) {
 				const playNewSong = () => {
 					audioRef.current
@@ -213,7 +221,7 @@ export default function MusicPlayer() {
 			setIsPlaying(wasPlaying);
 			shouldPlayAfterLoad.current = wasPlaying;
 		}
-	}, [songs.length, isPlaying]);
+	}, [songs.length, isPlaying, currentTime]);
 
 	useEffect(() => {
 		if ("mediaSession" in navigator) {
@@ -367,9 +375,9 @@ export default function MusicPlayer() {
 					onError={(e) => console.error("Audio playback error:", e)}
 				/>
 			)}
-			<Card className="bg-black/35 backdrop-blur-md border border-[#dbdbdb]/20 rounded-lg w-[90%] max-w-md mx-auto h-auto transition-all duration-300 hover:shadow-[0_0_5px_rgba(22,22,22,15)] hover:border-opacity-30 hover:scale-[1.02] hover:backdrop-filter-none relative overflow-hidden">
+			<Card className="bg-black/35 backdrop-blur-md border border-[#dbdbdb]/20 rounded-lg w-[90%] max-w-md mx-auto h-auto transition-all duration-300 hover:shadow-[0_0_5px_rgba(22,22,22,15)] hover:border-opacity-35 hover:scale-[1.02] hover:backdrop-filter-none relative overflow-hidden">
 				<video
-					className="absolute inset-0 w-full h-full object-cover opacity-25 scale-[1.5] -z-10 blur-[2px]"
+					className="absolute inset-0 w-full h-full object-cover opacity-35 scale-[1.5] -z-10 blur-[2px]"
 					autoPlay
 					loop
 					muted
