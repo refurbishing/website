@@ -10,7 +10,7 @@ export async function GET() {
 			if (lastSuccessfulResponse) {
 				return NextResponse.json({
 					...lastSuccessfulResponse,
-					cached: false,
+					cached: true,
 				});
 			}
 		} else {
@@ -65,7 +65,7 @@ export async function GET() {
 			contributions: contributionsData.contributions,
 			total: contributionsData.total.lastYear,
 			languages: aggregatedLanguages,
-			cached: true,
+			cached: false,
 		};
 
 		return NextResponse.json(lastSuccessfulResponse);
@@ -75,7 +75,7 @@ export async function GET() {
 		if (lastSuccessfulResponse && now - lastRequestTime < RATE_LIMIT_WINDOW) {
 			return NextResponse.json({
 				...lastSuccessfulResponse,
-				cached: false,
+				cached: true,
 			});
 		}
 		lastSuccessfulResponse = null;

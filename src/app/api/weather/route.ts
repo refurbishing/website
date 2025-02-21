@@ -9,7 +9,10 @@ export async function GET() {
 		const now = Date.now();
 		if (lastRequestTime && now - lastRequestTime < RATE_LIMIT_WINDOW) {
 			if (lastSuccessfulResponse) {
-				return NextResponse.json(lastSuccessfulResponse);
+				return NextResponse.json({
+					...lastSuccessfulResponse,
+					cached: true
+				});
 			}
 		} else {
 			lastSuccessfulResponse = null;
