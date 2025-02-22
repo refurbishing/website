@@ -55,7 +55,7 @@ export default function Projects() {
 
 	return (
 		<div
-			id="projects-section"
+			id="projects"
 			ref={ref}
 			className="mt-10 flex flex-col items-center"
 		>

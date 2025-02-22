@@ -21,7 +21,7 @@ export function Footer() {
 				>
 					© 2025 Cortex All rights reserved
 				</a>
-				&nbsp; • Made with NextJS & TailwindCSS
+				&nbsp;• Made with NextJS & TailwindCSS
 			</h1>
 		</motion.footer>
 	);

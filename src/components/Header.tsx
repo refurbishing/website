@@ -28,7 +28,7 @@ export default function Header() {
 	useEffect(() => {
 		const handleResize = () => {
 			setIsDesktop(window.innerWidth >= 1024);
-			if (window.innerWidth >= 640) {
+			if (window.innerWidth >= 1100) {
 				setHamburgerTriggered(false);
 			}
 		};
@@ -46,15 +46,6 @@ export default function Header() {
 		return () => {
 			document.documentElement.style.scrollBehavior = "auto";
 		};
-	}, []);
-
-	useEffect(() => {
-		const handleScroll = () => {
-			setScrolled(window.scrollY > 20);
-		};
-
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
 	return (
@@ -95,7 +86,7 @@ export default function Header() {
 				className={`fixed top-0 left-0 right-0 mt-4 bg-dark/85 text-white border border-[#999a9e]/30 backdrop-blur-[5px] rounded-2xl shadow-md hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] non-selectable relative z-50`}
 				style={{ position: "fixed", top: 0, left: 0, right: 0 }}
 			>
-				<div className="p-3.5 non-selectable">
+				<div className="p-3.5 px-4 non-selectable">
 					<div className="flex justify-between items-center non-selectable">
 						<div className="flex items-center gap-2 non-selectable min-w-fit xsm:w-1/4">
 							<div
@@ -120,7 +111,7 @@ export default function Header() {
 									Cortex
 								</h1>
 								<div
-									className={`w-2 h-2 rounded-full ${statusClass} non-selectable`}
+									className={`w-2 h-2 rounded-full ${statusClass} non-selectable ml-0.5`}
 								></div>
 							</div>
 						</div>
@@ -135,7 +126,7 @@ export default function Header() {
 
 						<div className="flex items-center w-1/4 justify-end">
 							<button
-								className="xsm:hidden flex items-center justify-center non-selectable"
+								className="lg:hidden flex items-center justify-center non-selectable"
 								onClick={() => setHamburgerTriggered(!hamburgerTriggered)}
 								aria-label="Toggle menu"
 							>
@@ -191,12 +182,12 @@ export default function Header() {
 									/>
 								</div>
 							</button>
-							<nav className="hidden xsm:flex gap-4 items-center non-selectable">
+							<nav className="hidden lg:flex gap-2.5 items-center non-selectable">
 								<a
 									href="#"
 									onClick={(e) => {
 										e.preventDefault();
-										window.scrollTo({ top: 0 });
+										smoothScrollTo(0, 650);
 										setHamburgerTriggered(false);
 									}}
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
@@ -204,14 +195,34 @@ export default function Header() {
 									Home
 								</a>
 								<a
-									href="https://github.com/refurbishing/website"
-									onClick={() => setHamburgerTriggered(false)}
-									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-									target="_blank"
-									rel="noopener noreferrer"
+									href="#about"
+									onClick={(e) => {
+										e.preventDefault();
+										const aboutElement = document.getElementById('about');
+										if (aboutElement) {
+											smoothScrollTo(aboutElement.offsetTop - 80, 650);
+										}
+										setHamburgerTriggered(false);
+									}}
+									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
-									Source
+									About
 								</a>
+								<a
+									href="#projects"
+									onClick={(e) => {
+										e.preventDefault();
+										const projectsElement = document.getElementById('projects');
+										if (projectsElement) {
+											smoothScrollTo(projectsElement.offsetTop - 80, 650);
+										}
+										setHamburgerTriggered(false);
+									}}
+									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
+								>
+									Projects
+								</a>
+								<div className="h-6 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent mx-1.5" />
 								<a
 									href="mailto:me@cortex.rest"
 									onClick={() => setHamburgerTriggered(false)}
@@ -231,22 +242,48 @@ export default function Header() {
 										/>
 									</svg>
 								</a>
+								<a
+									href="https://github.com/refurbishing/website"
+									onClick={() => setHamburgerTriggered(false)}
+									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										className="w-5 h-5"
+									>
+										<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+										<path d="M20 3v4"/>
+										<path d="M22 5h-4"/>
+										<path d="M4 17v2"/>
+										<path d="M5 18H3"/>
+									</svg>
+								</a>
 							</nav>
 						</div>
 					</div>
 
 					{hamburgerTriggered && (
 						<div
-							className="absolute left-0 right-0 mt-6 mx-4 bg-dark/70 text-white border border-[#898c91] opacity-75 rounded-2xl shadow-md shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(255,255,255,0.08)] transition-all duration-300 xsm:hidden non-selectable z-30"
+							className="absolute left-0 right-0 mt-6 mx-4 bg-dark/70 text-white border border-[#898c91] opacity-75 rounded-2xl shadow-md shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(255,255,255,0.08)] transition-all duration-300 lg:hidden non-selectable z-30"
 							style={{ boxShadow: "0 0 15px rgba(255, 255, 255, 0.05)" }}
 						>
-							<nav className="index-nav xsm:hidden p-4 non-selectable">
+							<nav className="index-nav p-4 non-selectable">
 								<div className="flex flex-col non-selectable">
 									<a
 										href="#"
 										onClick={(e) => {
 											e.preventDefault();
-											window.scrollTo({ top: 0 });
+											smoothScrollTo(0, 800);
 											setHamburgerTriggered(false);
 										}}
 										className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
@@ -254,12 +291,32 @@ export default function Header() {
 										Home
 									</a>
 									<a
-										href="https://github.com/refurbishing/website"
+										href="#about"
+										onClick={(e) => {
+											e.preventDefault();
+											const aboutElement = document.getElementById('about');
+											if (aboutElement) {
+												smoothScrollTo(aboutElement.offsetTop - 80, 800);
+											}
+											setHamburgerTriggered(false);
+										}}
 										className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-										target="_blank"
-										rel="noopener noreferrer"
 									>
-										Source
+										About
+									</a>
+									<a
+										href="#projects"
+										onClick={(e) => {
+											e.preventDefault();
+											const projectsElement = document.getElementById('projects');
+											if (projectsElement) {
+												smoothScrollTo(projectsElement.offsetTop - 80, 800);
+											}
+											setHamburgerTriggered(false);
+										}}
+										className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+									>
+										Projects
 									</a>
 									<a
 										href="mailto:me@cortex.rest"
@@ -282,6 +339,34 @@ export default function Header() {
 											Contact
 										</div>
 									</a>
+									<a
+										href="https://github.com/refurbishing/website"
+										className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<div className="flex items-center">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="24"
+												height="24"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												strokeWidth="2"
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												className="w-5 h-5 mr-2"
+											>
+												<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+												<path d="M20 3v4"/>
+												<path d="M22 5h-4"/>
+												<path d="M4 17v2"/>
+												<path d="M5 18H3"/>
+											</svg>
+											Source
+										</div>
+									</a>
 								</div>
 							</nav>
 						</div>
@@ -292,4 +377,28 @@ export default function Header() {
 			<UserArea isOpen={showUserArea} onClose={() => setShowUserArea(false)} />
 		</div>
 	);
+}
+
+function smoothScrollTo(targetY: number, duration: number) {
+	const startY = window.scrollY;
+	const distance = targetY - startY;
+	let startTime: number | null = null;
+
+	function animation(currentTime: number) {
+		if (startTime === null) startTime = currentTime;
+		const timeElapsed = currentTime - startTime;
+		const progress = Math.min(timeElapsed / duration, 1);
+		const ease = easeInOutQuad(progress);
+		window.scrollTo(0, startY + distance * ease);
+
+		if (timeElapsed < duration) {
+			requestAnimationFrame(animation);
+		}
+	}
+
+	function easeInOutQuad(t: number) {
+		return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+	}
+
+	requestAnimationFrame(animation);
 }

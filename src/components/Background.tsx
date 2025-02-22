@@ -24,7 +24,7 @@ export default function Background() {
 				className="absolute inset-0 w-full h-full"
 				style={{
 					backgroundImage: "url('/assets/background.svg')",
-					backgroundSize: windowWidth <= 1000 ? "300%" : "100%",
+					backgroundSize: windowWidth <= 1000 ? "250%" : "100%",
 					backgroundPosition: "center",
 					backgroundRepeat: "no-repeat",
 					filter: "brightness(1.2)",
