@@ -54,11 +54,7 @@ export default function Projects() {
 	}, []);
 
 	return (
-		<div
-			id="projects"
-			ref={ref}
-			className="mt-10 flex flex-col items-center"
-		>
+		<div id="projects" ref={ref} className="mt-10 flex flex-col items-center">
 			<TextFade
 				fullLoadedDuration={2.25}
 				duration={1.85}
@@ -193,7 +189,7 @@ export default function Projects() {
 					fullLoadedDuration={1.4}
 					duration={1}
 					words="... and have contributed to multiple frontend projects"
-					className="text-sm text-gray-400 mb-16 italic text-center w-full px-3"
+					className="text-sm text-gray-400 mb-28 italic text-center w-full px-3"
 				/>
 			</motion.div>
 		</div>

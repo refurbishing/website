@@ -79,9 +79,9 @@ export default function Statistics() {
 
 	return (
 		<div
-			id="Statistics"
+			id="statistics"
 			ref={ref}
-			className="flex flex-col items-center justify-center min-h-[25vh] py-12"
+			className="mt-10 flex flex-col items-center justify-center min-h-[25vh] py-6"
 		>
 			<motion.div
 				initial={{ opacity: 0, y: -5 }}
@@ -142,7 +142,7 @@ export default function Statistics() {
 									</div>
 								</div>
 							</div>
-							<div className="mt-4 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4">
+							<div className="mt-2 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4">
 								<div className="flex flex-col gap-2">
 									{[...Array(5)].map((_, i) => (
 										<div key={i} className="flex items-center gap-2">

@@ -14,7 +14,7 @@ export default function About() {
 	return (
 		<div
 			id="about"
-			className="flex justify-center items-center mt-10"
+			className="mt-10 flex justify-center items-center"
 			ref={ref}
 		>
 			<div className="flex flex-col items-center">
