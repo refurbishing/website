@@ -19,22 +19,32 @@ export default function Statistics() {
 	useEffect(() => {
 		const getLastTwelveMonths = () => {
 			const monthNames = [
-				"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-				"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+				"Jan",
+				"Feb",
+				"Mar",
+				"Apr",
+				"May",
+				"Jun",
+				"Jul",
+				"Aug",
+				"Sep",
+				"Oct",
+				"Nov",
+				"Dec",
 			];
 			const current = new Date();
 			const months = [];
 
 			const startMonth = current.getMonth();
 			const currentYear = current.getFullYear();
-			
+
 			for (let i = 0; i <= 12; i++) {
 				const monthIndex = (startMonth + i) % 12;
 				const yearOffset = Math.floor((startMonth + i) / 12);
 				const year = currentYear + yearOffset;
 				months.push({
 					label: monthNames[monthIndex],
-					key: `${monthNames[monthIndex]}-${year}`
+					key: `${monthNames[monthIndex]}-${year}`,
 				});
 			}
 
@@ -344,7 +354,10 @@ export default function Statistics() {
 														<span>Wed</span>
 														<span>Fri</span>
 													</div>
-													<div className="w-full relative" style={{ zIndex: 10 }}>
+													<div
+														className="w-full relative"
+														style={{ zIndex: 10 }}
+													>
 														<div className="flex justify-between mb-2 gap-[50px] md:gap-0">
 															{months.map((month) => (
 																<span
@@ -356,42 +369,48 @@ export default function Statistics() {
 															))}
 														</div>
 														<div className="grid grid-flow-col auto-cols-min grid-rows-[repeat(7,_minmax(0,_1fr))] gap-1 md:gap-[3.5px]">
-															{contributions.map(({ date, level, count }, index) => (
-																<motion.div 
-																	key={date} 
-																	className="relative"
-																	initial={{ opacity: 0, scale: 0.8 }}
-																	animate={isInView && { 
-																		opacity: 1, 
-																		scale: 1,
-																		transition: {
-																			delay: index * 0.0025,
+															{contributions.map(
+																({ date, level, count }, index) => (
+																	<motion.div
+																		key={date}
+																		className="relative"
+																		initial={{ opacity: 0, scale: 0.8 }}
+																		animate={
+																			isInView && {
+																				opacity: 1,
+																				scale: 1,
+																				transition: {
+																					delay: index * 0.0025,
+																				},
+																			}
 																		}
-																	}}
-																	transition={{
-																		type: "spring",
-																		stiffness: 500,
-																		damping: 10,
-																		mass: 0.5,
-																	}}																>
-																	<div
-																		className={`group relative h-3 w-3 rounded-sm ${
-																			[
-																				"bg-white/10 hover:bg-white/15",
-																				"bg-white/25 hover:bg-white/30",
-																				"bg-white/50 hover:bg-white/55",
-																				"bg-white/75 hover:bg-white/80",
-																				"bg-white/90 hover:bg-white/95",
-																			][level]
-																		}`}
+																		transition={{
+																			type: "spring",
+																			stiffness: 500,
+																			damping: 10,
+																			mass: 0.5,
+																		}}
 																	>
 																		<div
+																			className={`group relative h-3 w-3 rounded-sm ${
+																				[
+																					"bg-white/10 hover:bg-white/15",
+																					"bg-white/25 hover:bg-white/30",
+																					"bg-white/50 hover:bg-white/55",
+																					"bg-white/75 hover:bg-white/80",
+																					"bg-white/90 hover:bg-white/95",
+																				][level]
+																			}`}
+																		>
+																			<div
 																				className="pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block"
 																				style={{ position: "fixed" }}
 																			>
 																				<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-xl">
 																					{(() => {
-																						const day = new Date(date).getDate();
+																						const day = new Date(
+																							date,
+																						).getDate();
 																						const suffix =
 																							day % 10 === 1 && day !== 11
 																								? "st"
@@ -409,14 +428,15 @@ export default function Statistics() {
 																								},
 																							) + suffix;
 																						return count === 1
-																								? `1 contribution on ${formattedDate}`
-																								: `${count} contributions on ${formattedDate}`;
+																							? `1 contribution on ${formattedDate}`
+																							: `${count} contributions on ${formattedDate}`;
 																					})()}
 																				</div>
 																			</div>
-																	</div>
-																</motion.div>
-															))}
+																		</div>
+																	</motion.div>
+																),
+															)}
 														</div>
 													</div>
 												</div>
@@ -449,11 +469,15 @@ export default function Statistics() {
 															<motion.div
 																className="h-full bg-white/80 rounded-full"
 																initial={{ width: "0%" }}
-																animate={isInView ? { width: `${percentage}%` } : { width: "0%" }}
+																animate={
+																	isInView
+																		? { width: `${percentage}%` }
+																		: { width: "0%" }
+																}
 																transition={{
 																	duration: 1.2,
 																	ease: [0.4, 0, 0.2, 1],
-																	delay: 0.2
+																	delay: 0.2,
 																}}
 																style={{ originX: 1 }}
 															/>

@@ -11,7 +11,7 @@ export async function GET() {
 			if (lastSuccessfulResponse) {
 				return NextResponse.json({
 					...lastSuccessfulResponse,
-					cached: true
+					cached: true,
 				});
 			}
 		} else {
@@ -28,22 +28,25 @@ export async function GET() {
 		const data = await response.text();
 		const [temp, condition] = data.split("|");
 
-		if (temp.toLowerCase().includes("error") || condition.toLowerCase().includes("unknown")) {
+		if (
+			temp.toLowerCase().includes("error") ||
+			condition.toLowerCase().includes("unknown")
+		) {
 			throw new Error("Received error or unknown data");
 		}
 
 		lastSuccessfulResponse = {
 			temp: temp.replace("+", "").trim(),
 			condition: condition.trim(),
-			lastUpdated: new Date().toLocaleString('en-US', {
-				month: 'long',
-				day: 'numeric',
-				year: 'numeric',
-				hour: 'numeric',
-				minute: 'numeric',
-				hour12: true
+			lastUpdated: new Date().toLocaleString("en-US", {
+				month: "long",
+				day: "numeric",
+				year: "numeric",
+				hour: "numeric",
+				minute: "numeric",
+				hour12: true,
 			}),
-			cached: false
+			cached: false,
 		};
 
 		return NextResponse.json(lastSuccessfulResponse);
@@ -53,7 +56,7 @@ export async function GET() {
 		if (lastSuccessfulResponse && now - lastRequestTime < RATE_LIMIT_WINDOW) {
 			return NextResponse.json({
 				...lastSuccessfulResponse,
-				cached: true
+				cached: true,
 			});
 		}
 		lastSuccessfulResponse = null;
@@ -62,4 +65,4 @@ export async function GET() {
 			{ status: 500 },
 		);
 	}
-} 
+}

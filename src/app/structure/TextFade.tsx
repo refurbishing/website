@@ -23,10 +23,10 @@ export const TextFade = ({
 
 	useEffect(() => {
 		if (isInView) {
-			const currentDuration = !mounted.current 
+			const currentDuration = !mounted.current
 				? (fullLoadedDuration ?? duration)
 				: duration;
-				
+
 			animate(
 				"span",
 				{

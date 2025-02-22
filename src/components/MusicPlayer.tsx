@@ -198,7 +198,7 @@ export default function MusicPlayer() {
 			const wasPlaying = isPlaying;
 			setSlideDirection(-1);
 			setIsAudioLoading(true);
-			
+
 			if (audioRef.current && currentTime <= 2.5) {
 				setCurrentSongIndex(
 					(prevIndex) => (prevIndex - 1 + songs.length) % songs.length,
@@ -384,7 +384,6 @@ export default function MusicPlayer() {
 					playsInline
 					disablePictureInPicture
 					preload="auto"
-
 				>
 					<source src="/assets/banner.mp4" type="video/mp4" />
 				</video>
