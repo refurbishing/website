@@ -7,126 +7,115 @@ import {
 	useEffect,
 	ReactNode,
 } from "react";
+import { SOCKET_CONFIG } from "@/data/socket";
 import { SocketState, WebSocketMessage, LanyardData } from "@/types/socket";
 
-const DISCORD_USER_ID = "825069530376044594";
-const RECONNECT_DELAY = 5000;
-const SOCKET_URL = "wss://api.lanyard.rest/socket";
+const createSocketManager = () => {
+	let socket: WebSocket | null = null;
+	let heartbeatInterval: number | undefined;
+	let reconnectAttempts = 0;
+	const listeners = new Set<(data: SocketState) => void>();
 
-class SocketManager {
-	private static instance: SocketManager;
-	private socket: WebSocket | null = null;
-	private listeners: Set<(data: SocketState) => void> = new Set();
-	private heartbeatTimeout?: NodeJS.Timeout;
-	private reconnectTimeout?: NodeJS.Timeout;
-	private currentState: SocketState = {
+	let currentState: SocketState = {
 		status: "offline",
 		data: null,
 		connectionStatus: "disconnected",
 	};
 
-	private constructor() {
-		this.connect();
-	}
+	const connect = () => {
+		if (socket?.readyState === WebSocket.OPEN) return;
 
-	static getInstance() {
-		if (!SocketManager.instance) {
-			SocketManager.instance = new SocketManager();
+		if (heartbeatInterval) {
+			clearInterval(heartbeatInterval);
 		}
-		return SocketManager.instance;
-	}
 
-	private connect() {
-		if (this.socket?.readyState === WebSocket.OPEN) return;
+		socket = new WebSocket(SOCKET_CONFIG.SOCKET_URL);
 
-		this.socket = new WebSocket(SOCKET_URL);
-		this.updateState({ ...this.currentState, connectionStatus: "connecting" });
-
-		const sendHeartbeat = () => {
-			if (this.socket?.readyState === WebSocket.OPEN) {
-				this.socket.send(JSON.stringify({ op: 3 }));
-				this.heartbeatTimeout = setTimeout(sendHeartbeat, 30000);
-			}
+		const updateState = (newState: Partial<SocketState>) => {
+			currentState = { ...currentState, ...newState };
+			listeners.forEach((listener) => listener(currentState));
 		};
 
-		this.socket.addEventListener("open", () => {
-			this.updateState({ ...this.currentState, connectionStatus: "connected" });
-			this.socket?.send(
+		updateState({ connectionStatus: "connecting" });
+
+		socket.onopen = () => {
+			reconnectAttempts = 0;
+			updateState({ connectionStatus: "connected" });
+			socket?.send(
 				JSON.stringify({
 					op: 2,
-					d: {
-						subscribe_to_id: DISCORD_USER_ID,
-					},
+					d: { subscribe_to_id: SOCKET_CONFIG.DISCORD_USER_ID },
 				}),
 			);
-		});
+		};
 
-		this.socket.addEventListener("message", (event: MessageEvent) => {
+		socket.onmessage = (event: MessageEvent) => {
 			try {
 				const message = JSON.parse(event.data) as WebSocketMessage;
 
-				switch (message.op) {
-					case 1:
-						if (message.d.heartbeat_interval) {
-							this.heartbeatTimeout = setTimeout(
-								sendHeartbeat,
-								message.d.heartbeat_interval,
-							);
+				if (message.op === 1 && message.d.heartbeat_interval) {
+					if (heartbeatInterval) clearInterval(heartbeatInterval);
+					heartbeatInterval = window.setInterval(() => {
+						if (socket?.readyState === WebSocket.OPEN) {
+							socket.send(JSON.stringify({ op: 3 }));
 						}
-						break;
+					}, message.d.heartbeat_interval);
+					return;
+				}
 
-					case 0:
-						if (message.t === "INIT_STATE" || message.t === "PRESENCE_UPDATE") {
-							this.updateState({
-								...this.currentState,
-								status: message.d.discord_status || "offline",
-								data: message.d as LanyardData,
-							});
-						}
-						break;
+				if (
+					message.op === 0 &&
+					(message.t === "INIT_STATE" || message.t === "PRESENCE_UPDATE")
+				) {
+					updateState({
+						status: message.d.discord_status || "offline",
+						data: message.d as LanyardData,
+					});
 				}
 			} catch (error) {
-				console.error("Failed to parse WebSocket message:", error);
+				console.error("WebSocket message error:", error);
 			}
-		});
-
-		this.socket.addEventListener("close", () => {
-			clearTimeout(this.heartbeatTimeout);
-			this.updateState({
-				...this.currentState,
-				connectionStatus: "disconnected",
-			});
-			this.reconnectTimeout = setTimeout(() => this.connect(), RECONNECT_DELAY);
-		});
-
-		this.socket.addEventListener("error", (error: Event) => {
-			console.error("WebSocket error:", error);
-			clearTimeout(this.heartbeatTimeout);
-			this.socket?.close();
-		});
-	}
-
-	private updateState(newState: SocketState) {
-		this.currentState = newState;
-		this.listeners.forEach((listener) => listener(this.currentState));
-	}
-
-	subscribe(listener: (data: SocketState) => void): () => void {
-		this.listeners.add(listener);
-		listener(this.currentState);
-		return () => {
-			this.listeners.delete(listener);
 		};
+
+		socket.onclose = () => {
+			if (heartbeatInterval) clearInterval(heartbeatInterval);
+			if (socket) socket.close();
+			socket = null;
+
+			if (reconnectAttempts < SOCKET_CONFIG.MAX_RECONNECT_ATTEMPTS) {
+				const delay =
+					SOCKET_CONFIG.RECONNECT_DELAY *
+					Math.pow(SOCKET_CONFIG.BACKOFF_MULTIPLIER, reconnectAttempts);
+				reconnectAttempts++;
+				setTimeout(connect, delay);
+			}
+
+			updateState({ connectionStatus: "disconnected" });
+		};
+
+		socket.onerror = (error: Event) => {
+			console.error("WebSocket error:", error);
+			socket?.close();
+		};
+	};
+
+	const subscribe = (listener: (data: SocketState) => void) => {
+		listeners.add(listener);
+		listener(currentState);
+		return () => {
+			listeners.delete(listener);
+			return undefined;
+		};
+	};
+
+	if (typeof window !== "undefined") {
+		connect();
 	}
 
-	cleanup() {
-		clearTimeout(this.heartbeatTimeout);
-		clearTimeout(this.reconnectTimeout);
-		this.socket?.close();
-		this.listeners.clear();
-	}
-}
+	return { subscribe };
+};
 
+const socketManager = createSocketManager();
 const SocketContext = createContext<SocketState | null>(null);
 
 export function SocketProvider({ children }: { children: ReactNode }) {
@@ -137,7 +126,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 	});
 
 	useEffect(() => {
-		const socketManager = SocketManager.getInstance();
 		return socketManager.subscribe(setSocketData);
 	}, []);
 

@@ -4,6 +4,7 @@ import { useSocket } from "@/hooks/SocketContext";
 import Image from "next/image";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Icon } from "@iconify/react";
+import React from "react";
 
 interface UserAreaProps {
 	isOpen: boolean;
@@ -337,6 +338,8 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 
 	const handleStatusTextOverflow = useCallback(
 		(text: string, maxWidth: number) => {
+			if (!text) return text;
+
 			const tempSpan = document.createElement("span");
 			Object.assign(tempSpan.style, {
 				visibility: "hidden",
@@ -352,15 +355,26 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 
 			if (!isOverflowing) return text;
 
-			const words = text.split(" ");
-			const lastTwoWords = words.slice(-2).join(" ");
-			const remainingWords = words.slice(0, -2).join(" ");
+			// Split text into chunks of 50 characters
+			const lines = [];
+			let remainingText = text;
+
+			while (remainingText.length > 50) {
+				lines.push(remainingText.slice(0, 50));
+				remainingText = remainingText.slice(50);
+			}
+			if (remainingText.length > 0) {
+				lines.push(remainingText);
+			}
 
 			return (
 				<>
-					{remainingWords}
-					<br />
-					{lastTwoWords}
+					{lines.map((line, index) => (
+						<React.Fragment key={index}>
+							{line}
+							{index < lines.length - 1 && <br />}
+						</React.Fragment>
+					))}
 				</>
 			);
 		},
@@ -675,20 +689,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 														data.activities?.find(
 															(activity) => activity.type === 4,
 														)?.emoji) && (
-														<motion.p
-															initial={{ height: 0, opacity: 0, marginTop: 0 }}
-															animate={{
-																height: "auto",
-																opacity: 1,
-																marginTop: "0.25rem",
-															}}
-															exit={{ height: 0, opacity: 0, marginTop: 0 }}
-															transition={{
-																duration: 0.2,
-																ease: "easeInOut",
-															}}
-															className="text-[11.5px] text-zinc-400/90 flex items-center gap-1.5 overflow-hidden mt-1"
-														>
+														<p className="text-[11.5px] text-zinc-400/90 flex items-center gap-1.5 overflow-hidden mt-1">
 															{data.activities.find(
 																(activity) => activity.type === 4,
 															)?.emoji && (
@@ -728,7 +729,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																	.querySelector(".text-xs.text-zinc-400")
 																	?.getBoundingClientRect().width || 0,
 															)}
-														</motion.p>
+														</p>
 													)}
 												</AnimatePresence>
 											</div>

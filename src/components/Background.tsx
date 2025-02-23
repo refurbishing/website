@@ -15,7 +15,7 @@ export default function Background() {
 	return (
 		<div className="fixed inset-0 w-screen h-screen -z-10 overflow-hidden animate-fadeIn">
 			<div
-				className="absolute inset-0 w-full h-full animate-float"
+				className="absolute inset-0 w-full h-full animate-float transition-colors"
 				style={{
 					backgroundImage: "url('/assets/background.svg')",
 					backgroundSize: windowWidth <= 1000 ? "250%" : "100%",

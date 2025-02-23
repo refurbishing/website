@@ -11,12 +11,15 @@ import About from "@/components/About";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Statistics from "@/components/Statistics";
+import { SocketProvider } from "@/hooks/SocketContext";
 
 export default function Home() {
 	return (
 		<>
 			<Background />
-			<Header />
+			<SocketProvider>
+				<Header />
+			</SocketProvider>
 			<Time />
 			<CardComponent />
 			<MusicPlayer />
