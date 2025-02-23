@@ -24,7 +24,11 @@ export default function RootLayout({
 		<html lang="en">
 			<head>
 				<meta name="darkreader-lock" />
-				<meta name="theme-color" content="#232121" />
+				<meta name="theme-color" content="#232121" />				
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+				<link rel="preload" href="/assets/background.svg" as="image" />
+				<link rel="preload" href="/assets/card.mp4" as="video" />
 			</head>
 			<body className="min-h-screen flex flex-col">
 				<SocketProvider>{children}</SocketProvider>
