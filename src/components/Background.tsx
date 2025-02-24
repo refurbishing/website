@@ -2,11 +2,9 @@
 import React, { useState, useEffect } from "react";
 
 export default function Background() {
-	const [windowWidth, setWindowWidth] = useState(0);
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
 	useEffect(() => {
-		setWindowWidth(window.innerWidth);
-
 		const handleResize = () => setWindowWidth(window.innerWidth);
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
