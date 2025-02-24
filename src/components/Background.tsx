@@ -1,10 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import dynamic from 'next/dynamic';
+import React from "react";
 
-export default function Background() {
-	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+const BackgroundClient = () => {
+	const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
 
-	useEffect(() => {
+	React.useEffect(() => {
 		const handleResize = () => setWindowWidth(window.innerWidth);
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
@@ -25,3 +26,7 @@ export default function Background() {
 		</div>
 	);
 }
+
+export default dynamic(() => Promise.resolve(BackgroundClient), {
+	ssr: false
+});
