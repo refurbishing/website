@@ -18,6 +18,7 @@
 		"@vercel/speed-insights": "^1.1.0",
 		"clsx": "^2.1.1",
 		"framer-motion": "^12.1.0",
+		"lenis": "^1.1.21",
 		"lucide-react": "^0.471.2",
 		"mini-svg-data-uri": "^1.4.4",
 		"next": "15.1.4",
