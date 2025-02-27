@@ -13,17 +13,11 @@
 	"dependencies": {
 		"@heroui/react": "^2.7.2",
 		"@iconify/react": "^5.2.0",
-		"@react-spring/web": "^9.7.5",
-		"@vercel/analytics": "^1.5.0",
-		"@vercel/speed-insights": "^1.2.0",
-		"clsx": "^2.1.1",
 		"framer-motion": "^12.4.7",
 		"lenis": "^1.1.21",
 		"lucide-react": "^0.471.2",
-		"mini-svg-data-uri": "^1.4.4",
 		"next": "15.1.4",
 		"react": "^19.0.0",
-		"tailwind-merge": "^2.6.0",
 		"typewriter-effect": "^2.21.0"
 	},
 	"devDependencies": {

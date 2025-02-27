@@ -551,13 +551,13 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 													<div className="space-y-1.5">
 														<div className="flex items-center gap-2">
 															<div className="h-4 w-32 bg-zinc-800/50 rounded" />
-															<div className="h-4 w-20 bg-zinc-800/30 rounded-md" />
+															<div className="h-4 w-20 bg-zinc-800/30 rounded-xl" />
 														</div>
 														<div className="h-3.5 w-24 bg-zinc-800/50 rounded" />
 														<div className="h-3.5 w-36 bg-zinc-800/50 rounded" />
 													</div>
 													<div className="mt-2 mr-5">
-														<div className="h-[30px] zsm:w-[120px] w-[60px] bg-zinc-800/50 rounded-md" />
+														<div className="h-[30px] zsm:w-[120px] w-[60px] bg-zinc-800/50 rounded-xl" />
 													</div>
 												</div>
 											</div>
@@ -565,7 +565,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 										<div className="space-y-2">
 											<div className="h-4 w-20 bg-zinc-800/50 rounded" />
 											<div className="bg-zinc-800/50 rounded-lg p-3 flex items-center gap-3">
-												<div className="w-[55px] h-[55px] rounded-md bg-zinc-700/50" />
+												<div className="w-[55px] h-[55px] rounded-xl bg-zinc-700/50" />
 												<div className="space-y-2">
 													<div className="h-4 w-32 bg-zinc-700/50 rounded" />
 													<div className="h-3 w-24 bg-zinc-700/50 rounded" />
@@ -629,7 +629,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																data.discord_user.username}
 															{data.discord_user.clan?.identity_enabled && (
 																<span
-																	className={`text-xs font-medium ${bannerUrl ? "text-zinc-400/70 bg-zinc-800/40" : "text-zinc-400 bg-zinc-800/50"} px-1.5 py-0.5 rounded-md flex items-center gap-1`}
+																	className={`text-xs font-medium ${bannerUrl ? "text-zinc-400/70 bg-zinc-800/40" : "text-zinc-400 bg-zinc-800/50"} px-1.5 py-0.5 rounded-xl flex items-center gap-1`}
 																>
 																	<Image
 																		src={`https://cdn.discordapp.com/clan-badges/${data.discord_user.clan.identity_guild_id}/${data.discord_user.clan.badge}.png`}
@@ -661,7 +661,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															href={`https://discord.com/users/${data.discord_user.id}`}
 															target="_blank"
 															rel="noopener noreferrer"
-															className="text-xs font-medium text-white bg-indigo-500 hover:bg-indigo-600 transition-colors px-2.5 py-1.5 rounded-md flex items-center gap-1.5 w-fit whitespace-nowrap"
+															className="text-xs font-medium text-white bg-indigo-500 hover:bg-indigo-600 transition-colors px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 w-fit whitespace-nowrap"
 														>
 															<span className="hidden zsm:block">
 																Add on Discord
@@ -928,7 +928,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																				alt={activity.name}
 																				width={needsWiderSpotifyCard ? 72 : 65}
 																				height={needsWiderSpotifyCard ? 72 : 65}
-																				className="rounded-md"
+																				className="rounded-xl"
 																				onLoad={(e) => {
 																					const target =
 																						e.target as HTMLImageElement;
@@ -950,7 +950,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																				activity.application_id
 																			] && (
 																				<div
-																					className="absolute inset-0 bg-zinc-700/50 rounded-md animate-pulse transition-opacity duration-300"
+																					className="absolute inset-0 bg-zinc-700/50 rounded-xl animate-pulse transition-opacity duration-300"
 																					onTransitionEnd={(e) => {
 																						const target =
 																							e.target as HTMLElement;
@@ -964,7 +964,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																		{activity.assets?.large_text && (
 																			<div className="fixed opacity-0 group-hover/large:opacity-100 transition-opacity duration-200 pointer-events-none">
 																				<div
-																					className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg relative"
+																					className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-lg relative"
 																					style={{
 																						position: "absolute",
 																						transform: "translate(-50%, -100%)",
@@ -1035,7 +1035,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																				{activity.assets?.small_text && (
 																					<div className="fixed opacity-0 group-hover/small:opacity-100 transition-opacity duration-200 pointer-events-none">
 																						<div
-																							className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg relative"
+																							className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-lg relative"
 																							style={{
 																								position: "absolute",
 																								transform:
@@ -1057,7 +1057,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																</div>
 															) : (
 																<div className="relative flex-shrink-0">
-																	<div className="w-[65px] h-[65px] rounded-md bg-zinc-700/50 flex items-center justify-center">
+																	<div className="w-[65px] h-[65px] rounded-xl bg-zinc-700/50 flex items-center justify-center">
 																		<svg
 																			xmlns="http://www.w3.org/2000/svg"
 																			className="h-8 w-8 text-zinc-500"
@@ -1232,11 +1232,11 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																		alt={data.spotify.album}
 																		width={80}
 																		height={80}
-																		className="rounded-md"
+																		className="rounded-xl"
 																		onLoad={() => setSpotifyImageLoaded(true)}
 																	/>
 																	{!spotifyImageLoaded && (
-																		<div className="absolute inset-0 w-20 h-20 rounded-md bg-zinc-700/50 animate-pulse" />
+																		<div className="absolute inset-0 w-20 h-20 rounded-xl bg-zinc-700/50 animate-pulse" />
 																	)}
 																</div>
 															)}

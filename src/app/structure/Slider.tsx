@@ -1,7 +1,7 @@
-import React from "react";
-
-export const Slider: React.FC<{ children: React.ReactNode }> = ({
+export const Slider = ({
 	children,
+}: {
+	children: React.ReactNode;
 }) => {
 	return (
 		<div className="relative flex max-w-[90vw] overflow-hidden py-0.5">

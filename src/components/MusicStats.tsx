@@ -327,7 +327,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 											<span className="hidden zssm:block">Top Tracks</span>
 										</button>
 									</div>
-									<span className="text-xs text-zinc-500 mt-2 px-2 rounded-md bg-zinc-800/35">
+									<span className="text-xs text-zinc-500 mt-2 px-2 rounded-xl bg-zinc-800/35">
 										since 4 weeks
 									</span>
 								</div>
@@ -358,7 +358,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 												setError(null);
 												fetchStats();
 											}}
-											className="mt-4 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-md transition-colors"
+											className="mt-4 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-xl transition-colors"
 										>
 											Try Again
 										</button>
