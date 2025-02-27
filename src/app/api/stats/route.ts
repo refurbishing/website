@@ -1,30 +1,48 @@
 import { NextResponse } from "next/server";
 
-let lastSuccessfulResponse: any = null;
-let lastRequestTime: number = 0;
-const RATE_LIMIT_WINDOW = 120 * 60 * 1000;
+// Define the global type extension
+declare global {
+	var statsCache: StatsCache | undefined;
+}
+
+// More structured cache implementation
+interface StatsCache {
+	data: {
+		contributions: any;
+		total: number;
+		languages: { [key: string]: number };
+	} | null;
+	timestamp: number;
+}
+
+// Initialize cache with Node.js global
+if (!global.statsCache) {
+	global.statsCache = {
+		data: null,
+		timestamp: 0
+	} as StatsCache;
+}
+
+const CACHE_DURATION = 120 * 60 * 1000; // 2 hours in milliseconds
+
 export async function GET() {
 	try {
 		const now = Date.now();
-		if (lastRequestTime && now - lastRequestTime < RATE_LIMIT_WINDOW) {
-			if (lastSuccessfulResponse) {
-				return NextResponse.json({
-					...lastSuccessfulResponse,
-					cached: true,
-				});
-			}
-		} else {
-			lastSuccessfulResponse = null;
+		const cache = global.statsCache as StatsCache;
+			if (cache.data && now - cache.timestamp < CACHE_DURATION) {
+			return NextResponse.json({
+				...cache.data,
+				cached: true,
+			});
 		}
-
-		lastRequestTime = now;
-
+		
+		// Fetch new data
 		const contributionsRes = await fetch(
-			// "https://corsproxy.io/?url=https://github-contributions-api.jogruber.de/v4/refurbishing?y=last",
 			"https://github-contributions-api.jogruber.de/v4/refurbishing?y=last",
 			{ next: { revalidate: 18000 } }, // Cache for 5 hours
 		);
 		const contributionsData = await contributionsRes.json();
+		
 		const reposRes = await fetch(
 			"https://api.github.com/users/refurbishing/repos",
 			{
@@ -35,9 +53,11 @@ export async function GET() {
 				next: { revalidate: 18000 }, // Cache for 5 hours
 			},
 		);
+		
 		if (!reposRes.ok) {
 			throw new Error(`GitHub API error: ${reposRes.status}`);
 		}
+		
 		const repos = await reposRes.json();
 
 		if (!Array.isArray(repos)) {
@@ -61,28 +81,38 @@ export async function GET() {
 				aggregatedLanguages[lang] = (aggregatedLanguages[lang] || 0) + bytes;
 			});
 		});
-		lastSuccessfulResponse = {
+		
+		const statsData = {
 			contributions: contributionsData.contributions,
 			total: contributionsData.total.lastYear,
 			languages: aggregatedLanguages,
-			cached: false,
 		};
-
-		return NextResponse.json(lastSuccessfulResponse);
+		
+		// Update cache
+		global.statsCache = {
+			data: statsData,
+			timestamp: now
+		};
+		
+		return NextResponse.json({
+			...statsData,
+			cached: false,
+		});
+		
 	} catch (error) {
 		console.error("API Error:", error);
-		const now = Date.now();
-		if (lastSuccessfulResponse && now - lastRequestTime < RATE_LIMIT_WINDOW) {
+		
+		const cache = global.statsCache as StatsCache;
+		if (cache.data) {
 			return NextResponse.json({
-				...lastSuccessfulResponse,
+				...cache.data,
 				cached: true,
 			});
 		}
-		lastSuccessfulResponse = null;
+		
 		return NextResponse.json(
 			{
-				error:
-					"Failed to fetch GitHub data. Possible Ratelimit try again later.",
+				error: "Failed to fetch GitHub data. Possible Ratelimit try again later.",
 			},
 			{ status: 500 },
 		);

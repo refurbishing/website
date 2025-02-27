@@ -1,41 +1,56 @@
 import { NextResponse } from "next/server";
 
-let lastSuccessfulResponse: any = null;
-let lastRequestTime: number = 0;
-const RATE_LIMIT_WINDOW = 30 * 60 * 1000; // 30 minutes
+declare global {
+	var weatherCache: WeatherCache | undefined;
+}
+
+interface WeatherCache {
+	data: {
+		temp: string;
+		condition: string;
+		lastUpdated: string;
+	} | null;
+	timestamp: number;
+}
+
+if (!global.weatherCache) {
+	global.weatherCache = {
+		data: null,
+		timestamp: 0
+	} as WeatherCache;
+}
+
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+const API_URL = "https://wttr.in/Honduras?format=%t|%C";
 
 export async function GET() {
 	try {
 		const now = Date.now();
-		if (lastRequestTime && now - lastRequestTime < RATE_LIMIT_WINDOW) {
-			if (lastSuccessfulResponse) {
-				return NextResponse.json({
-					...lastSuccessfulResponse,
-					cached: true,
-				});
-			}
-		} else {
-			lastSuccessfulResponse = null;
+		const cache = global.weatherCache as WeatherCache;
+		
+		if (cache.data && now - cache.timestamp < CACHE_DURATION) {
+			return NextResponse.json({
+				...cache.data,
+				cached: true,
+			});
 		}
-
-		lastRequestTime = now;
-
-		const response = await fetch("https://wttr.in/Honduras?format=%t|%C", {
+		
+		const response = await fetch(API_URL, {
 			next: { revalidate: 900 }, // Cache for 15 minutes
 		});
+		
 		if (!response.ok) throw new Error("Weather service unavailable");
-
+		
 		const data = await response.text();
 		const [temp, condition] = data.split("|");
-
+		
 		if (
 			temp.toLowerCase().includes("error") ||
 			condition.toLowerCase().includes("unknown")
 		) {
 			throw new Error("Received error or unknown data");
 		}
-
-		lastSuccessfulResponse = {
+			const weatherData = {
 			temp: temp.replace("+", "").trim(),
 			condition: condition.trim(),
 			lastUpdated: new Date().toLocaleString("en-US", {
@@ -46,20 +61,28 @@ export async function GET() {
 				minute: "numeric",
 				hour12: true,
 			}),
-			cached: false,
 		};
-
-		return NextResponse.json(lastSuccessfulResponse);
+		
+		global.weatherCache = {
+			data: weatherData,
+			timestamp: now
+		};
+		
+		return NextResponse.json({
+			...weatherData,
+			cached: false,
+		});
+		
 	} catch (error) {
 		console.error("Error fetching weather:", error);
-		const now = Date.now();
-		if (lastSuccessfulResponse && now - lastRequestTime < RATE_LIMIT_WINDOW) {
+				const cache = global.weatherCache as WeatherCache;
+		if (cache.data) {
 			return NextResponse.json({
-				...lastSuccessfulResponse,
+				...cache.data,
 				cached: true,
 			});
 		}
-		lastSuccessfulResponse = null;
+		
 		return NextResponse.json(
 			{ error: "Unable to fetch weather data" },
 			{ status: 500 },

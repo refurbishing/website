@@ -74,7 +74,8 @@ export default function MusicPlayer() {
 			setIsLoading(true);
 			try {
 				const response = await fetch("/api/songs");
-				const songList = await response.json();
+				const data = await response.json();
+				const songList = data.songs || [];
 				setSongs(songList);
 				setCurrentSongIndex(Math.floor(Math.random() * songList.length));
 				if ("mediaSession" in navigator) {
