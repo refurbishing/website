@@ -20,7 +20,7 @@ if (!global.weatherCache) {
 	} as WeatherCache;
 }
 
-const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
 const API_URL = "https://wttr.in/Honduras?format=%t|%C";
 
 export async function GET() {

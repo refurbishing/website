@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
 
-// Define the global type extension
 declare global {
 	var statsCache: StatsCache | undefined;
 }
 
-// More structured cache implementation
 interface StatsCache {
 	data: {
 		contributions: any;
@@ -15,7 +13,6 @@ interface StatsCache {
 	timestamp: number;
 }
 
-// Initialize cache with Node.js global
 if (!global.statsCache) {
 	global.statsCache = {
 		data: null,
@@ -36,7 +33,6 @@ export async function GET() {
 			});
 		}
 		
-		// Fetch new data
 		const contributionsRes = await fetch(
 			"https://github-contributions-api.jogruber.de/v4/refurbishing?y=last",
 			{ next: { revalidate: 18000 } }, // Cache for 5 hours
@@ -88,7 +84,6 @@ export async function GET() {
 			languages: aggregatedLanguages,
 		};
 		
-		// Update cache
 		global.statsCache = {
 			data: statsData,
 			timestamp: now
