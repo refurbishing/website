@@ -95,7 +95,7 @@ export default function About() {
 											ease: [0.4, 0, 0.2, 1],
 											duration: 0.3,
 										}}
-										className="text-white text-xs flex-[1.5] bg-white/[0.01] backdrop-blur-sm px-3 py-1 rounded-2xl shadow-lg border border-white/[0.02]"
+										className="text-white text-xs flex-[1.5] bg-white/[0.01] backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
 										Currently focused on Web Development and always exploring
 										new technologies to enhance and improve my skill set.
@@ -106,9 +106,9 @@ export default function About() {
 											boxShadow: "0 0 2px rgba(255, 255, 255, 0.08)",
 										}}
 										whileTap={{ scale: 0.98 }}
-										className="flex items-center justify-center sm:justify-start gap-1.5 bg-white/[0.03] w-fit px-2.5 py-1 rounded-xl mt-3 mx-auto sm:mx-0 border border-white/[0.03]"
+										className="flex items-center justify-center sm:justify-start gap-1.5 bg-white/[0.03] w-fit px-2.5 py-1 rounded-md mt-3 mx-auto sm:mx-0 border border-white/[0.03]"
 									>
-										<div className="bg-white/[0.06] p-0.5 rounded-xl border border-white/[0.03]">
+										<div className="bg-white/[0.06] p-0.5 rounded-md border border-white/[0.03]">
 											<Code className="w-3.5 h-3.5 text-white/80" />
 										</div>
 										<span className="text-white/80 text-xs">

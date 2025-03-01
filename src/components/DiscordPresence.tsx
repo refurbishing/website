@@ -661,7 +661,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															href={`https://discord.com/users/${data.discord_user.id}`}
 															target="_blank"
 															rel="noopener noreferrer"
-															className="text-xs font-medium text-white bg-indigo-500 hover:bg-indigo-600 transition-colors px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 w-fit whitespace-nowrap"
+															className="text-xs font-medium text-white bg-indigo-500 hover:bg-indigo-600 transition-colors px-2.5 py-1.5 rounded-md flex items-center gap-1.5 w-fit whitespace-nowrap"
 														>
 															<span className="hidden zsm:block">
 																Add on Discord
