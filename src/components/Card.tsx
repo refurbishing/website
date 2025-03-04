@@ -32,6 +32,11 @@ export default function CardComponent() {
 				icon: "/assets/statsfm.png",
 				alt: "stats.fm",
 			},
+			{
+				href: "https://ko-fi.com/authenticators",
+				icon: "famicons:cash",
+				alt: "Ko-fi",
+			},
 		],
 		[],
 	);
