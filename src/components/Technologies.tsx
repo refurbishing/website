@@ -50,7 +50,7 @@ export default function Technologies() {
 		},
 		{
 			href: "https://www.kernel.org",
-			icon: "simple-icons:linux",
+			icon: "teenyicons:linux-alt-solid",
 			name: "Linux",
 		},
 		{
