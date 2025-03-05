@@ -11,6 +11,8 @@ export default function Header() {
 	const [showUserArea, setShowUserArea] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 	const [isDesktop, setIsDesktop] = useState(false);
+	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+	const [isHovered, setIsHovered] = useState(false);
 
 	const statusColor = {
 		online: {
@@ -67,19 +69,27 @@ export default function Header() {
 		};
 	}, []);
 
+	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+		const rect = e.currentTarget.getBoundingClientRect();
+		setMousePosition({
+			x: e.clientX - rect.left,
+			y: e.clientY - rect.top
+		});
+	};
+
 	return (
 		<div>
 			<div className="h-20" />
 
 			{hamburgerTriggered && (
 				<div
-					className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity duration-200"
+					className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-200"
 					onClick={() => setHamburgerTriggered(false)}
 				></div>
 			)}
 
 			<div
-				className={`fixed top-0 left-0 right-0 mt-4 bg-dark/85 text-white border border-[#999a9e]/30 backdrop-blur-[5px] rounded-2xl shadow-md hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] non-selectable relative z-50 transition-all duration-300 ease-out transform translate-y-0 scale-100`}
+				className={`fixed top-0 left-0 right-0 mt-4 bg-dark/85 text-white border border-[#999a9e]/30 backdrop-blur-[5px] rounded-2xl shadow-md non-selectable relative z-50 transition-all duration-300 ease-out transform translate-y-0 scale-100`}
 				style={{
 					position: "fixed",
 					top: 0,
@@ -89,7 +99,25 @@ export default function Header() {
 					marginRight: scrolled && isDesktop ? "8.5rem" : "5rem",
 					transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
 				}}
+				onMouseMove={handleMouseMove}
+				onMouseEnter={() => setIsHovered(true)}
+				onMouseLeave={() => setIsHovered(false)}
 			>
+				<div
+					className="absolute pointer-events-none"
+					style={{
+						background: 'radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 25%)',
+						border: '1px solid transparent',
+						borderImage: 'radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.2), transparent 25%) 1',
+						inset: '-1px',
+						borderRadius: '16px',
+						WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+						opacity: isHovered && isDesktop ? 1 : 0,
+						transition: 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+						'--mouse-x': `${mousePosition.x}px`,
+						'--mouse-y': `${mousePosition.y}px`,
+					} as React.CSSProperties}
+				/>
 				<div className="p-3.5 px-4 non-selectable">
 					<div className="flex justify-between items-center non-selectable">
 						<div className="flex items-center gap-2 non-selectable min-w-fit xsm:w-1/4">
@@ -235,11 +263,15 @@ export default function Header() {
 					</div>
 
 					<div
-						className={`absolute left-0 right-0 mt-6 mx-4 bg-dark/70 text-white border border-[#898c91] rounded-2xl shadow-md transition-all duration-300 lg:hidden non-selectable z-30 ${
+						className={`fixed left-0 right-0 mt-2 mx-4 bg-dark/70 text-white border border-[#898c91] rounded-2xl shadow-md transition-all duration-300 lg:hidden non-selectable ${
 							hamburgerTriggered
 								? "opacity-100 translate-y-0"
 								: "opacity-0 -translate-y-4 pointer-events-none"
 						}`}
+						style={{
+							top: "4.5rem",
+							zIndex: 45
+						}}
 					>
 						<nav className="index-nav p-4 non-selectable">
 							<div className="flex flex-col non-selectable">
