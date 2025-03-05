@@ -89,7 +89,7 @@ export default function CardComponent() {
 				rotateX: { duration: 0.8 },
 			}}
 		>
-			<Card className="card-background bg-black/25 mt-4 mx-auto py-4 w-[95%] min-w-[320px] max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-2xl xl:max-w-3xl px-4 sm:px-6 border border-[#999a9e]/75 rounded-xl relative z-0 transition-all duration-500 ease-out hover:shadow-[0_0_15px_rgba(35,32,32,15)] hover:border-opacity-60 hover:scale-[1.01]">
+			<Card className="card-background bg-black/25 mt-4 mx-auto py-4 w-[95%] min-w-[320px] max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-2xl xl:max-w-3xl px-4 sm:px-6 border border-[#999a9e]/75 rounded-xl relative z-0 transition-all duration-300 ease-in-out hover:shadow-[0_0_15px_rgba(35,32,32,15)] hover:border-opacity-60 hover:scale-[1.01]">
 				<video autoPlay loop muted playsInline disablePictureInPicture>
 					<source src="/assets/banner.mp4" type="video/mp4" />
 					Your browser does not support the video tag.

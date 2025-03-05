@@ -65,7 +65,7 @@ export default function About() {
 									In my early teen years, I developed an interest in
 									programming, design and cybersecurity which led me to pursue a
 									career in the field which I have a passion for and I'm always
-									looking to learn more and to make a difference.
+									looking to learn more and to make something new and unique.
 								</motion.div>
 								<motion.div
 									initial={{ opacity: 0, y: 20 }}
@@ -97,8 +97,8 @@ export default function About() {
 										}}
 										className="text-white text-xs flex-[1.5] bg-white/[0.01] backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
-										Currently focused on Web Development and always exploring
-										new technologies to enhance and improve my skill set.
+										Currently focused on Web Development, open to commissions and paid work opportunities
+										while exploring new technologies to enhance my skill set.
 									</motion.div>
 									<motion.div
 										whileHover={{

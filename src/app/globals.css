@@ -158,7 +158,16 @@ body {
 	isolation: isolate;
 }
 
-.nav-link::before {
+.nav-link-icon {
+	padding: 5px 8px;
+	border-radius: 50px;
+	transition: all 0.3s ease;
+	position: relative;
+	isolation: isolate;
+}
+
+.nav-link::before,
+.nav-link-icon::before {
 	content: "";
 	position: absolute;
 	inset: 0;
@@ -171,7 +180,8 @@ body {
 	box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
 }
 
-.nav-link:hover::before {
+.nav-link:hover::before,
+.nav-link-icon:hover::before {
 	opacity: 1;
 }
 
@@ -189,27 +199,6 @@ body {
 
 .fadeIn {
 	animation: fadeIn 2s ease-in-out;
-}
-@keyframes fadeIn {
-	0% {
-		opacity: 0;
-	}
-	25% {
-		opacity: 0.25;
-	}
-	50% {
-		opacity: 0.5;
-	}
-	75% {
-		opacity: 0.75;
-	}
-	90% {
-		opacity: 0.9;
-	}
-
-	100% {
-		opacity: 1;
-	}
 }
 
 .custom-scrollbar {
@@ -236,6 +225,29 @@ body {
 	background: rgba(255, 255, 255, 0.3);
 }
 
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	25% {
+		opacity: 0.25;
+	}
+	50% {
+		opacity: 0.5;
+	}
+	75% {
+		opacity: 0.75;
+	}
+	90% {
+		opacity: 0.9;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+
 @keyframes fadeScale {
 	0% {
 		opacity: 0;
@@ -249,4 +261,19 @@ body {
 		opacity: 1;
 		transform: scale(1);
 	}
+}
+@keyframes gradient {
+	0% { background-position: -200% 50%; }
+	100% { background-position: 200% 50%; }
+}
+
+.animate-gradient {
+	background-size: 200% auto;
+	animation: gradient 8s linear infinite;
+	transition: all 0.3s ease;
+}
+
+.animate-gradient:hover {
+	animation: gradient 3s linear infinite;
+	text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }

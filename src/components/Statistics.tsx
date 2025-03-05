@@ -374,7 +374,7 @@ export default function Statistics() {
 																	key={date}
 																	className="relative"
 																	style={{
-																		animation: isInView ? `fadeScale 0.6s ease-out ${index * 0.003}s backwards` : 'none'
+																		animation: isInView ? `fadeScale 0.35s ease-out ${Math.floor(index / 7) * 0.02}s backwards` : 'none'
 																	}}
 																>
 																	<div

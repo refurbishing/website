@@ -19,7 +19,7 @@ const projects = [
 	{
 		name: "VNREZ",
 		description:
-			"Utility-suite for recording and screenshotting your files easily and uploading them to a file host",
+			"Utility-suite for Linux that records and screenshots your files easily and uploads them to a file host if desired",
 		url: "https://github.com/refurbishing/vnrez",
 		icon: "https://github.com/refurbishing/vnrez/raw/main/assets/logo.png",
 		language: "Bash",
