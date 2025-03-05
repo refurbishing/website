@@ -61,7 +61,11 @@ export default function MusicPlayer() {
 				};
 
 	useEffect(() => {
-		setIsImageLoaded(!!loadedImages.current[currentSong.cover]);
+		if (loadedImages.current[currentSong.cover]) {
+			setIsImageLoaded(true);
+		} else {
+			setIsImageLoaded(false);
+		}
 	}, [currentSong.cover]);
 
 	const handleImageLoad = () => {
