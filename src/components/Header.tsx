@@ -106,9 +106,9 @@ export default function Header() {
 				<div
 					className="absolute pointer-events-none"
 					style={{
-						background: 'radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 25%)',
+						background: 'radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.04), transparent 25%)',
 						border: '1px solid transparent',
-						borderImage: 'radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.2), transparent 25%) 1',
+						borderImage: 'radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.15), transparent 25%) 1',
 						inset: '-1px',
 						borderRadius: '16px',
 						WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',

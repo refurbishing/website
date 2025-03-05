@@ -213,7 +213,7 @@ export default function CardComponent() {
 											delay: 0.5 + i * 0.1,
 										},
 									}}
-									className="border p-1 rounded-md border-[#999a9e]/45 hover:bg-[#1a1a1a]/60 mr-2 last:mr-0 cursor-pointer will-change-transform"
+									className="border p-1 rounded-md border-[#999a9e]/45 hover:bg-[#1a1a1a]/60 mr-2 last:mr-0 cursor-pointer will-change-transform group"
 								>
 									{link.icon.startsWith("/") ? (
 										<Image
@@ -221,12 +221,12 @@ export default function CardComponent() {
 											alt={link.alt}
 											width={24}
 											height={24}
-											className="w-6 h-6 sm:w-7 sm:h-7 text-[#b7b7b7]"
+											className="w-6 h-6 sm:w-7 sm:h-7 text-[#b7b7b7] transition-transform duration-300 non-selectable group-hover:scale-105"
 										/>
 									) : (
 										<Icon
 											icon={link.icon}
-											className="text-[#b7b7b7] text-2xl sm:text-3xl"
+											className="text-[#b7b7b7] text-2xl sm:text-3xl transition-transform duration-300 group-hover:scale-105"
 											aria-label={link.alt}
 										/>
 									)}

@@ -275,5 +275,5 @@ body {
 
 .animate-gradient:hover {
 	animation: gradient 3s linear infinite;
-	text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+	text-shadow: 0 0 5px rgba(240,237,255,0.7);
 }
