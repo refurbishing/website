@@ -171,8 +171,25 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 
 	const getAvatarUrl = useCallback(() => {
 		if (!data?.discord_user) return null;
-		const { avatar } = data.discord_user;
-		return `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${avatar}.${avatar?.startsWith("a_") ? "gif" : "png"}?size=512`;
+		const { avatar, id, global_name, username } = data.discord_user;
+		
+		if (!avatar) {
+			const displayName = global_name || username || "";
+			const firstLetter = displayName.charAt(0).toUpperCase();			
+			const svgContent = `
+				<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+					<rect width="512" height="512" fill="#1e1e1e" />
+					<text x="256" y="256" fill="#888888" font-size="256" font-weight="bold" 
+						font-family="Arial, sans-serif" text-anchor="middle" dominant-baseline="central">
+						${firstLetter}
+					</text>
+				</svg>
+			`;
+			
+			return `data:image/svg+xml;base64,${btoa(svgContent)}`;
+		}
+		
+		return `https://cdn.discordapp.com/avatars/${id}/${avatar}.${avatar?.startsWith("a_") ? "gif" : "png"}?size=512`;
 	}, [data?.discord_user]);
 
 	useEffect(() => {
@@ -544,7 +561,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 												{!avatarLoaded && (
 													<div className="absolute inset-0 w-20 h-20 rounded-full bg-zinc-800/50 animate-pulse" />
 												)}
-												<div className="absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-zinc-900 bg-zinc-800/50" />
+												<div className="absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-zinc-900/80 bg-zinc-800/50" />
 											</div>
 											<div className="flex-1">
 												<div className="flex items-start justify-between">
@@ -618,7 +635,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 														/>
 													)}
 												<div
-													className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-zinc-900 ${statusColor}`}
+													className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor}`}
 												/>
 											</div>
 											<div className="flex-1">
@@ -629,7 +646,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																data.discord_user.username}
 															{data.discord_user.clan?.identity_enabled && (
 																<span
-																	className={`text-xs font-medium ${bannerUrl ? "text-zinc-400/70 bg-zinc-800/40" : "text-zinc-400 bg-zinc-800/50"} px-1.5 py-0.5 rounded-xl flex items-center gap-1`}
+																	className={`text-xs font-medium ${bannerUrl ? "text-zinc-400/70 bg-zinc-800/40" : "text-zinc-400 bg-zinc-800/50"} px-1.5 py-0.5 rounded-md flex items-center gap-1`}
 																>
 																	<Image
 																		src={`https://cdn.discordapp.com/clan-badges/${data.discord_user.clan.identity_guild_id}/${data.discord_user.clan.badge}.png`}
