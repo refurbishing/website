@@ -172,10 +172,10 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 	const getAvatarUrl = useCallback(() => {
 		if (!data?.discord_user) return null;
 		const { avatar, id, global_name, username } = data.discord_user;
-		
+
 		if (!avatar) {
 			const displayName = global_name || username || "";
-			const firstLetter = displayName.charAt(0).toUpperCase();			
+			const firstLetter = displayName.charAt(0).toUpperCase();
 			const svgContent = `
 				<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
 					<rect width="512" height="512" fill="#1e1e1e" />
@@ -185,10 +185,10 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 					</text>
 				</svg>
 			`;
-			
+
 			return `data:image/svg+xml;base64,${btoa(svgContent)}`;
 		}
-		
+
 		return `https://cdn.discordapp.com/avatars/${id}/${avatar}.${avatar?.startsWith("a_") ? "gif" : "png"}?size=512`;
 	}, [data?.discord_user]);
 

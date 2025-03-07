@@ -19,6 +19,7 @@ body {
 @layer utilities {
 	.pause-animation {
 		animation-play-state: paused !important;
+		transition: animation-play-state 0.5s ease-in-out;
 	}
 }
 
@@ -247,7 +248,6 @@ body {
 	}
 }
 
-
 @keyframes fadeScale {
 	0% {
 		opacity: 0;
@@ -263,8 +263,12 @@ body {
 	}
 }
 @keyframes gradient {
-	0% { background-position: -200% 50%; }
-	100% { background-position: 200% 50%; }
+	0% {
+		background-position: -200% 50%;
+	}
+	100% {
+		background-position: 200% 50%;
+	}
 }
 
 .animate-gradient {
@@ -275,5 +279,5 @@ body {
 
 .animate-gradient:hover {
 	animation: gradient 3s linear infinite;
-	text-shadow: 0 0 5px rgba(240,237,255,0.7);
+	text-shadow: 0 0 5px rgba(240, 237, 255, 0.7);
 }

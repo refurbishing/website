@@ -11,8 +11,8 @@ import MusicPlayer from "@/components/MusicPlayer";
 import About from "@/components/About";
 import Statistics from "@/components/Statistics";
 import { SocketProvider } from "@/hooks/SocketContext";
-import { useEffect, useRef } from 'react';
-import Lenis from 'lenis';
+import { useEffect, useRef } from "react";
+import Lenis from "lenis";
 
 export default function Home() {
 	const lenisRef = useRef<Lenis | null>(null);
@@ -21,7 +21,7 @@ export default function Home() {
 		lenisRef.current = new Lenis({
 			duration: 1.2,
 			easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-			orientation: 'vertical',
+			orientation: "vertical",
 			smoothWheel: true,
 			wheelMultiplier: 1,
 			touchMultiplier: 1,

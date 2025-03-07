@@ -16,26 +16,35 @@ export default function Header() {
 
 	const statusColor = {
 		online: {
-			normal: "bg-green-500 shadow-[0_0_3px_rgba(34,197,94,0.2),_0_0_5px_rgba(34,197,94,0.12),_0_0_8px_rgba(34,197,94,0.05)]",
-			hover: "hover:bg-green-400 hover:shadow-[0_0_5px_rgba(34,197,94,0.3),_0_0_8px_rgba(34,197,94,0.2),_0_0_12px_rgba(34,197,94,0.1)]"
+			normal:
+				"bg-green-500 shadow-[0_0_3px_rgba(34,197,94,0.2),_0_0_5px_rgba(34,197,94,0.12),_0_0_8px_rgba(34,197,94,0.05)]",
+			hover:
+				"hover:bg-green-400 hover:shadow-[0_0_5px_rgba(34,197,94,0.3),_0_0_8px_rgba(34,197,94,0.2),_0_0_12px_rgba(34,197,94,0.1)]",
 		},
 		dnd: {
-			normal: "bg-red-500 shadow-[0_0_3px_rgba(239,68,68,0.2),_0_0_5px_rgba(239,68,68,0.12),_0_0_8px_rgba(239,68,68,0.05)]",
-			hover: "hover:bg-red-400 hover:shadow-[0_0_5px_rgba(239,68,68,0.3),_0_0_8px_rgba(239,68,68,0.2),_0_0_12px_rgba(239,68,68,0.1)]"
+			normal:
+				"bg-red-500 shadow-[0_0_3px_rgba(239,68,68,0.2),_0_0_5px_rgba(239,68,68,0.12),_0_0_8px_rgba(239,68,68,0.05)]",
+			hover:
+				"hover:bg-red-400 hover:shadow-[0_0_5px_rgba(239,68,68,0.3),_0_0_8px_rgba(239,68,68,0.2),_0_0_12px_rgba(239,68,68,0.1)]",
 		},
 		idle: {
-			normal: "bg-yellow-500 shadow-[0_0_3px_rgba(234,179,8,0.2),_0_0_5px_rgba(234,179,8,0.12),_0_0_8px_rgba(234,179,8,0.05)]",
-			hover: "hover:bg-yellow-400 hover:shadow-[0_0_5px_rgba(234,179,8,0.3),_0_0_8px_rgba(234,179,8,0.2),_0_0_12px_rgba(234,179,8,0.1)]"
+			normal:
+				"bg-yellow-500 shadow-[0_0_3px_rgba(234,179,8,0.2),_0_0_5px_rgba(234,179,8,0.12),_0_0_8px_rgba(234,179,8,0.05)]",
+			hover:
+				"hover:bg-yellow-400 hover:shadow-[0_0_5px_rgba(234,179,8,0.3),_0_0_8px_rgba(234,179,8,0.2),_0_0_12px_rgba(234,179,8,0.1)]",
 		},
 		offline: {
-			normal: "bg-gray-500 shadow-[0_0_3px_rgba(107,114,128,0.2),_0_0_5px_rgba(107,114,128,0.12),_0_0_8px_rgba(107,114,128,0.05)]",
-			hover: "hover:bg-gray-400 hover:shadow-[0_0_5px_rgba(107,114,128,0.3),_0_0_8px_rgba(107,114,128,0.2),_0_0_12px_rgba(107,114,128,0.1)]"
-		}
+			normal:
+				"bg-gray-500 shadow-[0_0_3px_rgba(107,114,128,0.2),_0_0_5px_rgba(107,114,128,0.12),_0_0_8px_rgba(107,114,128,0.05)]",
+			hover:
+				"hover:bg-gray-400 hover:shadow-[0_0_5px_rgba(107,114,128,0.3),_0_0_8px_rgba(107,114,128,0.2),_0_0_12px_rgba(107,114,128,0.1)]",
+		},
 	} as const;
 
-	const statusClass = status in statusColor
-		? `${statusColor[status as keyof typeof statusColor].normal} ${statusColor[status as keyof typeof statusColor].hover} transition-all duration-300`
-		: `${statusColor.offline.normal} ${statusColor.offline.hover} transition-all duration-300`;
+	const statusClass =
+		status in statusColor
+			? `${statusColor[status as keyof typeof statusColor].normal} ${statusColor[status as keyof typeof statusColor].hover} transition-all duration-300`
+			: `${statusColor.offline.normal} ${statusColor.offline.hover} transition-all duration-300`;
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -73,7 +82,7 @@ export default function Header() {
 		const rect = e.currentTarget.getBoundingClientRect();
 		setMousePosition({
 			x: e.clientX - rect.left,
-			y: e.clientY - rect.top
+			y: e.clientY - rect.top,
 		});
 	};
 
@@ -105,18 +114,23 @@ export default function Header() {
 			>
 				<div
 					className="absolute pointer-events-none"
-					style={{
-						background: 'radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.04), transparent 25%)',
-						border: '1px solid transparent',
-						borderImage: 'radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.15), transparent 25%) 1',
-						inset: '-1px',
-						borderRadius: '16px',
-						WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-						opacity: isHovered && isDesktop ? 1 : 0,
-						transition: 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-						'--mouse-x': `${mousePosition.x}px`,
-						'--mouse-y': `${mousePosition.y}px`,
-					} as React.CSSProperties}
+					style={
+						{
+							background:
+								"radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.04), transparent 25%)",
+							border: "1px solid transparent",
+							borderImage:
+								"radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.15), transparent 25%) 1",
+							inset: "-1px",
+							borderRadius: "16px",
+							WebkitMask:
+								"linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+							opacity: isHovered && isDesktop ? 1 : 0,
+							transition: "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+							"--mouse-x": `${mousePosition.x}px`,
+							"--mouse-y": `${mousePosition.y}px`,
+						} as React.CSSProperties
+					}
 				/>
 				<div className="p-3.5 px-4 non-selectable">
 					<div className="flex justify-between items-center non-selectable">
@@ -270,7 +284,7 @@ export default function Header() {
 						}`}
 						style={{
 							top: "4.5rem",
-							zIndex: 45
+							zIndex: 45,
 						}}
 					>
 						<nav className="index-nav p-4 non-selectable">
@@ -304,8 +318,7 @@ export default function Header() {
 									href="#projects"
 									onClick={(e) => {
 										e.preventDefault();
-										const projectsElement =
-											document.getElementById("projects");
+										const projectsElement = document.getElementById("projects");
 										if (projectsElement) {
 											smoothScrollTo(projectsElement.offsetTop - 80, 800);
 										}

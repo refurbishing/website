@@ -97,8 +97,9 @@ export default function About() {
 										}}
 										className="text-white text-xs flex-[1.5] bg-white/[0.01] backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
-										Currently focused on Web Development, open to commissions and paid work opportunities
-										while exploring new technologies to enhance my skill set.
+										Currently focused on Web Development, open to commissions
+										and paid work opportunities while exploring new technologies
+										to enhance my skill set.
 									</motion.div>
 									<motion.div
 										whileHover={{

@@ -18,7 +18,7 @@ interface MusicCache {
 if (!global.musicCache) {
 	global.musicCache = {
 		data: null,
-		timestamp: 0
+		timestamp: 0,
 	} as MusicCache;
 }
 
@@ -28,14 +28,14 @@ export async function GET() {
 	try {
 		const now = Date.now();
 		const cache = global.musicCache as MusicCache;
-		
+
 		if (cache.data && now - cache.timestamp < CACHE_DURATION) {
 			return NextResponse.json({
 				...cache.data,
 				cached: true,
 			});
 		}
-		
+
 		const [artistsRes, tracksRes] = await Promise.all([
 			fetch(
 				`https://api.stats.fm/api/v1/users/${USER_ID}/top/artists?range=${range}`,
@@ -49,9 +49,9 @@ export async function GET() {
 		const tracks = await tracksRes.json();
 
 		const musicData = { artists, tracks };
-			global.musicCache = {
+		global.musicCache = {
 			data: musicData,
-			timestamp: now
+			timestamp: now,
 		};
 
 		return NextResponse.json({
@@ -60,7 +60,7 @@ export async function GET() {
 		});
 	} catch (error) {
 		console.error("Error fetching music stats:", error);
-		
+
 		const cache = global.musicCache as MusicCache;
 		if (cache.data) {
 			return NextResponse.json({
@@ -68,7 +68,7 @@ export async function GET() {
 				cached: true,
 			});
 		}
-		
+
 		return NextResponse.json(
 			{ error: "Failed to fetch music stats" },
 			{ status: 500 },

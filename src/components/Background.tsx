@@ -1,5 +1,5 @@
 "use client";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import React from "react";
 
 const BackgroundClient = () => {
@@ -25,8 +25,8 @@ const BackgroundClient = () => {
 			/>
 		</div>
 	);
-}
+};
 
 export default dynamic(() => Promise.resolve(BackgroundClient), {
-	ssr: false
+	ssr: false,
 });

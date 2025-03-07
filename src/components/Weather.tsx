@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
 	Sun,
 	SunMedium,
@@ -17,6 +18,8 @@ import {
 	Cloudy,
 	LucideIcon,
 } from "lucide-react";
+import WeatherWidget from "./WeatherWidget";
+import type { WeatherData } from "./WeatherWidget";
 
 const WEATHER_ICONS: Record<string, { icon: LucideIcon; color: string }> = {
 	clear: { icon: Sun, color: "text-yellow-300" },
@@ -65,17 +68,17 @@ const WeatherSkeleton = () => {
 };
 
 const Weather = () => {
-	const [weatherState, setWeatherState] = useState<{
-		temp: string;
-		condition: string;
-		error: string | null;
-	}>({
-		temp: "",
-		condition: "",
-		error: null,
-	});
+	const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 	const [windowWidth, setWindowWidth] = useState(0);
+	const [showWeatherWidget, setShowWeatherWidget] = useState(false);
+	const [isMounted, setIsMounted] = useState(false);
+
+	useEffect(() => {
+		setIsMounted(true);
+		return () => setIsMounted(false);
+	}, []);
 
 	useEffect(() => {
 		setWindowWidth(window.innerWidth);
@@ -91,18 +94,13 @@ const Weather = () => {
 			if (!response.ok) throw new Error("Weather service unavailable");
 
 			const data = await response.json();
+			if (data.error) throw new Error(data.error);
 
-			setWeatherState({
-				temp: data.temp,
-				condition: data.condition,
-				error: null,
-			});
+			setWeatherData(data);
+			setError(null);
 		} catch (error) {
 			console.error("Error fetching weather:", error);
-			setWeatherState((prev) => ({
-				...prev,
-				error: "Unable to fetch weather data",
-			}));
+			setError("Unable to fetch weather data");
 		} finally {
 			setLoading(false);
 		}
@@ -115,25 +113,44 @@ const Weather = () => {
 	const showIconOnly = windowWidth < 415;
 
 	if (loading) return <WeatherSkeleton />;
-	if (weatherState.error) {
+	if (error) {
 		return (
 			<div className="bg-red-500/10 backdrop-blur-sm px-3 py-1 rounded-2xl flex items-center gap-2 hover:shadow-[0_0_2px_rgba(255,255,255,0.08)]">
 				<span className="text-sm text-red-500">
-					{windowWidth < 860 ? "Error" : weatherState.error}
+					{windowWidth < 860 ? "Error" : error}
 				</span>
 			</div>
 		);
 	}
 
 	return (
-		<div className="outline outline-1 outline-[#999a9e]/20 bg-white/5 backdrop-blur-sm px-3 py-1 rounded-2xl flex items-center gap-2 hover:shadow-[0_0_2px_rgba(255,255,255,0.08)] hover:bg-white/10 transition-all duration-300">
-			<WeatherIcon condition={weatherState.condition} />
-			{!showIconOnly && (
-				<span className="text-sm text-white/85 font-medium">
-					{weatherState.temp}
-				</span>
-			)}
-		</div>
+		<>
+			<div
+				className="outline outline-1 outline-[#999a9e]/20 bg-white/5 backdrop-blur-sm px-3 py-1 rounded-2xl flex items-center gap-2 hover:shadow-[0_0_2px_rgba(255,255,255,0.08)] hover:bg-white/10 transition-all duration-300 cursor-pointer"
+				onClick={() => setShowWeatherWidget(true)}
+			>
+				<WeatherIcon condition={weatherData?.condition || ""} />
+				{!showIconOnly && (
+					<span className="text-sm text-white/85 font-medium">
+						{weatherData?.temp}
+					</span>
+				)}
+			</div>
+
+			{isMounted &&
+				showWeatherWidget &&
+				createPortal(
+					<WeatherWidget
+						isOpen={showWeatherWidget}
+						onClose={() => setShowWeatherWidget(false)}
+						weatherData={weatherData}
+						loading={loading}
+						error={error}
+						onRetry={fetchWeather}
+					/>,
+					document.body,
+				)}
+		</>
 	);
 };
 
@@ -152,4 +169,5 @@ const WeatherIcon = ({ condition }: { condition: string }) => {
 
 	return getWeatherIcon(condition);
 };
+
 export default Weather;

@@ -16,7 +16,7 @@ interface StatsCache {
 if (!global.statsCache) {
 	global.statsCache = {
 		data: null,
-		timestamp: 0
+		timestamp: 0,
 	} as StatsCache;
 }
 
@@ -26,19 +26,19 @@ export async function GET() {
 	try {
 		const now = Date.now();
 		const cache = global.statsCache as StatsCache;
-			if (cache.data && now - cache.timestamp < CACHE_DURATION) {
+		if (cache.data && now - cache.timestamp < CACHE_DURATION) {
 			return NextResponse.json({
 				...cache.data,
 				cached: true,
 			});
 		}
-		
+
 		const contributionsRes = await fetch(
 			"https://github-contributions-api.jogruber.de/v4/refurbishing?y=last",
 			{ next: { revalidate: 18000 } }, // Cache for 5 hours
 		);
 		const contributionsData = await contributionsRes.json();
-		
+
 		const reposRes = await fetch(
 			"https://api.github.com/users/refurbishing/repos",
 			{
@@ -49,11 +49,11 @@ export async function GET() {
 				next: { revalidate: 18000 }, // Cache for 5 hours
 			},
 		);
-		
+
 		if (!reposRes.ok) {
 			throw new Error(`GitHub API error: ${reposRes.status}`);
 		}
-		
+
 		const repos = await reposRes.json();
 
 		if (!Array.isArray(repos)) {
@@ -77,26 +77,25 @@ export async function GET() {
 				aggregatedLanguages[lang] = (aggregatedLanguages[lang] || 0) + bytes;
 			});
 		});
-		
+
 		const statsData = {
 			contributions: contributionsData.contributions,
 			total: contributionsData.total.lastYear,
 			languages: aggregatedLanguages,
 		};
-		
+
 		global.statsCache = {
 			data: statsData,
-			timestamp: now
+			timestamp: now,
 		};
-		
+
 		return NextResponse.json({
 			...statsData,
 			cached: false,
 		});
-		
 	} catch (error) {
 		console.error("API Error:", error);
-		
+
 		const cache = global.statsCache as StatsCache;
 		if (cache.data) {
 			return NextResponse.json({
@@ -104,10 +103,11 @@ export async function GET() {
 				cached: true,
 			});
 		}
-		
+
 		return NextResponse.json(
 			{
-				error: "Failed to fetch GitHub data. Possible Ratelimit try again later.",
+				error:
+					"Failed to fetch GitHub data. Possible Ratelimit try again later.",
 			},
 			{ status: 500 },
 		);

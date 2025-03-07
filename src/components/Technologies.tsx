@@ -113,7 +113,7 @@ export default function Technologies() {
 												key={tech.name}
 												href={tech.href}
 												target="_blank"
-												className="hover-effect shrink-0"
+												className="hover-effect shrink-0 transition-transform duration-500 ease-in-out"
 											>
 												<motion.div
 													initial={{ opacity: 0 }}

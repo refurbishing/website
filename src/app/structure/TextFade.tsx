@@ -57,7 +57,7 @@ export const TextFade = ({
 	};
 
 	return (
-		<div className={`font-bold ${className || ''}`}>
+		<div className={`font-bold ${className || ""}`}>
 			<div className="mt-4">
 				<div className="leading-snug tracking-wide">{renderWords()}</div>
 			</div>

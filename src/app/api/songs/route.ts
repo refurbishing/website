@@ -17,7 +17,7 @@ interface SongsCache {
 if (!global.songsCache) {
 	global.songsCache = {
 		data: null,
-		timestamp: 0
+		timestamp: 0,
 	} as SongsCache;
 }
 const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
@@ -26,14 +26,14 @@ export async function GET() {
 	try {
 		const now = Date.now();
 		const cache = global.songsCache as SongsCache;
-		
+
 		if (cache.data && now - cache.timestamp < CACHE_DURATION) {
 			return NextResponse.json({
 				songs: cache.data,
 				cached: true,
 			});
 		}
-		
+
 		const musicDir = path.join(process.cwd(), "public", "songs");
 		const files = await fs.readdir(musicDir);
 
@@ -53,7 +53,7 @@ export async function GET() {
 
 		global.songsCache = {
 			data: songs,
-			timestamp: now
+			timestamp: now,
 		};
 
 		return NextResponse.json({
@@ -62,7 +62,7 @@ export async function GET() {
 		});
 	} catch (error) {
 		console.error("Error loading songs:", error);
-		
+
 		const cache = global.songsCache as SongsCache;
 		if (cache.data) {
 			return NextResponse.json({
@@ -70,7 +70,7 @@ export async function GET() {
 				cached: true,
 			});
 		}
-		
+
 		return NextResponse.json(
 			{ error: "Failed to load songs" },
 			{ status: 500 },

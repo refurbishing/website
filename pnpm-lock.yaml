@@ -29,6 +29,9 @@ importers:
       react:
         specifier: ^19.0.0
         version: 19.0.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.0.0(react@19.0.0)
       typewriter-effect:
         specifier: ^2.21.0
         version: 2.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)

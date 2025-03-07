@@ -10,6 +10,22 @@ import Image from "next/image";
 export default function CardComponent() {
 	const [iconsLoaded, setIconsLoaded] = useState(false);
 
+	const age = useMemo(() => {
+		const birthDate = new Date("2009-08-29");
+		const today = new Date();
+		let age = today.getFullYear() - birthDate.getFullYear();
+		const monthDiff = today.getMonth() - birthDate.getMonth();
+
+		if (
+			monthDiff < 0 ||
+			(monthDiff === 0 && today.getDate() < birthDate.getDate())
+		) {
+			age--;
+		}
+
+		return age;
+	}, []);
+
 	const socialLinks = useMemo(
 		() => [
 			{
@@ -96,7 +112,7 @@ export default function CardComponent() {
 				</video>
 				<CardHeader className="pb-2">
 					<h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white overflow-hidden">
-						{["I'm a", "15 year old", "developer from", "Honduras"].map(
+						{[`I'm a`, `${age} year old`, "developer from", "Honduras"].map(
 							(text, index) => (
 								<div key={index} className="relative inline-block">
 									<motion.span

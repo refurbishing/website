@@ -369,59 +369,63 @@ export default function Statistics() {
 															))}
 														</div>
 														<div className="grid grid-flow-col auto-cols-min grid-rows-[repeat(7,_minmax(0,_1fr))] gap-1 md:gap-[3.5px]">
-															{contributions.map(({ date, level, count }, index) => (
-																<div
-																	key={date}
-																	className="relative"
-																	style={{
-																		animation: isInView ? `fadeScale 0.35s ease-out ${Math.floor(index / 7) * 0.02}s backwards` : 'none'
-																	}}
-																>
+															{contributions.map(
+																({ date, level, count }, index) => (
 																	<div
-																		className={`group relative h-3 w-3 rounded-sm ${
-																			[
-																				"bg-white/10 hover:bg-white/15",
-																				"bg-white/25 hover:bg-white/30",
-																				"bg-white/50 hover:bg-white/55",
-																				"bg-white/75 hover:bg-white/80",
-																				"bg-white/90 hover:bg-white/95",
-																			][level]
-																		}`}
+																		key={date}
+																		className="relative"
+																		style={{
+																			animation: isInView
+																				? `fadeScale 0.35s ease-out ${Math.floor(index / 7) * 0.02}s backwards`
+																				: "none",
+																		}}
 																	>
 																		<div
-																			className="pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block"
-																			style={{ position: "fixed" }}
+																			className={`group relative h-3 w-3 rounded-sm ${
+																				[
+																					"bg-white/10 hover:bg-white/15",
+																					"bg-white/25 hover:bg-white/30",
+																					"bg-white/50 hover:bg-white/55",
+																					"bg-white/75 hover:bg-white/80",
+																					"bg-white/90 hover:bg-white/95",
+																				][level]
+																			}`}
 																		>
-																			<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
-																				{(() => {
-																					const day = new Date(
-																						date,
-																					).getDate();
-																					const suffix =
-																						day % 10 === 1 && day !== 11
-																							? "st"
-																							: day % 10 === 2 && day !== 12
+																			<div
+																				className="pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block"
+																				style={{ position: "fixed" }}
+																			>
+																				<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
+																					{(() => {
+																						const day = new Date(
+																							date,
+																						).getDate();
+																						const suffix =
+																							day % 10 === 1 && day !== 11
+																								? "st"
+																								: day % 10 === 2 && day !== 12
 																									? "nd"
 																									: day % 10 === 3 && day !== 13
 																										? "rd"
 																										: "th";
-																					const formattedDate =
-																						new Date(date).toLocaleDateString(
-																							"en-US",
-																							{
-																								month: "long",
-																								day: "numeric",
-																							},
-																						) + suffix;
-																					return count === 1
-																						? `1 contribution on ${formattedDate}`
-																						: `${count} contributions on ${formattedDate}`;
-																				})()}
+																						const formattedDate =
+																							new Date(date).toLocaleDateString(
+																								"en-US",
+																								{
+																									month: "long",
+																									day: "numeric",
+																								},
+																							) + suffix;
+																						return count === 1
+																							? `1 contribution on ${formattedDate}`
+																							: `${count} contributions on ${formattedDate}`;
+																					})()}
+																				</div>
 																			</div>
 																		</div>
 																	</div>
-																</div>
-															))}
+																),
+															)}
 														</div>
 													</div>
 												</div>
@@ -454,10 +458,14 @@ export default function Statistics() {
 															<motion.div
 																className="h-full bg-white/80 rounded-full"
 																initial={{ width: "0%" }}
-																animate={isInView ? { width: `${percentage}%` } : { width: "0%" }}
+																animate={
+																	isInView
+																		? { width: `${percentage}%` }
+																		: { width: "0%" }
+																}
 																transition={{
 																	duration: 0.8,
-																	ease: "easeOut"
+																	ease: "easeOut",
 																}}
 																style={{ originX: 0 }}
 															/>
