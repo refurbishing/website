@@ -1,0 +1,19 @@
+name: ping
+
+# This workflow pings the cortex.rest website every 14 minutes to keep it active
+# and prevent it from going idle by render.com
+on:
+  schedule:
+    - cron: '*/14 * * * *'
+  
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: send request to cortex.rest
+        run: |
+          curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://cortex.rest
+          echo "Request sent to cortex.rest at $(date)" 
