@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSocket } from "@/hooks/SocketContext";
+import { motion, AnimatePresence } from "framer-motion";
 import UserArea from "./DiscordPresence";
 import Weather from "./Weather";
 
@@ -90,24 +91,34 @@ export default function Header() {
 		<div>
 			<div className="h-20" />
 
-			{hamburgerTriggered && (
-				<div
-					className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-200"
-					onClick={() => setHamburgerTriggered(false)}
-				></div>
-			)}
+			<AnimatePresence>
+				{hamburgerTriggered && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-200"
+						onClick={() => setHamburgerTriggered(false)}
+					></motion.div>
+				)}
+			</AnimatePresence>
 
-			<div
-				className={`fixed top-0 left-0 right-0 mt-4 bg-dark/85 text-white border border-[#999a9e]/30 backdrop-blur-[5px] rounded-2xl shadow-md non-selectable relative z-50 transition-all duration-300 ease-out transform translate-y-0 scale-100`}
-				style={{
-					position: "fixed",
-					top: 0,
-					left: 0,
-					right: 0,
+			<motion.div
+				initial={{ y: -100, scale: 0.98 }}
+				animate={{
+					y: 0,
+					scale: 1,
 					marginLeft: scrolled && isDesktop ? "8.5rem" : "5rem",
 					marginRight: scrolled && isDesktop ? "8.5rem" : "5rem",
-					transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
 				}}
+				transition={{
+					y: { type: "spring", stiffness: 180, damping: 30, mass: 0.8 },
+					scale: { type: "spring", stiffness: 180, damping: 30, mass: 0.8 },
+					marginLeft: { type: "spring", stiffness: 150, damping: 35, mass: 1 },
+					marginRight: { type: "spring", stiffness: 150, damping: 35, mass: 1 },
+				}}
+				className={`fixed top-0 left-0 right-0 mt-4 bg-dark/85 text-white border border-[#999a9e]/30 backdrop-blur-[5px] rounded-2xl shadow-md non-selectable relative z-50`}
+				style={{ position: "fixed", top: 0, left: 0, right: 0 }}
 				onMouseMove={handleMouseMove}
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
@@ -165,24 +176,34 @@ export default function Header() {
 								aria-label="Toggle menu"
 							>
 								<div className="relative w-8 h-8 flex items-center justify-center">
-									<span
-										className={`absolute w-6 h-0.5 bg-white rounded-full transition-all duration-200 ease-in-out ${
-											hamburgerTriggered
-												? "rotate-45 translate-y-0 w-5"
-												: "-translate-y-2 w-6"
-										}`}
+									<motion.span
+										className="absolute h-0.5 bg-white rounded-full"
+										initial={false}
+										animate={{
+											rotate: hamburgerTriggered ? 45 : 0,
+											y: hamburgerTriggered ? 0 : -8,
+											width: hamburgerTriggered ? "20px" : "24px",
+										}}
+										transition={{ duration: 0.2, ease: "easeInOut" }}
 									/>
-									<span
-										className={`absolute w-6 h-0.5 bg-white rounded-full transition-all duration-200 ease-in-out ${
-											hamburgerTriggered ? "opacity-0 scale-0" : "opacity-100"
-										}`}
+									<motion.span
+										className="absolute w-6 h-0.5 bg-white rounded-full"
+										initial={false}
+										animate={{
+											opacity: hamburgerTriggered ? 0 : 1,
+											scale: hamburgerTriggered ? 0 : 1,
+										}}
+										transition={{ duration: 0.1, ease: "easeInOut" }}
 									/>
-									<span
-										className={`absolute w-6 h-0.5 bg-white rounded-full transition-all duration-200 ease-in-out ${
-											hamburgerTriggered
-												? "-rotate-45 translate-y-0 w-5"
-												: "translate-y-2 w-6"
-										}`}
+									<motion.span
+										className="absolute h-0.5 bg-white rounded-full"
+										initial={false}
+										animate={{
+											rotate: hamburgerTriggered ? -45 : 0,
+											y: hamburgerTriggered ? 0 : 8,
+											width: hamburgerTriggered ? "20px" : "24px",
+										}}
+										transition={{ duration: 0.2, ease: "easeInOut" }}
 									/>
 								</div>
 							</button>
@@ -276,112 +297,117 @@ export default function Header() {
 						</div>
 					</div>
 
-					<div
-						className={`fixed left-0 right-0 mt-2 mx-4 bg-dark/70 text-white border border-[#898c91] rounded-2xl shadow-md transition-all duration-300 lg:hidden non-selectable ${
-							hamburgerTriggered
-								? "opacity-100 translate-y-0"
-								: "opacity-0 -translate-y-4 pointer-events-none"
-						}`}
-						style={{
-							top: "4.5rem",
-							zIndex: 45,
-						}}
-					>
-						<nav className="index-nav p-4 non-selectable">
-							<div className="flex flex-col non-selectable">
-								<a
-									href="#"
-									onClick={(e) => {
-										e.preventDefault();
-										smoothScrollTo(0, 800);
-										setHamburgerTriggered(false);
-									}}
-									className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-								>
-									Home
-								</a>
-								<a
-									href="#about"
-									onClick={(e) => {
-										e.preventDefault();
-										const aboutElement = document.getElementById("about");
-										if (aboutElement) {
-											smoothScrollTo(aboutElement.offsetTop - 80, 800);
-										}
-										setHamburgerTriggered(false);
-									}}
-									className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-								>
-									About
-								</a>
-								<a
-									href="#projects"
-									onClick={(e) => {
-										e.preventDefault();
-										const projectsElement = document.getElementById("projects");
-										if (projectsElement) {
-											smoothScrollTo(projectsElement.offsetTop - 80, 800);
-										}
-										setHamburgerTriggered(false);
-									}}
-									className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-								>
-									Projects
-								</a>
-								<a
-									href="mailto:me@cortex.rest"
-									className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-								>
-									<div className="flex items-center">
-										<svg
-											className="w-5 h-5 mr-2"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
+					<AnimatePresence>
+						{hamburgerTriggered && (
+							<motion.div
+								initial={{ opacity: 0, y: -20 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: -20 }}
+								transition={{ duration: 0.2 }}
+								className="fixed left-0 right-0 mt-2 mx-4 bg-dark/70 text-white border border-[#898c91] rounded-2xl shadow-md lg:hidden non-selectable"
+								style={{
+									top: "4.5rem",
+									zIndex: 45,
+								}}
+							>
+								<nav className="index-nav p-4 non-selectable">
+									<div className="flex flex-col non-selectable">
+										<a
+											href="#"
+											onClick={(e) => {
+												e.preventDefault();
+												smoothScrollTo(0, 800);
+												setHamburgerTriggered(false);
+											}}
+											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
 										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth="2"
-												d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-											/>
-										</svg>
-										Contact
-									</div>
-								</a>
-								<a
-									href="https://github.com/refurbishing/website"
-									className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<div className="flex items-center">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="24"
-											height="24"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											strokeWidth="2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											className="w-5 h-5 mr-2"
+											Home
+										</a>
+										<a
+											href="#about"
+											onClick={(e) => {
+												e.preventDefault();
+												const aboutElement = document.getElementById("about");
+												if (aboutElement) {
+													smoothScrollTo(aboutElement.offsetTop - 80, 800);
+												}
+												setHamburgerTriggered(false);
+											}}
+											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
 										>
-											<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
-											<path d="M20 3v4" />
-											<path d="M22 5h-4" />
-											<path d="M4 17v2" />
-											<path d="M5 18H3" />
-										</svg>
-										Source
+											About
+										</a>
+										<a
+											href="#projects"
+											onClick={(e) => {
+												e.preventDefault();
+												const projectsElement =
+													document.getElementById("projects");
+												if (projectsElement) {
+													smoothScrollTo(projectsElement.offsetTop - 80, 800);
+												}
+												setHamburgerTriggered(false);
+											}}
+											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+										>
+											Projects
+										</a>
+										<a
+											href="mailto:me@cortex.rest"
+											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+										>
+											<div className="flex items-center">
+												<svg
+													className="w-5 h-5 mr-2"
+													fill="none"
+													stroke="currentColor"
+													viewBox="0 0 24 24"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														strokeWidth="2"
+														d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+													/>
+												</svg>
+												Contact
+											</div>
+										</a>
+										<a
+											href="https://github.com/refurbishing/website"
+											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<div className="flex items-center">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="24"
+													height="24"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													className="w-5 h-5 mr-2"
+												>
+													<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+													<path d="M20 3v4" />
+													<path d="M22 5h-4" />
+													<path d="M4 17v2" />
+													<path d="M5 18H3" />
+												</svg>
+												Source
+											</div>
+										</a>
 									</div>
-								</a>
-							</div>
-						</nav>
-					</div>
+								</nav>
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</div>
-			</div>
+			</motion.div>
 
 			<UserArea isOpen={showUserArea} onClose={() => setShowUserArea(false)} />
 		</div>

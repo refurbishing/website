@@ -145,9 +145,9 @@ export default function CardComponent() {
 												opacity: 1,
 												backgroundImage:
 													index === 1
-														? "linear-gradient(to right, rgba(167, 89, 237, 0.90), rgb(216, 180, 254), rgba(167, 89, 237, 0.90))"
+														? "linear-gradient(to top,rgb(169, 110, 225),rgb(193, 119, 220))"
 														: index === 3
-															? "linear-gradient(to right, rgba(96, 165, 250, 0.8), rgb(147, 197, 253), rgba(96, 165, 250, 0.8))"
+															? "linear-gradient(to right, rgba(84, 215, 255, 0.8), rgba(183, 231, 247, 0.8), rgba(84, 215, 255, 0.8))"
 															: "linear-gradient(to right, rgb(229, 231, 235), rgb(209, 213, 219), rgb(229, 231, 235))",
 											}}
 											transition={{
