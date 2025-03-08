@@ -4,7 +4,7 @@ name: ping
 # and prevent it from going idle by render.com
 on:
   schedule:
-    - cron: '*/14 * * * *'
+    - cron: '*/5 * * * *'
   
   workflow_dispatch:
 
