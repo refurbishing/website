@@ -66,7 +66,13 @@ export default function Statistics() {
 				}
 				setContributions(data.contributions);
 				setTotal(data.total);
-				setLanguages(data.languages);
+				
+				if (data.languages && typeof data.languages === 'object' && !data.languages.message) {
+					setLanguages(data.languages);
+				} else {
+					setLanguages({});
+				}
+				
 				setError(null);
 				setLoading(false);
 			})
@@ -434,51 +440,54 @@ export default function Statistics() {
 									</motion.div>
 								</div>
 							</div>
-							<motion.div
-								whileHover={{ scale: 1.005 }}
-								className="mt-4 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4"
-							>
-								<div className="flex flex-col gap-2">
-									{(() => {
-										const totalBytes = Object.values(languages).reduce(
-											(a, b) => a + b,
-											0,
-										);
-										return Object.entries(languages)
-											.sort(([, a], [, b]) => b - a)
-											.filter(([, bytes]) => (bytes / totalBytes) * 100 >= 1)
-											.map(([lang, bytes]) => {
-												const percentage = (bytes / totalBytes) * 100;
-												return (
-													<div key={lang} className="flex items-center gap-2">
-														<span className="text-xs text-white/60 w-20 truncate">
-															{lang}
-														</span>
-														<div className="flex-1 h-3 bg-white/10 hover:bg-white/15 rounded-full overflow-hidden">
-															<motion.div
-																className="h-full bg-white/80 rounded-full"
-																initial={{ width: "0%" }}
-																animate={
-																	isInView
-																		? { width: `${percentage}%` }
-																		: { width: "0%" }
-																}
-																transition={{
-																	duration: 0.8,
-																	ease: "easeOut",
-																}}
-																style={{ originX: 0 }}
-															/>
+							
+							{Object.keys(languages).length > 0 && (
+								<motion.div
+									whileHover={{ scale: 1.005 }}
+									className="mt-4 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4"
+								>
+									<div className="flex flex-col gap-2">
+										{(() => {
+											const totalBytes = Object.values(languages).reduce(
+												(a, b) => a + b,
+												0,
+											);
+											return Object.entries(languages)
+												.sort(([, a], [, b]) => b - a)
+												.filter(([, bytes]) => (bytes / totalBytes) * 100 >= 1)
+												.map(([lang, bytes]) => {
+													const percentage = (bytes / totalBytes) * 100;
+													return (
+														<div key={lang} className="flex items-center gap-2">
+															<span className="text-xs text-white/60 w-20 truncate">
+																{lang}
+															</span>
+															<div className="flex-1 h-3 bg-white/10 hover:bg-white/15 rounded-full overflow-hidden">
+																<motion.div
+																	className="h-full bg-white/80 rounded-full"
+																	initial={{ width: "0%" }}
+																	animate={
+																		isInView
+																			? { width: `${percentage}%` }
+																			: { width: "0%" }
+																	}
+																	transition={{
+																		duration: 0.8,
+																		ease: "easeOut",
+																	}}
+																	style={{ originX: 0 }}
+																/>
+															</div>
+															<span className="text-xs text-white/60 w-10 text-right">
+																{percentage.toFixed(1)}%
+															</span>
 														</div>
-														<span className="text-xs text-white/60 w-10 text-right">
-															{percentage.toFixed(1)}%
-														</span>
-													</div>
-												);
-											});
-									})()}
-								</div>
-							</motion.div>
+													);
+												});
+										})()}
+									</div>
+								</motion.div>
+							)}
 						</CardBody>
 					</Card>
 				</motion.div>
