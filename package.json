@@ -15,6 +15,8 @@
 	"dependencies": {
 		"@heroui/react": "^2.7.2",
 		"@iconify/react": "^5.2.0",
+		"@vercel/analytics": "^1.5.0",
+		"@vercel/speed-insights": "^1.2.0",
 		"framer-motion": "^12.4.7",
 		"lenis": "^1.1.21",
 		"lucide-react": "^0.471.2",
