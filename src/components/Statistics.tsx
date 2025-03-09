@@ -66,45 +66,15 @@ export default function Statistics() {
 				}
 				setContributions(data.contributions);
 				setTotal(data.total);
-				setError(null);
 				
-				fetch("https://api.github.com/users/refurbishing/repos")
-					.then((res) => res.json())
-					.then((repos) => {
-						if (!Array.isArray(repos)) {
-							throw new Error("Unexpected response format from GitHub API");
-						}
-						
-						const filteredRepos = repos.filter(
-							(repo) => !repo.fork || repo.full_name === "refurbishing/dots-hyprland"
-						);
-						
-						const languagePromises = filteredRepos.map((repo) =>
-							fetch(repo.languages_url).then((res) => res.json())
-						);
-						
-						Promise.all(languagePromises)
-							.then((languageData) => {
-								const aggregatedLanguages: { [key: string]: number } = {};
-								languageData.forEach((repoLangs: { [key: string]: number }) => {
-									Object.entries(repoLangs).forEach(([lang, bytes]) => {
-										aggregatedLanguages[lang] = (aggregatedLanguages[lang] || 0) + bytes;
-									});
-								});
-								setLanguages(aggregatedLanguages);
-								setLoading(false);
-							})
-							.catch((error) => {
-								console.error("Error fetching language data:", error);
-								setLanguages({});
-								setLoading(false);
-							});
-					})
-					.catch((error) => {
-						console.error("Error fetching repos:", error);
-						setLanguages({});
-						setLoading(false);
-					});
+				if (data.languages && typeof data.languages === 'object' && !data.languages.message) {
+					setLanguages(data.languages);
+				} else {
+					setLanguages({});
+				}
+				
+				setError(null);
+				setLoading(false);
 			})
 			.catch((error) => {
 				console.error("Error fetching GitHub data:", error);
