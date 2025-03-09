@@ -104,9 +104,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 		"left" | "right" | null
 	>(null);
 	const [isPageChange, setIsPageChange] = useState(false);
-	const [loadingStates, setLoadingStates] = useState<
-		Record<string, LoadingState>
-	>({});
+	const [imageLoadingStates, setImageLoadingStates] = useState<Record<string, LoadingState>>({});
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
@@ -159,7 +157,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 			? `${item.artist.id}-${item.artist.image}`
 			: `${item.track.id}-${item.track.albums[0]?.image}`;
 
-		setLoadingStates((prev) => ({
+		setImageLoadingStates((prev) => ({
 			...prev,
 			[itemKey]: { loading: false, loaded: true },
 		}));
@@ -217,13 +215,13 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 				? `${item.artist.id}-${item.artist.image}`
 				: `${item.track.id}-${item.track.albums[0]?.image}`;
 
-			if (!loadingStates[key]) {
+			if (!imageLoadingStates[key]) {
 				newLoadingStates[key] = { loading: true, loaded: false };
 			}
 		});
 
 		if (Object.keys(newLoadingStates).length > 0) {
-			setLoadingStates((prev) => ({ ...prev, ...newLoadingStates }));
+			setImageLoadingStates((prev) => ({ ...prev, ...newLoadingStates }));
 		}
 
 		currentItems.forEach((item) => {
@@ -489,10 +487,10 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																	</span>
 																	<div className="flex items-center gap-3 flex-1 px-1.5 w-full">
 																		<div className="relative w-12 h-12 rounded-full overflow-hidden">
-																			{loadingStates[
+																			{imageLoadingStates[
 																				`${item.artist.id}-${item.artist.image}`
 																			]?.loading && (
-																				<div className="absolute inset-0 skeleton-bg animate-pulse rounded-full" />
+																				<div className="absolute inset-0 bg-zinc-800/50 animate-pulse rounded-full" />
 																			)}
 																			<Image
 																				src={item.artist.image}
@@ -500,7 +498,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																				width={48}
 																				height={48}
 																				className={`rounded-full object-cover transition-opacity duration-300 ease-in-out ${
-																					loadingStates[
+																					imageLoadingStates[
 																						`${item.artist.id}-${item.artist.image}`
 																					]?.loaded
 																						? "opacity-100"
@@ -611,10 +609,10 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																	</span>
 																	<div className="flex items-center gap-3 flex-1 px-1.5 w-full">
 																		<div className="relative w-12 h-12">
-																			{loadingStates[
+																			{imageLoadingStates[
 																				`${item.track.id}-${item.track.albums[0]?.image}`
 																			]?.loading && (
-																				<div className="absolute inset-0 skeleton-bg animate-pulse rounded" />
+																				<div className="absolute inset-0 bg-zinc-800/50 animate-pulse rounded" />
 																			)}
 																			<Image
 																				src={item.track.albums[0].image}
@@ -622,7 +620,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																				width={48}
 																				height={48}
 																				className={`rounded object-cover transition-opacity duration-300 ease-in-out ${
-																					loadingStates[
+																					imageLoadingStates[
 																						`${item.track.id}-${item.track.albums[0]?.image}`
 																					]?.loaded
 																						? "opacity-100"
