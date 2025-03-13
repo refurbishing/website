@@ -90,23 +90,25 @@ export default function Statistics() {
 			className="mt-10 flex flex-col items-center justify-center min-h-[25vh] py-6"
 		>
 			<motion.div
-				initial={{ opacity: 0, y: -5 }}
-				animate={isInView && { opacity: 1, y: 0 }}
-				transition={{ duration: 0.2, ease: "easeInOut" }}
+				initial={{ opacity: 0, y: 30 }}
+				animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+				transition={{ duration: 0.7, ease: "easeOut" }}
 			>
 				<TextFade
 					words="Statistics"
 					className="mb-3.5 text-2xl font-bold text-white/90"
 					fullLoadedDuration={2}
 					duration={1.85}
+					slideDirection="up"
+					slideDistance={25}
 				/>
 			</motion.div>
 
 			{loading ? (
 				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={isInView && { opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, ease: "easeInOut" }}
+					initial={{ opacity: 0, y: 50 }}
+					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+					transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
 				>
 					<Card className="w-full max-w-[95vw] md:w-auto bg-black/5 backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-xl">
 						<CardHeader className="px-2 md:px-4 pt-2 md:pt-4 flex gap-3 justify-between items-center">
@@ -164,9 +166,9 @@ export default function Statistics() {
 				</motion.div>
 			) : error ? (
 				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={isInView && { opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, ease: "easeInOut" }}
+					initial={{ opacity: 0, y: 50 }}
+					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+					transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
 				>
 					<Card className="w-full max-w-[95vw] md:w-auto bg-black/5 backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-xl">
 						<CardHeader className="px-2 md:px-4 pt-2 md:pt-4 flex gap-3 justify-between items-center">
@@ -247,9 +249,9 @@ export default function Statistics() {
 				</motion.div>
 			) : (
 				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={isInView && { opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, ease: "easeInOut" }}
+					initial={{ opacity: 0, y: 50 }}
+					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+					transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
 				>
 					<Card className="bg-black/5 w-full max-w-[95vw] md:w-auto backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-xl relative overflow-hidden z-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 hover:scale-[1.02] hover:backdrop-blur-none">
 						<video

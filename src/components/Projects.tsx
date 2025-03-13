@@ -55,12 +55,20 @@ export default function Projects() {
 
 	return (
 		<div id="projects" ref={ref} className="mt-10 flex flex-col items-center">
-			<TextFade
-				fullLoadedDuration={2.25}
-				duration={1.85}
-				words="Projects"
-				className="text-2xl font-bold text-white/90"
-			/>
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+				transition={{ duration: 0.7, ease: "easeOut" }}
+			>
+				<TextFade
+					fullLoadedDuration={2.25}
+					duration={1.85}
+					words="Projects"
+					className="text-2xl font-bold text-white/90"
+					slideDirection="up"
+					slideDistance={25}
+				/>
+			</motion.div>
 
 			<div
 				className={`grid ${
@@ -72,16 +80,16 @@ export default function Projects() {
 				{projects.map((project, index) => (
 					<motion.div
 						key={index}
-						initial={{ opacity: 0, y: 25 }}
+						initial={{ opacity: 0, y: 35 }}
 						animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
 						transition={{
-							opacity: { duration: 0.8, delay: isInView ? index * 0.2 : 0 },
+							opacity: { duration: 1.2, delay: isInView ? index * 0.25 : 0 },
 							y: {
-								duration: 0.65,
-								delay: isInView ? index * 0.2 : 0,
-								ease: [0.2, 0.8, 0.2, 1],
+								duration: 0.85,
+								delay: isInView ? index * 0.25 : 0,
+								ease: [0.1, 0.6, 0.2, 1],
 							},
-							ease: "easeOut",
+							ease: "easeInOut",
 						}}
 					>
 						<Card className="bg-black/5 backdrop-blur-[1.5px] border border-[#999a9e]/75 rounded-xl relative z-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 hover:scale-[1.02] hover:backdrop-blur-none">

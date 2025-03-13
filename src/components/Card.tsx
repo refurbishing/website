@@ -1,13 +1,16 @@
 "use client";
 import { Card, CardHeader, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import Typewriter from "typewriter-effect/dist/core";
 import { Icon, loadIcon } from "@iconify/react";
 import { shuffledQuotes } from "@/data/quotes";
 import Image from "next/image";
+import { useInview } from "@/lib/animateInscroll";
 
 export default function CardComponent() {
+	const cardRef = useRef(null);
+	const isInView = useInview(cardRef);
 	const [iconsLoaded, setIconsLoaded] = useState(false);
 
 	const age = useMemo(() => {
@@ -94,12 +97,16 @@ export default function CardComponent() {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20, scale: 0.98, rotateX: -10 }}
-			animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+			ref={cardRef}
+			initial={{ opacity: 0, y: 50, scale: 0.98, rotateX: -10 }}
+			animate={isInView ? 
+				{ opacity: 1, y: 0, scale: 1, rotateX: 0 } : 
+				{ opacity: 0, y: 50, scale: 0.98, rotateX: -10 }
+			}
 			transition={{
 				duration: 0.7,
 				ease: [0.2, 0.8, 0.2, 1],
-				opacity: { duration: 0.6 },
+				opacity: { duration: 0.9, ease: [0.1, 0.3, 0.8, 1] },
 				y: { duration: 0.6 },
 				scale: { duration: 0.7 },
 				rotateX: { duration: 0.8 },

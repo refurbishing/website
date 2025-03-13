@@ -19,22 +19,24 @@ export default function About() {
 		>
 			<div className="flex flex-col items-center">
 				<motion.div
-					initial={{ opacity: 0, y: -5 }}
-					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -5 }}
-					transition={{ duration: 0.2, ease: "easeInOut" }}
+					initial={{ opacity: 0, y: 30 }}
+					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+					transition={{ duration: 0.7, ease: "easeOut" }}
 				>
 					<TextFade
 						fullLoadedDuration={1.9}
 						duration={1.85}
 						words="About Me"
 						className="text-2xl font-bold text-white/90"
+						slideDirection="up"
+						slideDistance={25}
 					/>
 				</motion.div>
 
 				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-					transition={{ duration: 0.5, ease: "easeInOut" }}
+					initial={{ opacity: 0, y: 50 }}
+					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+					transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
 				>
 					<Card className="backdrop-blur-[1.5px] bg-black/5 mt-4 mx-auto py-4 w-[95%] min-w-[320px] max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl px-4 sm:px-6 border border-[#999a9e]/75 rounded-xl relative z-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-[1.02] hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 hover:backdrop-blur-none will-change-transform overflow-hidden origin-center">
 						<video
@@ -68,9 +70,9 @@ export default function About() {
 									looking to learn more and to make something new and unique.
 								</motion.div>
 								<motion.div
-									initial={{ opacity: 0, y: 20 }}
+									initial={{ opacity: 0, y: 40 }}
 									animate={isInView ? { opacity: 1, y: 0 } : {}}
-									transition={{ duration: 0.5, ease: "easeInOut" }}
+									transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
 								>
 									<div className="block sm:hidden w-56 h-[1px] my-4 mx-auto bg-gradient-to-r from-transparent via-[#dbdbdb] to-transparent opacity-50 relative">
 										<div className="absolute w-16 h-[3px] bg-white/20 blur-sm -top-[1px]" />

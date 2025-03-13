@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
+import { useInview } from "@/lib/animateInscroll";
 
 interface Song {
 	title: string;
@@ -45,6 +46,9 @@ export default function MusicPlayer() {
 	const [isMobile, setIsMobile] = useState(false);
 
 	const [isAudioLoading, setIsAudioLoading] = useState(false);
+
+	const playerRef = useRef(null);
+	const isInView = useInview(playerRef);
 
 	const currentSong =
 		songs.length > 0
@@ -365,10 +369,21 @@ export default function MusicPlayer() {
 
 	return (
 		<motion.div
+			ref={playerRef}
 			className="pt-2.5"
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.25, ease: "easeInOut" }}
+			initial={{ opacity: 0, y: 50, scale: 0.98, rotateX: -10 }}
+			animate={isInView ? 
+				{ opacity: 1, y: 0, scale: 1, rotateX: 0 } : 
+				{ opacity: 0, y: 50, scale: 0.98, rotateX: -10 }
+			}
+			transition={{
+				duration: 0.7,
+				ease: [0.2, 0.8, 0.2, 1],
+				opacity: { duration: 0.9, ease: [0.1, 0.3, 0.8, 1] },
+				y: { duration: 0.6 },
+				scale: { duration: 0.7 },
+				rotateX: { duration: 0.8 },
+			}}
 		>
 			{currentSong.file && (
 				<audio

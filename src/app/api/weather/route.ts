@@ -53,6 +53,11 @@ export async function GET() {
 
 		if (!response.ok) throw new Error("Weather service unavailable");
 
+		const contentType = response.headers.get("content-type");
+		if (!contentType || !contentType.includes("application/json")) {
+			throw new Error("Invalid response from weather service");
+		}
+
 		const data = await response.json();
 
 		if (!data || !data.current_condition || !data.current_condition[0]) {
