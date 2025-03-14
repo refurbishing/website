@@ -104,7 +104,9 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 		"left" | "right" | null
 	>(null);
 	const [isPageChange, setIsPageChange] = useState(false);
-	const [imageLoadingStates, setImageLoadingStates] = useState<Record<string, LoadingState>>({});
+	const [imageLoadingStates, setImageLoadingStates] = useState<
+		Record<string, LoadingState>
+	>({});
 
 	useEffect(() => {
 		const timer = setTimeout(() => {

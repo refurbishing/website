@@ -30,10 +30,6 @@ export const TextFade = ({
 				? (fullLoadedDuration ?? duration)
 				: duration;
 
-			// Define initial and animate values based on slideDirection
-			const initialY = slideDirection === "up" ? slideDistance : slideDirection === "down" ? -slideDistance : 0;
-			const initialX = slideDirection === "left" ? slideDistance : slideDirection === "right" ? -slideDistance : 0;
-
 			animate(
 				"span",
 				{
@@ -49,12 +45,29 @@ export const TextFade = ({
 			);
 		}
 		mounted.current = true;
-	}, [animate, duration, filter, fullLoadedDuration, isInView, slideDirection, slideDistance]);
+	}, [
+		animate,
+		duration,
+		filter,
+		fullLoadedDuration,
+		isInView,
+		slideDirection,
+		slideDistance,
+	]);
 
 	const renderWords = () => {
-		// Define initial styles based on slideDirection
-		const initialY = slideDirection === "up" ? slideDistance : slideDirection === "down" ? -slideDistance : 0;
-		const initialX = slideDirection === "left" ? slideDistance : slideDirection === "right" ? -slideDistance : 0;
+		const initialY =
+			slideDirection === "up"
+				? slideDistance
+				: slideDirection === "down"
+					? -slideDistance
+					: 0;
+		const initialX =
+			slideDirection === "left"
+				? slideDistance
+				: slideDirection === "right"
+					? -slideDistance
+					: 0;
 
 		return (
 			<motion.div ref={scope}>

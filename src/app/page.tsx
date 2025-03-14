@@ -7,8 +7,8 @@ import Technologies from "@/components/Technologies";
 import CardComponent from "@/components/Card";
 import Projects from "@/components/Projects";
 import { Footer } from "@/components/Footer";
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import MusicPlayer from "@/components/MusicPlayer";
 import About from "@/components/About";
 import Statistics from "@/components/Statistics";

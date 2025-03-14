@@ -66,13 +66,17 @@ export default function Statistics() {
 				}
 				setContributions(data.contributions);
 				setTotal(data.total);
-				
-				if (data.languages && typeof data.languages === 'object' && !data.languages.message) {
+
+				if (
+					data.languages &&
+					typeof data.languages === "object" &&
+					!data.languages.message
+				) {
 					setLanguages(data.languages);
 				} else {
 					setLanguages({});
 				}
-				
+
 				setError(null);
 				setLoading(false);
 			})
@@ -442,7 +446,7 @@ export default function Statistics() {
 									</motion.div>
 								</div>
 							</div>
-							
+
 							{Object.keys(languages).length > 0 && (
 								<motion.div
 									whileHover={{ scale: 1.005 }}

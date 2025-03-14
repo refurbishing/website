@@ -72,7 +72,11 @@ export default function About() {
 								<motion.div
 									initial={{ opacity: 0, y: 40 }}
 									animate={isInView ? { opacity: 1, y: 0 } : {}}
-									transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
+									transition={{
+										duration: 0.7,
+										ease: [0.25, 0.1, 0.25, 1],
+										delay: 0.2,
+									}}
 								>
 									<div className="block sm:hidden w-56 h-[1px] my-4 mx-auto bg-gradient-to-r from-transparent via-[#dbdbdb]/40 to-transparent opacity-40 relative">
 										<div className="absolute w-16 h-[3px] bg-white/20 blur-sm -top-[1px]" />
@@ -99,8 +103,8 @@ export default function About() {
 										}}
 										className="text-white text-xs flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.003] to-transparent backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
-										Currently focused on Web Development and design.
-										while exploring new technologies to enhance my skill set.
+										Currently focused on Web Development and design. while
+										exploring new technologies to enhance my skill set.
 									</motion.div>
 									<motion.div
 										whileHover={{

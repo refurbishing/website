@@ -51,38 +51,36 @@ export default function Comissions() {
 						</video>
 						<div className="relative z-10">
 							<CardHeader className="flex flex-col sm:flex-row items-center gap-4">
-								<div className="flex flex-col items-start gap-0">
-									<div className="flex items-start">
-										<motion.div 
+								<div className="flex flex-row sm:flex-col items-center sm:items-start gap-2 sm:gap-0">
+									<div className="flex items-center sm:items-start">
+										<motion.div
 											whileTap={{ scale: 0.8, rotate: -30 }}
-											className="relative mr-6 mt-1"
+											className="relative mr-2 sm:mr-6 sm:mt-1"
 										>
-											<Bug className="w-5 h-5 text-white/70 transform -rotate-12 transition-transform duration-300 hover:scale-125 hover:rotate-[20deg]" />
+											<Bug className="w-6 h-6 sm:w-5 sm:h-5 text-white/70 transform -rotate-12 transition-transform duration-300 hover:scale-125 hover:rotate-[20deg]" />
 										</motion.div>
-										<motion.div 
+										<motion.div
 											whileTap={{ scale: 0.9, rotate: 15 }}
 											className="relative"
 										>
-											<Globe className="w-16 h-16 text-white/80 -mb-1 -ml-1 transition-transform duration-300 hover:scale-110 hover:rotate-6" />
+											<Globe className="w-12 h-12 sm:w-16 sm:h-16 text-white/80 sm:-mb-1 sm:-ml-1 transition-transform duration-300 hover:scale-110 hover:rotate-6" />
 										</motion.div>
 									</div>
-									<motion.div 
+									<motion.div
 										whileTap={{ scale: 0.8, rotate: -15 }}
-										className="-ml-2"
+										className="mx-2 sm:-ml-2 sm:mx-0"
 									>
-										<Laptop className="w-8 h-8 text-white/80 transition-transform duration-300 hover:scale-110 hover:-rotate-6" />
+										<Laptop className="w-9 h-9 sm:w-8 sm:h-8 text-white/80 transition-transform duration-300 hover:scale-110 hover:-rotate-6" />
 									</motion.div>
-									<div className="pl-8 -mt-4 relative">
-										<motion.div
-											whileTap={{ scale: 0.9, rotate: 10 }}
-										>
-											<Paintbrush className="w-14 h-14 text-white/80 transition-transform duration-300 hover:scale-110 hover:rotate-3" />
+									<div className="flex items-center sm:block sm:pl-8 sm:-mt-4 relative">
+										<motion.div whileTap={{ scale: 0.9, rotate: 10 }}>
+											<Paintbrush className="w-12 h-12 sm:w-14 sm:h-14 text-white/80 transition-transform duration-300 hover:scale-110 hover:rotate-3" />
 										</motion.div>
 										<motion.div
 											whileTap={{ scale: 0.7, rotate: 30 }}
-											className="absolute -bottom-1 -left-2"
+											className="relative sm:absolute ml-1 sm:ml-0 sm:-bottom-1 sm:-left-2"
 										>
-											<DollarSign className="w-4 h-4 text-white/70 transform rotate-12 transition-transform duration-300 hover:scale-125 hover:rotate-[20deg]" />
+											<DollarSign className="w-5 h-5 sm:w-4 sm:h-4 text-white/70 transform rotate-12 transition-transform duration-300 hover:scale-125 hover:rotate-[20deg]" />
 										</motion.div>
 									</div>
 								</div>
@@ -92,7 +90,7 @@ export default function Comissions() {
 										<div className="absolute w-16 h-[3px] bg-white/20 blur-sm -top-[1px] right-0" />
 									</div>
 									<div className="hidden sm:block w-auto h-32 my-2 justify-center sm:ml-8">
-										<div className="h-full w-[1px] bg-gradient-to-b from-transparent via-[#dbdbdb] to-transparent opacity-50 relative rotate-[25deg]">
+										<div className="h-full w-[1px] bg-gradient-to-b from-transparent via-[#dbdbdb] to-transparent opacity-50 relative rotate-[-25deg]">
 											<div className="absolute h-8 w-[3px] bg-white/20 blur-sm -left-[1px]" />
 											<div className="absolute h-8 w-[3px] bg-white/20 blur-sm -left-[1px] bottom-0" />
 										</div>
@@ -112,9 +110,14 @@ export default function Comissions() {
 										}}
 										className="text-white text-sm flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-transparent backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
-										I'm open for commissions in web development and design. While I may be young, I'm passionate and willing to prove my full potential. I'm available for hire and committed to deliver quality work that helps bring your ideas to life and grow your business while exploring opportunities to get better.
+										Currently open for commissions in web development and
+										design. While I may be young, I'm passionate and willing to
+										prove my full potential. Available for hire and committed to
+										deliver quality work that helps bring your ideas to life and
+										grow your business while exploring opportunities to get
+										better.
 									</motion.div>
-									
+
 									<motion.div
 										whileHover={{
 											scale: 1.03,

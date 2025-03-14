@@ -237,7 +237,8 @@ export default function Header() {
 									href="#commissions"
 									onClick={(e) => {
 										e.preventDefault();
-										const projectsElement = document.getElementById("commissions");
+										const projectsElement =
+											document.getElementById("commissions");
 										if (projectsElement) {
 											smoothScrollTo(projectsElement.offsetTop - 80, 650);
 										}

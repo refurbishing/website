@@ -70,10 +70,10 @@ export default function Technologies() {
 				<motion.div
 					initial={{ opacity: 0, y: 40 }}
 					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-					transition={{ 
-						duration: 1.1, 
+					transition={{
+						duration: 1.1,
 						ease: [0.22, 0.03, 0.26, 1],
-						opacity: { duration: 1.3 }
+						opacity: { duration: 1.3 },
 					}}
 				>
 					<TextFade
@@ -89,17 +89,21 @@ export default function Technologies() {
 				<motion.div
 					initial={{ opacity: 0, y: 60 }}
 					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-					transition={{ 
-						duration: 1.2, 
-						ease: [0.22, 0.03, 0.26, 1], 
+					transition={{
+						duration: 1.2,
+						ease: [0.22, 0.03, 0.26, 1],
 						delay: 0.15,
-						opacity: { duration: 1.4, delay: 0.15 }
+						opacity: { duration: 1.4, delay: 0.15 },
 					}}
 				>
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-						transition={{ duration: 0.8, ease: [0.22, 0.03, 0.26, 1], delay: 0.25 }}
+						transition={{
+							duration: 0.8,
+							ease: [0.22, 0.03, 0.26, 1],
+							delay: 0.25,
+						}}
 					>
 						<Card className="bg-black/5 relative mx-4 mt-3 w-auto max-w-4xl overflow-hidden backdrop-blur-[1px] py-0.5 border border-[#999a9e]/75 rounded-xl transition-all duration-300 ease-in-out hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 slider-fade">
 							<video
