@@ -87,6 +87,36 @@ export default function Header() {
 		});
 	};
 
+	let isScrolling = false;
+	function smoothScrollTo(targetY: number, duration: number) {
+		if (isScrolling) return;
+		
+		isScrolling = true;
+		const startY = window.scrollY;
+		const distance = targetY - startY;
+		let startTime: number | null = null;
+
+		function animation(currentTime: number) {
+			if (startTime === null) startTime = currentTime;
+			const timeElapsed = currentTime - startTime;
+			const progress = Math.min(timeElapsed / duration, 1);
+			const ease = easeInOutQuad(progress);
+			window.scrollTo(0, startY + distance * ease);
+
+			if (timeElapsed < duration) {
+				requestAnimationFrame(animation);
+			} else {
+				isScrolling = false;
+			}
+		}
+
+		function easeInOutQuad(t: number) {
+			return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+		}
+
+		requestAnimationFrame(animation);
+	}
+
 	return (
 		<div>
 			<div className="h-20" />
@@ -413,28 +443,4 @@ export default function Header() {
 			<UserArea isOpen={showUserArea} onClose={() => setShowUserArea(false)} />
 		</div>
 	);
-}
-
-function smoothScrollTo(targetY: number, duration: number) {
-	const startY = window.scrollY;
-	const distance = targetY - startY;
-	let startTime: number | null = null;
-
-	function animation(currentTime: number) {
-		if (startTime === null) startTime = currentTime;
-		const timeElapsed = currentTime - startTime;
-		const progress = Math.min(timeElapsed / duration, 1);
-		const ease = easeInOutQuad(progress);
-		window.scrollTo(0, startY + distance * ease);
-
-		if (timeElapsed < duration) {
-			requestAnimationFrame(animation);
-		}
-	}
-
-	function easeInOutQuad(t: number) {
-		return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-	}
-
-	requestAnimationFrame(animation);
 }

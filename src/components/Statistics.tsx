@@ -404,8 +404,7 @@ export default function Statistics() {
 																			}`}
 																		>
 																			<div
-																				className="pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block"
-																				style={{ position: "fixed" }}
+																				className="pointer-events-none fixed bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block"
 																			>
 																				<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
 																					{(() => {
