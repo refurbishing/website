@@ -62,7 +62,7 @@ export default function About() {
 										ease: [0.4, 0, 0.2, 1],
 										duration: 0.3,
 									}}
-									className="text-white text-sm flex-[1.5] bg-white/[0.01] backdrop-blur-sm px-3 py-1 rounded-2xl shadow-lg border border-white/[0.02]"
+									className="text-white text-sm flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.003] to-transparent backdrop-blur-sm px-3 py-1 rounded-2xl shadow-lg border border-white/[0.02]"
 								>
 									In my early teen years, I developed an interest in
 									programming, design and cybersecurity which led me to pursue a
@@ -74,12 +74,12 @@ export default function About() {
 									animate={isInView ? { opacity: 1, y: 0 } : {}}
 									transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
 								>
-									<div className="block sm:hidden w-56 h-[1px] my-4 mx-auto bg-gradient-to-r from-transparent via-[#dbdbdb] to-transparent opacity-50 relative">
+									<div className="block sm:hidden w-56 h-[1px] my-4 mx-auto bg-gradient-to-r from-transparent via-[#dbdbdb]/40 to-transparent opacity-40 relative">
 										<div className="absolute w-16 h-[3px] bg-white/20 blur-sm -top-[1px]" />
 										<div className="absolute w-16 h-[3px] bg-white/20 blur-sm -top-[1px] right-0" />
 									</div>
 									<div className="hidden sm:block w-auto h-28 my-2 justify-center sm:ml-8">
-										<div className="h-full w-[1px] bg-gradient-to-b from-transparent via-[#dbdbdb] to-transparent opacity-50 relative">
+										<div className="h-full w-[1px] bg-gradient-to-b from-transparent via-[#dbdbdb]/40 to-transparent opacity-40 relative">
 											<div className="absolute h-8 w-[3px] bg-white/20 blur-sm -left-[1px]" />
 											<div className="absolute h-8 w-[3px] bg-white/20 blur-sm -left-[1px] bottom-0" />
 										</div>
@@ -97,11 +97,10 @@ export default function About() {
 											ease: [0.4, 0, 0.2, 1],
 											duration: 0.3,
 										}}
-										className="text-white text-xs flex-[1.5] bg-white/[0.01] backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
+										className="text-white text-xs flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.003] to-transparent backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
-										Currently focused on Web Development, open to commissions
-										and paid work opportunities while exploring new technologies
-										to enhance my skill set.
+										Currently focused on Web Development and design.
+										while exploring new technologies to enhance my skill set.
 									</motion.div>
 									<motion.div
 										whileHover={{

@@ -15,6 +15,7 @@ import Statistics from "@/components/Statistics";
 import { SocketProvider } from "@/hooks/SocketContext";
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
+import Comissions from "@/components/Comissions";
 
 export default function Home() {
 	const lenisRef = useRef<Lenis | null>(null);
@@ -53,6 +54,7 @@ export default function Home() {
 			<Technologies />
 			<About />
 			<Statistics />
+			<Comissions />
 			<Projects />
 			<Cat />
 			<Footer />
