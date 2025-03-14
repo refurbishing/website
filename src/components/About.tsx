@@ -112,7 +112,7 @@ export default function About() {
 											boxShadow: "0 0 2px rgba(255, 255, 255, 0.08)",
 										}}
 										whileTap={{ scale: 0.98 }}
-										className="flex items-center justify-center sm:justify-start gap-1.5 bg-white/[0.03] w-fit px-2.5 py-1 rounded-md mt-3 mx-auto sm:mx-0 border border-white/[0.03]"
+										className="flex items-center justify-center sm:justify-start gap-1.5 bg-white/[0.03] w-fit px-2.5 py-1 rounded-md mt-3 mx-auto sm:mx-0 border border-white/[0.03] bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-transparent backdrop-blur-sm"
 									>
 										<div className="bg-white/[0.06] p-0.5 rounded-md border border-white/[0.03]">
 											<Code className="w-3.5 h-3.5 text-white/80" />
