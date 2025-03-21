@@ -567,26 +567,37 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 												<div className="flex items-start justify-between">
 													<div className="space-y-1.5">
 														<div className="flex items-center gap-2">
-															<div className="h-4 w-32 bg-zinc-800/50 rounded" />
-															<div className="h-4 w-20 bg-zinc-800/30 rounded-xl" />
+															<div className="h-5 w-32 bg-zinc-800/50 rounded" />
+															<div className="h-4 w-20 bg-zinc-800/30 rounded-md" />
 														</div>
 														<div className="h-3.5 w-24 bg-zinc-800/50 rounded" />
-														<div className="h-3.5 w-36 bg-zinc-800/50 rounded" />
+														<div className="h-3 w-36 bg-zinc-800/50 rounded mt-1" />
 													</div>
 													<div className="mt-2 mr-5">
-														<div className="h-[30px] zsm:w-[120px] w-[60px] bg-zinc-800/50 rounded-xl" />
+														<div className="h-[30px] zsm:w-[120px] w-[60px] bg-zinc-800/50 rounded-md" />
 													</div>
 												</div>
 											</div>
 										</div>
-										<div className="space-y-2">
-											<div className="h-4 w-20 bg-zinc-800/50 rounded" />
+										
+										<div className="relative py-1">
+											<div className="absolute inset-x-0 bottom-0" aria-hidden="true">
+												<div className="w-3/4 mx-auto h-[2px] bg-gradient-to-r from-transparent via-zinc-700/30 to-transparent" />
+											</div>
+										</div>
+										
+										<div className="space-y-3">
 											<div className="bg-zinc-800/50 rounded-lg p-3 flex items-center gap-3">
-												<div className="w-[55px] h-[55px] rounded-xl bg-zinc-700/50" />
-												<div className="space-y-2">
-													<div className="h-4 w-32 bg-zinc-700/50 rounded" />
-													<div className="h-3 w-24 bg-zinc-700/50 rounded" />
-													<div className="h-3 w-28 bg-zinc-700/50 rounded" />
+												<div className="w-[80px] h-[80px] rounded-xl bg-zinc-700/50" />
+												<div className="space-y-2 flex-1">
+													<div className="h-4 w-40 bg-zinc-700/50 rounded" />
+													<div className="h-3 w-32 bg-zinc-700/50 rounded" />
+													<div className="h-3 w-36 bg-zinc-700/50 rounded" />
+													<div className="mt-3 flex items-center gap-2">
+														<div className="h-3 w-8 bg-zinc-700/50 rounded" />
+														<div className="h-1 w-40 bg-zinc-700/50 rounded-full" />
+														<div className="h-3 w-8 bg-zinc-700/50 rounded" />
+													</div>
 												</div>
 											</div>
 										</div>
