@@ -330,7 +330,7 @@ export default function Statistics() {
 									<div className="group relative">
 										<Icon
 											icon="material-symbols:info-outline-rounded"
-											className="w-4 h-4 -ml-1 text-white/60 hover:text-white/80 transition-colors duration-200 self-center cursor-help"
+											className="w-4 h-4 -ml-1 text-white/60 hover:text-white/80 hover:scale-110 transition-all duration-200 cursor-help"
 										/>
 										<div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden md:group-hover:block">
 											<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
@@ -533,116 +533,94 @@ export default function Statistics() {
 										>
 											<div className="flex w-full items-center">
 												<div className="relative flex-shrink-0">
-													<svg viewBox="0 0 100 100" className="w-[150px] h-[150px] -rotate-90 drop-shadow-lg overflow-visible">
-														<circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-														<circle cx="50" cy="50" r="30" fill="rgba(0,0,0,0.1)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
-														
-														{(() => {
-															const languages = wakatime.languages || [];
-															const total = languages.reduce((sum: number, lang: any) => sum + lang.total_seconds, 0);
-															let currentAngle = 0;
+													<div className="relative">
+														<div className="relative">
+															<svg viewBox="0 0 100 100" className="w-[150px] h-[150px] -rotate-90 drop-shadow-lg overflow-visible">
+																<circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+																<circle cx="50" cy="50" r="30" fill="rgba(0,0,0,0.1)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
+																
+																{(() => {
+																	const languages = wakatime.languages || [];
+																	const total = languages.reduce((sum: number, lang: any) => sum + lang.total_seconds, 0);
+																	let currentAngle = 0;
+																	
+																	const colors = [
+																		"rgba(255, 255, 255, 0.9)", 
+																		"rgba(255, 255, 255, 0.75)", 
+																		"rgba(255, 255, 255, 0.6)", 
+																		"rgba(255, 255, 255, 0.45)",
+																		"rgba(255, 255, 255, 0.3)", 
+																		"rgba(255, 255, 255, 0.15)"
+																	];
+																	
+																	return languages
+																		.filter((lang: any) => lang.percent >= 1)
+																		.map((lang: any, index: number) => {
+																			const percentage = lang.percent;
+																			const angle = (percentage / 100) * 360;
+																			const startAngle = currentAngle;
+																			currentAngle += angle;
+																		
+																			const x1 = 50 + 40 * Math.cos((startAngle * Math.PI) / 180);
+																			const y1 = 50 + 40 * Math.sin((startAngle * Math.PI) / 180);
+																			const x2 = 50 + 40 * Math.cos(((startAngle + angle) * Math.PI) / 180);
+																			const y2 = 50 + 40 * Math.sin(((startAngle + angle) * Math.PI) / 180);
+																		
+																			const innerRadius = 30;
+																			const x3 = 50 + innerRadius * Math.cos(((startAngle + angle) * Math.PI) / 180);
+																			const y3 = 50 + innerRadius * Math.sin(((startAngle + angle) * Math.PI) / 180);
+																			const x4 = 50 + innerRadius * Math.cos((startAngle * Math.PI) / 180);
+																			const y4 = 50 + innerRadius * Math.sin((startAngle * Math.PI) / 180);
+																		
+																			const largeArcFlag = angle > 180 ? 1 : 0;
+																		
+																			return (
+																				<motion.path
+																					key={lang.name}
+																					d={`M ${x1} ${y1} A 40 40 0 ${largeArcFlag} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4} Z`}
+																					fill={colors[index % colors.length]}
+																					className="transition-all duration-300 hover:opacity-90 hover:scale-105 origin-center cursor-pointer"
+																					stroke="rgba(0,0,0,0.2)"
+																					strokeWidth="0.5"
+																					initial={{ opacity: 0, scale: 0.8 }}
+																					animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+																					transition={{ 
+																						duration: 0.5, 
+																						delay: index * 0.1,
+																						ease: "easeOut"
+																					}}
+																					onMouseOver={() => {
+																						const tooltip = document.getElementById('chart-tooltip');
+																						if (tooltip) {
+																							tooltip.innerHTML = `${lang.name}: ${lang.text} (${lang.percent.toFixed(1)}%)`;
+																							tooltip.style.display = 'block';
+																						}
+																					}}
+																					onMouseOut={() => {
+																						const tooltip = document.getElementById('chart-tooltip');
+																						if (tooltip) {
+																							tooltip.style.display = 'none';
+																						}
+																					}}
+																				/>
+																			);
+																		});
+																})()}
+																
+																<circle cx="50" cy="50" r="20" fill="url(#gradientCenter)" />
+																<defs>
+																	<radialGradient id="gradientCenter" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+																		<stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
+																		<stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
+																	</radialGradient>
+																</defs>
+															</svg>
 															
-															const colors = [
-																"rgba(255, 255, 255, 0.9)", 
-																"rgba(255, 255, 255, 0.75)", 
-																"rgba(255, 255, 255, 0.6)", 
-																"rgba(255, 255, 255, 0.45)",
-																"rgba(255, 255, 255, 0.3)", 
-																"rgba(255, 255, 255, 0.15)"
-															];
-															
-															return languages
-																.filter((lang: any) => lang.percent >= 1)
-																.map((lang: any, index: number) => {
-																	const percentage = lang.percent;
-																	const angle = (percentage / 100) * 360;
-																	const startAngle = currentAngle;
-																	currentAngle += angle;
-																	
-																	const x1 = 50 + 40 * Math.cos((startAngle * Math.PI) / 180);
-																	const y1 = 50 + 40 * Math.sin((startAngle * Math.PI) / 180);
-																	const x2 = 50 + 40 * Math.cos(((startAngle + angle) * Math.PI) / 180);
-																	const y2 = 50 + 40 * Math.sin(((startAngle + angle) * Math.PI) / 180);
-																	
-																	const innerRadius = 30;
-																	const x3 = 50 + innerRadius * Math.cos(((startAngle + angle) * Math.PI) / 180);
-																	const y3 = 50 + innerRadius * Math.sin(((startAngle + angle) * Math.PI) / 180);
-																	const x4 = 50 + innerRadius * Math.cos((startAngle * Math.PI) / 180);
-																	const y4 = 50 + innerRadius * Math.sin((startAngle * Math.PI) / 180);
-																	
-																	const largeArcFlag = angle > 180 ? 1 : 0;
-																	
-																	return (
-																		<motion.path
-																			key={lang.name}
-																			d={`M ${x1} ${y1} A 40 40 0 ${largeArcFlag} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4} Z`}
-																			fill={colors[index % colors.length]}
-																			className="transition-all duration-300 hover:opacity-90 hover:scale-105 origin-center"
-																			stroke="rgba(0,0,0,0.2)"
-																			strokeWidth="0.5"
-																			initial={{ opacity: 0, scale: 0.8 }}
-																			animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-																			transition={{ 
-																				duration: 0.5, 
-																				delay: index * 0.1,
-																				ease: "easeOut"
-																			}}
-																		/>
-																	);
-																});
-														})()}
-														
-														<circle cx="50" cy="50" r="20" fill="url(#gradientCenter)" />
-														<defs>
-															<radialGradient id="gradientCenter" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-																<stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
-																<stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
-															</radialGradient>
-														</defs>
-													</svg>
-													
-													<div className="absolute inset-0 overflow-visible">
-														{(() => {
-															const languages = wakatime.languages || [];
-															let currentAngle = 0;
-															
-															return languages
-																.filter((lang: any) => lang.percent >= 1)
-																.map((lang: any, index: number) => {
-																	const percentage = lang.percent;
-																	const angle = (percentage / 100) * 360;
-																	const midAngle = currentAngle + angle / 2;
-																	currentAngle += angle;
-																	
-																	const radius = 30; 
-																	const radian = ((midAngle - 90) * Math.PI) / 180;
-																	const x = 75 + radius * Math.cos(radian);
-																	const y = 75 + radius * Math.sin(radian);
-																	
-																	return (
-																		<motion.div 
-																			key={lang.name}
-																			className="absolute w-10 h-10 -mt-5 -ml-5 group cursor-pointer overflow-visible"
-																			style={{
-																				left: `${x}px`,
-																				top: `${y}px`,
-																			}}
-																			initial={{ opacity: 0 }}
-																			animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-																			transition={{ 
-																				delay: 0.3 + index * 0.1,
-																				duration: 0.4
-																			}}
-																		>
-																			<div className="opacity-0 group-hover:opacity-100 absolute z-[100] -mt-6 -ml-14 w-auto min-w-24 pointer-events-none transition-all duration-200 ease-in-out transform-gpu translate-y-1 group-hover:translate-y-0 overflow-visible">
-																				<div className="bg-zinc-950/95 border border-white/10 text-white/90 text-[10px] px-1.5 py-0.5 rounded-lg whitespace-nowrap shadow-xl text-center mx-auto">
-																					{`${lang.name}: ${lang.text} (${lang.percent.toFixed(1)}%)`}
-																				</div>
-																			</div>
-																		</motion.div>
-																	);
-																});
-														})()}
+															<div 
+																id="chart-tooltip" 
+																className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[100px] bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-lg whitespace-nowrap shadow-xl z-50 pointer-events-none hidden"
+															></div>
+														</div>
 													</div>
 												</div>
 
@@ -659,7 +637,7 @@ export default function Statistics() {
 														<div className="group relative overflow-visible">
 															<Icon
 																icon="material-symbols:info-outline-rounded"
-																className="w-4 h-4 text-white/60 hover:text-white/80 transition-colors cursor-help"
+																className="w-4 h-4 text-white/60 hover:text-white/80 hover:scale-110 transition-all duration-200 cursor-help"
 															/>
 															<div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-[100]">
 																<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
