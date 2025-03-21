@@ -159,15 +159,40 @@ export default function Statistics() {
 									</div>
 								</div>
 							</div>
-							<div className="mt-2 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4">
-								<div className="flex flex-col gap-2">
-									{[...Array(5)].map((_, i) => (
-										<div key={i} className="flex items-center gap-2">
-											<div className="h-3 w-20 bg-white/10 animate-pulse rounded" />
-											<div className="flex-1 h-3 bg-white/10 animate-pulse rounded-full" />
-											<div className="h-3 w-10 bg-white/10 animate-pulse rounded" />
+							
+							<div className="mt-4 flex flex-col md:flex-row gap-4">
+								<div className="flex-1 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4">
+									<div className="flex flex-col gap-2">
+										{[...Array(5)].map((_, i) => (
+											<div key={i} className="flex items-center gap-2">
+												<div className="h-3 w-20 bg-white/10 animate-pulse rounded" />
+												<div className="flex-1 h-3 bg-white/10 animate-pulse rounded-full" />
+												<div className="h-3 w-10 bg-white/10 animate-pulse rounded" />
+											</div>
+										))}
+									</div>
+								</div>
+								
+								<div className="flex-1 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4">
+									<div className="flex w-full items-center">
+										<div className="relative flex-shrink-0 w-[150px] h-[150px]">
+											<div className="w-full h-full rounded-full bg-white/10 animate-pulse" />
 										</div>
-									))}
+										<div className="flex-1 pl-4 flex flex-col gap-1.5 justify-center">
+											<div className="mb-3 flex items-center gap-2">
+												<div className="h-6 w-24 bg-white/10 animate-pulse rounded" />
+												<div className="h-4 w-4 bg-white/10 animate-pulse rounded-full" />
+											</div>
+											{[...Array(5)].map((_, i) => (
+												<div key={i} className="flex items-center gap-1.5">
+													<div className="w-2.5 h-2.5 bg-white/10 animate-pulse rounded-full" />
+													<div className="h-3 w-16 bg-white/10 animate-pulse rounded" />
+													<div className="flex-1 h-1.5 bg-white/10 animate-pulse rounded-full mx-2" />
+													<div className="h-3 w-8 bg-white/10 animate-pulse rounded" />
+												</div>
+											))}
+										</div>
+									</div>
 								</div>
 							</div>
 						</CardBody>
@@ -509,6 +534,9 @@ export default function Statistics() {
 											<div className="flex w-full items-center">
 												<div className="relative flex-shrink-0">
 													<svg viewBox="0 0 100 100" className="w-[150px] h-[150px] -rotate-90 drop-shadow-lg overflow-visible">
+														<circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+														<circle cx="50" cy="50" r="30" fill="rgba(0,0,0,0.1)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
+														
 														{(() => {
 															const languages = wakatime.languages || [];
 															const total = languages.reduce((sum: number, lang: any) => sum + lang.total_seconds, 0);
@@ -536,31 +564,41 @@ export default function Statistics() {
 																	const x2 = 50 + 40 * Math.cos(((startAngle + angle) * Math.PI) / 180);
 																	const y2 = 50 + 40 * Math.sin(((startAngle + angle) * Math.PI) / 180);
 																	
+																	const innerRadius = 30;
+																	const x3 = 50 + innerRadius * Math.cos(((startAngle + angle) * Math.PI) / 180);
+																	const y3 = 50 + innerRadius * Math.sin(((startAngle + angle) * Math.PI) / 180);
+																	const x4 = 50 + innerRadius * Math.cos((startAngle * Math.PI) / 180);
+																	const y4 = 50 + innerRadius * Math.sin((startAngle * Math.PI) / 180);
+																	
 																	const largeArcFlag = angle > 180 ? 1 : 0;
 																	
 																	return (
-																		<g key={lang.name} className="group">
-																			<path
-																				d={`M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArcFlag} 1 ${x2} ${y2} Z`}
-																				fill={colors[index % colors.length]}
-																				className="transition-all duration-200 hover:opacity-90 hover:scale-105 origin-center"
-																				stroke="rgba(0,0,0,0.1)"
-																				strokeWidth="0.5"
-																			>
-																				<animate 
-																					attributeName="opacity" 
-																					from="0" 
-																					to="1" 
-																					dur="0.8s" 
-																					begin={`${index * 0.1}s`} 
-																					fill="freeze" 
-																				/>
-																			</path>
-																		</g>
+																		<motion.path
+																			key={lang.name}
+																			d={`M ${x1} ${y1} A 40 40 0 ${largeArcFlag} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4} Z`}
+																			fill={colors[index % colors.length]}
+																			className="transition-all duration-300 hover:opacity-90 hover:scale-105 origin-center"
+																			stroke="rgba(0,0,0,0.2)"
+																			strokeWidth="0.5"
+																			initial={{ opacity: 0, scale: 0.8 }}
+																			animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+																			transition={{ 
+																				duration: 0.5, 
+																				delay: index * 0.1,
+																				ease: "easeOut"
+																			}}
+																		/>
 																	);
 																});
 														})()}
-														<circle cx="50" cy="50" r="25" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
+														
+														<circle cx="50" cy="50" r="20" fill="url(#gradientCenter)" />
+														<defs>
+															<radialGradient id="gradientCenter" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+																<stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
+																<stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
+															</radialGradient>
+														</defs>
 													</svg>
 													
 													<div className="absolute inset-0 overflow-visible">
@@ -582,12 +620,18 @@ export default function Statistics() {
 																	const y = 75 + radius * Math.sin(radian);
 																	
 																	return (
-																		<div 
+																		<motion.div 
 																			key={lang.name}
 																			className="absolute w-10 h-10 -mt-5 -ml-5 group cursor-pointer overflow-visible"
 																			style={{
 																				left: `${x}px`,
 																				top: `${y}px`,
+																			}}
+																			initial={{ opacity: 0 }}
+																			animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+																			transition={{ 
+																				delay: 0.3 + index * 0.1,
+																				duration: 0.4
 																			}}
 																		>
 																			<div className="opacity-0 group-hover:opacity-100 absolute z-[100] -mt-6 -ml-14 w-auto min-w-24 pointer-events-none transition-all duration-200 ease-in-out transform-gpu translate-y-1 group-hover:translate-y-0 overflow-visible">
@@ -595,7 +639,7 @@ export default function Statistics() {
 																					{`${lang.name}: ${lang.text} (${lang.percent.toFixed(1)}%)`}
 																				</div>
 																			</div>
-																		</div>
+																		</motion.div>
 																	);
 																});
 														})()}
@@ -603,7 +647,12 @@ export default function Statistics() {
 												</div>
 
 												<div className="flex-1 pl-4 flex flex-col gap-1.5 justify-center">
-													<div className="mb-3 flex items-center gap-2">
+													<motion.div 
+														className="mb-3 flex items-center gap-2"
+														initial={{ opacity: 0, y: -10 }}
+														animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+														transition={{ duration: 0.4 }}
+													>
 														<span className="text-lg font-semibold text-white/90 block">
 															{wakatime.human_readable_total || "0 hrs"}
 														</span>
@@ -619,7 +668,7 @@ export default function Statistics() {
 																</div>
 															</div>
 														</div>
-													</div>
+													</motion.div>
 													
 													{wakatime.languages && wakatime.languages
 														.filter((lang: any) => lang.percent >= 3)
@@ -638,7 +687,7 @@ export default function Statistics() {
 																	key={lang.name} 
 																	className="flex items-center gap-1.5 group"
 																	initial={{ opacity: 0, x: -5 }}
-																	animate={{ opacity: 1, x: 0 }}
+																	animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -5 }}
 																	transition={{ delay: index * 0.1, duration: 0.3 }}
 																>
 																	<span 
@@ -653,7 +702,7 @@ export default function Statistics() {
 																			className="h-full rounded-full"
 																			style={{ backgroundColor: colors[index % colors.length] }}
 																			initial={{ width: 0 }}
-																			animate={{ width: `${lang.percent}%` }}
+																			animate={isInView ? { width: `${lang.percent}%` } : { width: 0 }}
 																			transition={{ duration: 0.8, delay: 0.2 + index * 0.1 }}
 																		/>
 																	</div>
