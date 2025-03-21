@@ -9,6 +9,7 @@ interface StatsCache {
 		contributions: any;
 		total: number;
 		languages: { [key: string]: number };
+		wakatime: any;
 	} | null;
 	timestamp: number;
 }
@@ -38,6 +39,12 @@ export async function GET() {
 			{ next: { revalidate: 18000 } }, // Cache for 5 hours
 		);
 		const contributionsData = await contributionsRes.json();
+
+		const wakatimeRes = await fetch(
+			"https://wakatime.com/api/v1/users/Cortex/stats?is_including_today=true",
+			{ next: { revalidate: 18000 } }, // Cache for 5 hours
+		);
+		const wakatimeData = await wakatimeRes.json();
 
 		const reposRes = await fetch(
 			"https://api.github.com/users/refurbishing/repos",
@@ -78,10 +85,19 @@ export async function GET() {
 			});
 		});
 
+		const topLanguages: { [key: string]: number } = {};
+		Object.entries(aggregatedLanguages)
+			.sort((a, b) => b[1] - a[1])
+			.slice(0, 6)
+			.forEach(([lang, bytes]) => {
+				topLanguages[lang] = bytes;
+			});
+
 		const statsData = {
 			contributions: contributionsData.contributions,
 			total: contributionsData.total.lastYear,
-			languages: aggregatedLanguages,
+			languages: topLanguages,
+			wakatime: wakatimeData.data,
 		};
 
 		global.statsCache = {

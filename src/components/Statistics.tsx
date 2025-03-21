@@ -14,6 +14,7 @@ export default function Statistics() {
 	const [months, setMonths] = useState<{ label: string; key: string }[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [languages, setLanguages] = useState<{ [key: string]: number }>({});
+	const [wakatime, setWakatime] = useState<any>(null);
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -75,6 +76,10 @@ export default function Statistics() {
 					setLanguages(data.languages);
 				} else {
 					setLanguages({});
+				}
+				
+				if (data.wakatime) {
+					setWakatime(data.wakatime);
 				}
 
 				setError(null);
@@ -219,6 +224,7 @@ export default function Statistics() {
 														setContributions(data.contributions);
 														setTotal(data.total);
 														setLanguages(data.languages);
+														setWakatime(data.wakatime);
 														setError(null);
 														setLoading(false);
 													})
@@ -303,7 +309,7 @@ export default function Statistics() {
 										/>
 										<div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden md:group-hover:block">
 											<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
-												All GitHub activity across public repositories
+												All GitHub & Wakatime activity
 											</div>
 										</div>
 									</div>
@@ -404,7 +410,7 @@ export default function Statistics() {
 																			}`}
 																		>
 																			<div
-																				className="pointer-events-none fixed bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block"
+																				className="pointer-events-none fixed bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block z-[100] transition-all duration-200 ease-in-out transform-gpu translate-y-1 group-hover:translate-y-0 opacity-0 group-hover:opacity-100"
 																			>
 																				<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
 																					{(() => {
@@ -447,51 +453,221 @@ export default function Statistics() {
 							</div>
 
 							{Object.keys(languages).length > 0 && (
-								<motion.div
-									whileHover={{ scale: 1.005 }}
-									className="mt-4 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4"
-								>
-									<div className="flex flex-col gap-2">
-										{(() => {
-											const totalBytes = Object.values(languages).reduce(
-												(a, b) => a + b,
-												0,
-											);
-											return Object.entries(languages)
-												.sort(([, a], [, b]) => b - a)
-												.filter(([, bytes]) => (bytes / totalBytes) * 100 >= 1)
-												.map(([lang, bytes]) => {
-													const percentage = (bytes / totalBytes) * 100;
-													return (
-														<div key={lang} className="flex items-center gap-2">
-															<span className="text-xs text-white/60 w-20 truncate">
-																{lang}
-															</span>
-															<div className="flex-1 h-3 bg-white/10 hover:bg-white/15 rounded-full overflow-hidden">
-																<motion.div
-																	className="h-full bg-white/80 rounded-full"
-																	initial={{ width: "0%" }}
-																	animate={
-																		isInView
-																			? { width: `${percentage}%` }
-																			: { width: "0%" }
-																	}
-																	transition={{
-																		duration: 0.8,
-																		ease: "easeOut",
-																	}}
-																	style={{ originX: 0 }}
-																/>
+								<div className="mt-4 flex flex-col md:flex-row gap-4">
+									<motion.div
+										whileHover={{ scale: 1.005 }}
+										className="flex-1 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4 flex items-center justify-center"
+									>
+										<div className="flex flex-col gap-2 w-full">
+											{(() => {
+												const totalBytes = Object.values(languages).reduce(
+													(a, b) => a + b,
+													0,
+												);
+												return Object.entries(languages)
+													.sort(([, a], [, b]) => b - a)
+													.filter(([, bytes]) => (bytes / totalBytes) * 100 >= 1)
+													.slice(0, 8)
+													.map(([lang, bytes]) => {
+														const percentage = (bytes / totalBytes) * 100;
+														return (
+															<div key={lang} className="flex items-center gap-2 group">
+																<span className="text-xs text-white/60 w-20 truncate group-hover:text-white/80 transition-colors">
+																	{lang}
+																</span>
+																<div className="flex-1 h-3 bg-white/10 rounded-full overflow-hidden">
+																	<motion.div
+																		className="h-full bg-gradient-to-r from-white/70 to-white/90 rounded-full"
+																		initial={{ width: "0%" }}
+																		animate={
+																			isInView
+																				? { width: `${percentage}%` }
+																				: { width: "0%" }
+																		}
+																		transition={{
+																			duration: 0.8,
+																			ease: "easeOut",
+																		}}
+																		style={{ originX: 0 }}
+																	/>
+																</div>
+																<span className="text-xs text-white/60 w-10 text-right group-hover:text-white/80 transition-colors">
+																	{percentage.toFixed(1)}%
+																</span>
 															</div>
-															<span className="text-xs text-white/60 w-10 text-right">
-																{percentage.toFixed(1)}%
-															</span>
+														);
+													});
+											})()}
+										</div>
+									</motion.div>
+									
+									{wakatime && wakatime.languages && wakatime.languages.length > 0 && (
+										<motion.div
+											whileHover={{ scale: 1.005 }}
+											className="flex-1 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4"
+										>
+											<div className="flex w-full items-center">
+												<div className="relative flex-shrink-0">
+													<svg viewBox="0 0 100 100" className="w-[150px] h-[150px] -rotate-90 drop-shadow-lg overflow-visible">
+														{(() => {
+															const languages = wakatime.languages || [];
+															const total = languages.reduce((sum: number, lang: any) => sum + lang.total_seconds, 0);
+															let currentAngle = 0;
+															
+															const colors = [
+																"rgba(255, 255, 255, 0.9)", 
+																"rgba(255, 255, 255, 0.75)", 
+																"rgba(255, 255, 255, 0.6)", 
+																"rgba(255, 255, 255, 0.45)",
+																"rgba(255, 255, 255, 0.3)", 
+																"rgba(255, 255, 255, 0.15)"
+															];
+															
+															return languages
+																.filter((lang: any) => lang.percent >= 1)
+																.map((lang: any, index: number) => {
+																	const percentage = lang.percent;
+																	const angle = (percentage / 100) * 360;
+																	const startAngle = currentAngle;
+																	currentAngle += angle;
+																	
+																	const x1 = 50 + 40 * Math.cos((startAngle * Math.PI) / 180);
+																	const y1 = 50 + 40 * Math.sin((startAngle * Math.PI) / 180);
+																	const x2 = 50 + 40 * Math.cos(((startAngle + angle) * Math.PI) / 180);
+																	const y2 = 50 + 40 * Math.sin(((startAngle + angle) * Math.PI) / 180);
+																	
+																	const largeArcFlag = angle > 180 ? 1 : 0;
+																	
+																	return (
+																		<g key={lang.name} className="group">
+																			<path
+																				d={`M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArcFlag} 1 ${x2} ${y2} Z`}
+																				fill={colors[index % colors.length]}
+																				className="transition-all duration-200 hover:opacity-90 hover:scale-105 origin-center"
+																				stroke="rgba(0,0,0,0.1)"
+																				strokeWidth="0.5"
+																			>
+																				<animate 
+																					attributeName="opacity" 
+																					from="0" 
+																					to="1" 
+																					dur="0.8s" 
+																					begin={`${index * 0.1}s`} 
+																					fill="freeze" 
+																				/>
+																			</path>
+																		</g>
+																	);
+																});
+														})()}
+														<circle cx="50" cy="50" r="25" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
+													</svg>
+													
+													<div className="absolute inset-0 overflow-visible">
+														{(() => {
+															const languages = wakatime.languages || [];
+															let currentAngle = 0;
+															
+															return languages
+																.filter((lang: any) => lang.percent >= 1)
+																.map((lang: any, index: number) => {
+																	const percentage = lang.percent;
+																	const angle = (percentage / 100) * 360;
+																	const midAngle = currentAngle + angle / 2;
+																	currentAngle += angle;
+																	
+																	const radius = 30; 
+																	const radian = ((midAngle - 90) * Math.PI) / 180;
+																	const x = 75 + radius * Math.cos(radian);
+																	const y = 75 + radius * Math.sin(radian);
+																	
+																	return (
+																		<div 
+																			key={lang.name}
+																			className="absolute w-10 h-10 -mt-5 -ml-5 group cursor-pointer overflow-visible"
+																			style={{
+																				left: `${x}px`,
+																				top: `${y}px`,
+																			}}
+																		>
+																			<div className="opacity-0 group-hover:opacity-100 absolute z-[100] -mt-6 -ml-14 w-auto min-w-24 pointer-events-none transition-all duration-200 ease-in-out transform-gpu translate-y-1 group-hover:translate-y-0 overflow-visible">
+																				<div className="bg-zinc-950/95 border border-white/10 text-white/90 text-[10px] px-1.5 py-0.5 rounded-lg whitespace-nowrap shadow-xl text-center mx-auto">
+																					{`${lang.name}: ${lang.text} (${lang.percent.toFixed(1)}%)`}
+																				</div>
+																			</div>
+																		</div>
+																	);
+																});
+														})()}
+													</div>
+												</div>
+
+												<div className="flex-1 pl-4 flex flex-col gap-1.5 justify-center">
+													<div className="mb-3 flex items-center gap-2">
+														<span className="text-lg font-semibold text-white/90 block">
+															{wakatime.human_readable_total || "0 hrs"}
+														</span>
+														<div className="group relative overflow-visible">
+															<Icon
+																icon="material-symbols:info-outline-rounded"
+																className="w-4 h-4 text-white/60 hover:text-white/80 transition-colors cursor-help"
+															/>
+															<div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-[100]">
+																<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
+																	<span className="hidden sm:inline">Coding </span>
+																	<span className="sm:hidden">A</span><span className="hidden sm:inline">a</span>ctivity from last 7 days
+																</div>
+															</div>
 														</div>
-													);
-												});
-										})()}
-									</div>
-								</motion.div>
+													</div>
+													
+													{wakatime.languages && wakatime.languages
+														.filter((lang: any) => lang.percent >= 3)
+														.slice(0, 6)
+														.map((lang: any, index: number) => {
+															const colors = [
+																"rgba(255, 255, 255, 0.9)", 
+																"rgba(255, 255, 255, 0.75)", 
+																"rgba(255, 255, 255, 0.6)", 
+																"rgba(255, 255, 255, 0.45)",
+																"rgba(255, 255, 255, 0.3)", 
+																"rgba(255, 255, 255, 0.15)"
+															];
+															return (
+																<motion.div 
+																	key={lang.name} 
+																	className="flex items-center gap-1.5 group"
+																	initial={{ opacity: 0, x: -5 }}
+																	animate={{ opacity: 1, x: 0 }}
+																	transition={{ delay: index * 0.1, duration: 0.3 }}
+																>
+																	<span 
+																		className="w-2.5 h-2.5 rounded-full transition-transform group-hover:scale-125 duration-300" 
+																		style={{ backgroundColor: colors[index % colors.length] }}
+																	></span>
+																	<span className="text-xs text-white/70 font-medium group-hover:text-white/90 transition-colors">
+																		{lang.name}
+																	</span>
+																	<div className="flex-1 h-1.5 bg-white/10 rounded-full mx-2 overflow-hidden">
+																		<motion.div 
+																			className="h-full rounded-full"
+																			style={{ backgroundColor: colors[index % colors.length] }}
+																			initial={{ width: 0 }}
+																			animate={{ width: `${lang.percent}%` }}
+																			transition={{ duration: 0.8, delay: 0.2 + index * 0.1 }}
+																		/>
+																	</div>
+																	<span className="text-xs text-white/50 group-hover:text-white/70 transition-colors">
+																		{lang.percent.toFixed(0)}%
+																	</span>
+																</motion.div>
+															);
+														})}
+												</div>
+											</div>
+										</motion.div>
+									)}
+								</div>
 							)}
 						</CardBody>
 					</Card>
