@@ -61,23 +61,22 @@ export default function CardComponent() {
 	);
 
 	useEffect(() => {
-		setTimeout(() => {
-			const typewriter = new Typewriter("#typewriter", {
-				cursor: "|",
-				delay: 70,
-				loop: true,
-			});
+		const typewriterElement = document.getElementById("typewriter");
+		if (!typewriterElement) return;
+		
+		const typewriter = new Typewriter("#typewriter", {
+			cursor: "|",
+			delay: 50,
+			loop: true,
+		});
 
-			shuffledQuotes
-				.reduce(
-					(tw, quote) => tw.typeString(quote).pauseFor(1500).deleteAll(),
-					typewriter,
-				)
-				.start();
-		}, 500);
-	}, []);
-
-	useEffect(() => {
+		shuffledQuotes
+			.reduce(
+				(tw, quote) => tw.typeString(quote).pauseFor(1250).deleteAll(),
+				typewriter,
+			)
+			.start();
+		
 		const loadIcons = async () => {
 			try {
 				await Promise.all(
