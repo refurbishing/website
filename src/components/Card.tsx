@@ -4,14 +4,17 @@ import { motion } from "framer-motion";
 import { useEffect, useState, useMemo, useRef } from "react";
 import Typewriter from "typewriter-effect/dist/core";
 import { Icon, loadIcon } from "@iconify/react";
-import { shuffledQuotes } from "@/data/quotes";
+import { getTranslatedQuotes, quotes } from "@/data/quotes";
 import Image from "next/image";
 import { useInview } from "@/lib/animateInscroll";
+import { useLanguage } from "@/hooks/LanguageContext";
+import { getTranslation } from "@/utils/translations";
 
 export default function CardComponent() {
 	const cardRef = useRef(null);
 	const isInView = useInview(cardRef);
 	const [iconsLoaded, setIconsLoaded] = useState(false);
+	const { language } = useLanguage();
 
 	const age = useMemo(() => {
 		const birthDate = new Date("2009-08-29");
@@ -70,9 +73,11 @@ export default function CardComponent() {
 			loop: true,
 		});
 
-		shuffledQuotes
+		const translatedQuotes = getTranslatedQuotes(language);
+		
+		translatedQuotes
 			.reduce(
-				(tw, quote) => tw.typeString(quote).pauseFor(1250).deleteAll(),
+				(tw: Typewriter, quote: string) => tw.typeString(quote).pauseFor(1250).deleteAll(),
 				typewriter,
 			)
 			.start();
@@ -92,7 +97,7 @@ export default function CardComponent() {
 		};
 
 		loadIcons();
-	}, [socialLinks]);
+	}, [socialLinks, language]);
 
 	return (
 		<motion.div
@@ -119,7 +124,12 @@ export default function CardComponent() {
 				</video>
 				<CardHeader className="pb-2">
 					<h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white overflow-hidden">
-						{[`I'm a`, `${age} year old`, "developer from", "Honduras"].map(
+						{[
+							getTranslation(language, 'card.intro'),
+							`${age} ${getTranslation(language, 'card.yearOld')}`,
+							getTranslation(language, 'card.developer'),
+							getTranslation(language, 'card.country')
+						].map(
 							(text, index) => (
 								<div key={index} className="relative inline-block">
 									<motion.span

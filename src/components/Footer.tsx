@@ -1,8 +1,13 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/hooks/LanguageContext";
+import { getTranslation } from "@/utils/translations";
 
 export function Footer() {
+	const { language } = useLanguage();
+	const t = (key: string) => getTranslation(language, key);
+
 	return (
 		<motion.footer
 			initial={{ opacity: 0, y: 20 }}
@@ -19,9 +24,9 @@ export function Footer() {
 					rel="noopener noreferrer"
 					className="hover:text-gray-300"
 				>
-					© 2025 Cortex All rights reserved
+					{t("footer.allRightsReserved")}
 				</a>
-				&nbsp;• Made with NextJS & TailwindCSS
+				&nbsp;• {t("footer.madeWith")}
 			</h1>
 		</motion.footer>
 	);

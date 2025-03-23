@@ -6,10 +6,14 @@ import Typewriter from "typewriter-effect/dist/core";
 import { Code } from "lucide-react";
 import { TextFade } from "../app/structure/TextFade";
 import { useInview } from "../lib/animateInscroll";
+import { useLanguage } from "@/hooks/LanguageContext";
+import { getTranslation } from "@/utils/translations";
 
 export default function About() {
 	const ref = useRef<HTMLDivElement>(null);
 	const isInView = useInview(ref);
+	const { language } = useLanguage();
+	const t = (key: string) => getTranslation(language, key);
 
 	return (
 		<div
@@ -26,7 +30,7 @@ export default function About() {
 					<TextFade
 						fullLoadedDuration={1.9}
 						duration={1.85}
-						words="About Me"
+						words={t('aboutMe.title')}
 						className="text-2xl font-bold text-white/90"
 						slideDirection="up"
 						slideDistance={25}
@@ -64,10 +68,7 @@ export default function About() {
 									}}
 									className="text-white text-sm flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.003] to-transparent backdrop-blur-sm px-3 py-1 rounded-2xl shadow-lg border border-white/[0.02]"
 								>
-									In my early teen years, I developed an interest in
-									programming, design and cybersecurity which led me to pursue a
-									career in the field which I have a passion for and I'm always
-									looking to learn more and to make something new and unique.
+									{t('aboutMe.description')}
 								</motion.div>
 								<motion.div
 									initial={{ opacity: 0, y: 40 }}
@@ -103,8 +104,7 @@ export default function About() {
 										}}
 										className="text-white text-xs flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.003] to-transparent backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
-										Currently focused on Web Development and design. while
-										exploring new technologies to enhance my skill set.
+										{t('aboutMe.currentFocus')}
 									</motion.div>
 									<motion.div
 										whileHover={{
@@ -118,7 +118,7 @@ export default function About() {
 											<Code className="w-3.5 h-3.5 text-white/80" />
 										</div>
 										<span className="text-white/80 text-xs">
-											~2 Years of Experience
+											{t('aboutMe.experience')}
 										</span>
 									</motion.div>
 								</div>

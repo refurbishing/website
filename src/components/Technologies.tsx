@@ -7,10 +7,15 @@ import { TextFade } from "../app/structure/TextFade";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInview } from "../lib/animateInscroll";
+import { useLanguage } from "@/hooks/LanguageContext";
+import { getTranslation } from "@/utils/translations";
 
 export default function Technologies() {
 	const ref = useRef<HTMLDivElement>(null);
 	const isInView = useInview(ref);
+	const { language } = useLanguage();
+	
+	const t = (key: string) => getTranslation(language, key);
 
 	const technologies = [
 		{
@@ -79,7 +84,7 @@ export default function Technologies() {
 					<TextFade
 						fullLoadedDuration={1}
 						duration={1}
-						words="Technologies"
+						words={t('technologies.title')}
 						className="text-2xl font-bold text-white/90"
 						slideDirection="up"
 						slideDistance={30}

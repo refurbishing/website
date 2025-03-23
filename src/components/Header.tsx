@@ -5,6 +5,8 @@ import { useSocket } from "@/hooks/SocketContext";
 import { motion, AnimatePresence } from "framer-motion";
 import UserArea from "./DiscordPresence";
 import Weather from "./Weather";
+import { useLanguage } from "@/hooks/LanguageContext";
+import { getTranslation } from "@/utils/translations";
 
 export default function Header() {
 	const [hamburgerTriggered, setHamburgerTriggered] = useState(false);
@@ -14,6 +16,7 @@ export default function Header() {
 	const [isDesktop, setIsDesktop] = useState(false);
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 	const [isHovered, setIsHovered] = useState(false);
+	const { language } = useLanguage();
 
 	const statusColor = {
 		online: {
@@ -46,6 +49,8 @@ export default function Header() {
 		status in statusColor
 			? `${statusColor[status as keyof typeof statusColor].normal} ${statusColor[status as keyof typeof statusColor].hover} transition-all duration-300`
 			: `${statusColor.offline.normal} ${statusColor.offline.hover} transition-all duration-300`;
+
+	const t = (key: string) => getTranslation(language, key);
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -247,7 +252,7 @@ export default function Header() {
 									}}
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
-									Home
+									{t('home')}
 								</a>
 								<a
 									href="#about"
@@ -261,7 +266,7 @@ export default function Header() {
 									}}
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
-									About
+									{t('about')}
 								</a>
 								<a
 									href="#commissions"
@@ -276,7 +281,7 @@ export default function Header() {
 									}}
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
-									Commissions
+									{t('commissions')}
 								</a>
 								<div className="h-6 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent mx-1.5" />
 								<a
@@ -352,7 +357,7 @@ export default function Header() {
 											}}
 											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
 										>
-											Home
+											{t('home')}
 										</a>
 										<a
 											href="#about"
@@ -366,7 +371,7 @@ export default function Header() {
 											}}
 											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
 										>
-											About
+											{t('about')}
 										</a>
 										<a
 											href="#commissions"
@@ -381,7 +386,7 @@ export default function Header() {
 											}}
 											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
 										>
-											Commissions
+											{t('commissions')}
 										</a>
 										<a
 											href="mailto:me@cortex.rest"
@@ -401,7 +406,7 @@ export default function Header() {
 														d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
 													/>
 												</svg>
-												Contact
+												{t("contact")}
 											</div>
 										</a>
 										<a
@@ -429,7 +434,7 @@ export default function Header() {
 													<path d="M4 17v2" />
 													<path d="M5 18H3" />
 												</svg>
-												Source
+												{t("source")}
 											</div>
 										</a>
 									</div>

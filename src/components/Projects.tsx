@@ -6,20 +6,20 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { Icon } from "@iconify/react";
 import { useInview } from "../lib/animateInscroll";
+import { getTranslation } from "@/utils/translations";
+import { useLanguage } from "@/hooks/LanguageContext";
 
 const projects = [
 	{
 		name: "Equibop",
-		description:
-			"A custom Discord App aiming to give you better performance and improvements forked from Vesktop",
+		descriptionKey: "projects.equibop",
 		url: "https://github.com/Equicord/Equibop",
 		icon: "https://github.com/Equicord/Equibop/raw/main/static/icon.png",
 		language: "TypeScript",
 	},
 	{
 		name: "VNREZ",
-		description:
-			"Utility-suite for Linux that records and screenshots your files easily and uploads them to a file host if desired",
+		descriptionKey: "projects.vnrez",
 		url: "https://github.com/refurbishing/vnrez",
 		icon: "https://github.com/refurbishing/vnrez/raw/main/assets/logo.png",
 		language: "Bash",
@@ -34,6 +34,8 @@ export default function Projects() {
 	const [stars, setStars] = useState<{ [key: string]: number }>({});
 	const ref = useRef<HTMLDivElement>(null);
 	const isInView = useInview(ref);
+	const { language } = useLanguage();
+	const t = (key: string) => getTranslation(language, key);
 
 	useEffect(() => {
 		projects.forEach((project) => {
@@ -63,7 +65,7 @@ export default function Projects() {
 				<TextFade
 					fullLoadedDuration={2.25}
 					duration={1.85}
-					words="Projects"
+					words={t("projects.title")}
 					className="text-2xl font-bold text-white/90"
 					slideDirection="up"
 					slideDistance={25}
@@ -168,7 +170,7 @@ export default function Projects() {
 							</CardHeader>
 							<CardBody className="px-4 py-1 pb-4">
 								<p className="text-gray-300 text-sm mb-3 -mt-2">
-									{project.description}
+									{t(project.descriptionKey)}
 								</p>
 								{project.language && (
 									<div className="border border-[#999a9e]/10 non-selectable flex items-center gap-1 text-xs text-gray-400 bg-zinc-900/50 px-2 py-0.5 rounded-full w-fit transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 hover:shadow-[0_0_2px_rgba(255,255,255,0.08)]">
@@ -196,7 +198,7 @@ export default function Projects() {
 				<TextFade
 					fullLoadedDuration={1.4}
 					duration={1}
-					words="... and have contributed to multiple frontend projects"
+					words={t("projects.subtitle")}
 					className="text-sm text-gray-400 mb-28 italic text-center w-full px-3"
 				/>
 			</motion.div>

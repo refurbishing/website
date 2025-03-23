@@ -1,12 +1,19 @@
-export const quotes = [
-	"Developer making modern interfaces and designs with ease.",
-	"Creating designs while being focused on aesthetics and user experience.",
-	"Programming, UI/UX design and making intuitive user experiences.",
-	"Designing and developing user-friendly interfaces and experiences.",
-	"Building interfaces that tell stories and sometimes solve problems too.",
-	"Modern minimalist designs that are both beautiful and functional.",
-	"Passionate Cybersecurity enthusiast and full-stack developer.",
-];
+import { getTranslation } from "@/utils/translations";
+import { Language } from '@/hooks/LanguageContext';
+
+import enTranslations from '../translations/en.json';
+import esTranslations from '../translations/es.json';
+
+export const quotes = {
+	en: enTranslations.quotes,
+	es: esTranslations.quotes
+};
+
+export const defaultQuotes = enTranslations.quotes;
+
+export const getTranslatedQuotes = (language: Language) => {
+	return quotes[language].map(quote => getTranslation(language, quote));
+};
 
 export const shuffleArray = (array: string[]) => {
 	const shuffled = [...array];
@@ -17,4 +24,7 @@ export const shuffleArray = (array: string[]) => {
 	return shuffled;
 };
 
-export const shuffledQuotes = shuffleArray(quotes);
+export const getShuffledQuotes = (language: Language) => {
+	const translatedQuotes = getTranslatedQuotes(language);
+	return shuffleArray(translatedQuotes);
+};

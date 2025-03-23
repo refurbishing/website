@@ -5,6 +5,8 @@ import { TextFade } from "../app/structure/TextFade";
 import { useState, useEffect, useRef } from "react";
 import { useInview } from "../lib/animateInscroll";
 import { Icon } from "@iconify/react";
+import { useLanguage } from "@/hooks/LanguageContext";
+import { getTranslation } from "@/utils/translations";
 
 export default function Statistics() {
 	const ref = useRef<HTMLDivElement>(null);
@@ -16,23 +18,14 @@ export default function Statistics() {
 	const [languages, setLanguages] = useState<{ [key: string]: number }>({});
 	const [wakatime, setWakatime] = useState<any>(null);
 	const [error, setError] = useState<string | null>(null);
+	const { language } = useLanguage();
+	const t = (key: string) => getTranslation(language, key);
 
 	useEffect(() => {
 		const getLastTwelveMonths = () => {
-			const monthNames = [
-				"Jan",
-				"Feb",
-				"Mar",
-				"Apr",
-				"May",
-				"Jun",
-				"Jul",
-				"Aug",
-				"Sep",
-				"Oct",
-				"Nov",
-				"Dec",
-			];
+			const monthNames = language === 'es' 
+				? ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+				: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 			const current = new Date();
 			const months = [];
 
@@ -90,7 +83,7 @@ export default function Statistics() {
 				setError("Failed to load GitHub statistics. Please try again later.");
 				setLoading(false);
 			});
-	}, []);
+	}, [language]);
 
 	return (
 		<div
@@ -104,7 +97,7 @@ export default function Statistics() {
 				transition={{ duration: 0.7, ease: "easeOut" }}
 			>
 				<TextFade
-					words="Statistics"
+					words={t("statistics.title")}
 					className="mb-3.5 text-2xl font-bold text-white/90"
 					fullLoadedDuration={2}
 					duration={1.85}
@@ -315,7 +308,7 @@ export default function Statistics() {
 								>
 									<div className="flex items-center gap-1">
 										<span className="font-medium">{total}</span>
-										<span>Contributions in the last year</span>
+										<span>{t("stats.contributionsLastYear")}</span>
 									</div>
 								</motion.div>
 								<motion.div
@@ -334,7 +327,7 @@ export default function Statistics() {
 										/>
 										<div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden md:group-hover:block">
 											<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
-												All GitHub & Wakatime activity
+												{t("stats.githubWakatimeActivity")}
 											</div>
 										</div>
 									</div>
@@ -352,7 +345,7 @@ export default function Statistics() {
 									}}
 									className="border border-white/[0.03] non-selectable flex items-center gap-2 text-xs text-gray-400 bg-white/[0.01] backdrop-blur-sm px-2 py-1 rounded-2xl shadow-lg"
 								>
-									<span>Less</span>
+									<span>{t("stats.less")}</span>
 									<div className="flex gap-1">
 										{[0, 1, 2, 3, 4].map((level) => (
 											<div
@@ -369,7 +362,7 @@ export default function Statistics() {
 											/>
 										))}
 									</div>
-									<span>More</span>
+									<span>{t("stats.more")}</span>
 								</motion.div>
 							</div>
 						</CardHeader>
@@ -393,9 +386,9 @@ export default function Statistics() {
 											<div className="min-w-[750px]">
 												<div className="flex gap-2">
 													<div className="flex flex-col justify-between pt-6 pb-2 text-[10px] md:text-xs text-gray-400">
-														<span>Mon</span>
-														<span>Wed</span>
-														<span>Fri</span>
+														<span>{t("stats.dayMon")}</span>
+														<span>{t("stats.dayWed")}</span>
+														<span>{t("stats.dayFri")}</span>
 													</div>
 													<div
 														className="w-full relative"
@@ -459,8 +452,8 @@ export default function Statistics() {
 																								},
 																							) + suffix;
 																						return count === 1
-																							? `1 contribution on ${formattedDate}`
-																							: `${count} contributions on ${formattedDate}`;
+																							? `1 ${t("stats.contributionSingular")} ${formattedDate}`
+																							: `${count} ${t("stats.contributionPlural")} ${formattedDate}`;
 																					})()}
 																				</div>
 																			</div>
@@ -641,8 +634,7 @@ export default function Statistics() {
 															/>
 															<div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-[100]">
 																<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
-																	<span className="hidden sm:inline">Coding </span>
-																	<span className="sm:hidden">A</span><span className="hidden sm:inline">a</span>ctivity from last 7 days
+																	{t("stats.codingActivity")}
 																</div>
 															</div>
 														</div>

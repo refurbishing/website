@@ -21,6 +21,7 @@
 		"lenis": "^1.2.3",
 		"lucide-react": "^0.471.2",
 		"next": "15.2.2",
+		"next-intl": "^4.0.2",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"typewriter-effect": "^2.21.0"

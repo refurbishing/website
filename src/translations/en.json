@@ -1,0 +1,103 @@
+{
+  "home": "Home",
+  "about": "About",
+  "commissions": "Commissions",
+  "source": "Source",
+  "footer": {
+    "madeWith": "Made with NextJS & TailwindCSS",
+    "allRightsReserved": "© 2025 Cortex. All rights reserved."
+  },
+  "aboutMe": {
+    "title": "About Me",
+    "description": "In my early teen years, I developed an interest in programming, design and cybersecurity which led me to pursue a career in the field which I have a passion for and I'm always looking to learn more and to make something new and unique.",
+    "currentFocus": "Currently focused on Web Development and design, while exploring new technologies to enhance my skill set.",
+    "experience": "~2 Years of Experience"
+  },
+
+  "statistics": {
+    "title": "Statistics"
+  },
+  "technologies": {
+    "title": "Technologies"
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "... and have contributed to multiple frontend projects",
+    "equibop": "A custom Discord App aiming to give you better performance and improvements forked from Vesktop",
+    "vnrez": "A utility-suite for Linux that records and screenshots your files easily and uploads them to a file host if desired"
+  },
+  "discordPresence": {
+    "nothingHappening": "Nothing is happening",
+    "noActiveActivity": "No active activity to display",
+    "currentlyOffline": "Currently offline",
+    "noDiscordConnection": "No connection to Discord",
+    "addOnDiscord": "Add on Discord",
+    "add": "Add",
+    "elapsed": "elapsed",
+    "by": "by",
+    "on": "on"
+  },
+  "contact": "Contact",
+  "card": {
+    "intro": "I'm a",
+    "yearOld": "year old",
+    "developer": "developer from",
+    "country": "Honduras"
+  },
+  "quotes": [
+    "Developer creating modern interfaces and designs with ease.",
+    "Creating designs focused on aesthetics and user experience.",
+    "Programming, UI/UX design and creating intuitive experiences.",
+    "Designing and developing friendly interfaces and experiences.",
+    "Building interfaces that tell stories and sometimes solve problems.",
+    "Modern minimalist designs that are both beautiful and functional.",
+    "Passionate Cybersecurity enthusiast and full-stack developer."
+  ],
+  "commissionsText": {
+    "openFor": "Currently open for commissions in web development and design. While I may be young, I'm passionate and willing to prove my full potential. Available for hire and committed to deliver quality work that helps bring your ideas to life and grow your business while exploring opportunities to get better.",
+    "affordableServices": "Affordable Quality Services"
+  },
+  "stats": {
+    "title": "Statistics",
+    "codingActivity": "Coding activity from last 7 days",
+    "error": "Failed to load GitHub statistics. Please try again later.",
+    "retry": "Try Again",
+    "contributionsLastYear": "Contributions in the last year",
+    "githubWakatimeActivity": "All GitHub & Wakatime activity",
+    "less": "Less",
+    "more": "More",
+    "dayMon": "Mon",
+    "dayWed": "Wed",
+    "dayFri": "Fri",
+    "contributionSingular": "contribution on",
+    "contributionPlural": "contributions on"
+  },
+  "weather": {
+    "title": "Weather",
+    "feelsLike": "Feels like",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "direction": "Direction",
+    "visibility": "Visibility",
+    "forecast": "3-Day Forecast",
+    "conditions": {
+      "clear": "Clear",
+      "sunny": "Sunny",
+      "thunder": "Thunder",
+      "fog": "Fog",
+      "heavy_rain": "Heavy rain",
+      "rain": "Rain",
+      "snow": "Snow",
+      "blizzard": "Blizzard",
+      "partly_cloudy": "Partly cloudy",
+      "overcast": "Overcast",
+      "cloudy": "Cloudy"
+    }
+  },
+  "musicStats": {
+    "top_artists": "Top Artists",
+    "top_tracks": "Top Tracks",
+    "since_weeks": "since 4 weeks",
+    "popularity": "Popularity"
+  }
+} 

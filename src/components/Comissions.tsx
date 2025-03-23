@@ -6,10 +6,15 @@ import Image from "next/image";
 import { useInview } from "@/lib/animateInscroll";
 import { TextFade } from "../app/structure/TextFade";
 import { Paintbrush, Globe, Laptop, DollarSign, Coffee, BugOff, MousePointer2, GitFork } from "lucide-react";
+import { useLanguage } from "@/hooks/LanguageContext";
+import { getTranslation } from "@/utils/translations";
 
 export default function Comissions() {
 	const ref = useRef<HTMLDivElement>(null);
 	const isInView = useInview(ref);
+	const { language } = useLanguage();
+	
+	const t = (key: string) => getTranslation(language, key);
 
 	return (
 		<div
@@ -26,7 +31,7 @@ export default function Comissions() {
 					<TextFade
 						fullLoadedDuration={1.9}
 						duration={1.85}
-						words="Commissions"
+						words={t('commissions')}
 						className="text-2xl font-bold text-white/90"
 						slideDirection="up"
 						slideDistance={25}
@@ -136,12 +141,7 @@ export default function Comissions() {
 										}}
 										className="text-white text-sm flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-transparent backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
-										Currently open for commissions in web development and
-										design. While I may be young, I'm passionate and willing to
-										prove my full potential. Available for hire and committed to
-										deliver quality work that helps bring your ideas to life and
-										grow your business while exploring opportunities to get
-										better.
+										{t('commissionsText.openFor')}
 									</motion.div>
 
 									<motion.div
@@ -156,7 +156,7 @@ export default function Comissions() {
 											<DollarSign className="w-3.5 h-3.5 text-white/80" />
 										</div>
 										<span className="text-white/80 text-xs">
-											Affordable Quality Services
+											{t('commissionsText.affordableServices')}
 										</span>
 									</motion.div>
 								</div>

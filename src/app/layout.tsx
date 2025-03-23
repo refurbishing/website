@@ -1,4 +1,6 @@
 import "./globals.css";
+import { LanguageProvider } from "@/hooks/LanguageContext";
+import { IntlProvider } from './providers';
 
 export const metadata = {
 	title: "Cortex's Portfolio",
@@ -33,7 +35,13 @@ export default function RootLayout({
 				<link rel="preload" href="/assets/background.svg" as="image" />
 				<link rel="preload" href="/assets/card.mp4" as="video" />
 			</head>
-			<body className="min-h-screen flex flex-col">{children}</body>
+			<body className="min-h-screen flex flex-col">
+				<LanguageProvider>
+					<IntlProvider>
+						{children}
+					</IntlProvider>
+				</LanguageProvider>
+			</body>
 		</html>
 	);
 }

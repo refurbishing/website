@@ -1,29 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardHeader, CardBody } from "@heroui/react";
 import {
-	Cloud,
 	CloudSun,
 	CloudRain,
 	CloudRainWind,
-	CloudSunRain,
 	CloudSnow,
-	CloudHail,
 	CloudLightning,
 	CloudFog,
 	Cloudy,
 	Sun,
-	SunMedium,
 	SunDim,
 	Wind,
 	Droplets,
 	Thermometer,
 	Eye,
 	Compass,
-	Clock,
 } from "lucide-react";
+import { getTranslation } from "@/utils/translations";
+import { useLanguage } from "@/hooks/LanguageContext";
 
 interface WeatherWidgetProps {
 	isOpen: boolean;
@@ -62,6 +59,9 @@ export default function WeatherWidget({
 	error,
 	onRetry,
 }: WeatherWidgetProps) {
+	const { language } = useLanguage();
+	const t = (key: string) => getTranslation(language, key);
+
 	useEffect(() => {
 		const handleEscapeKey = (event: KeyboardEvent) => {
 			if (event.key === "Escape" && isOpen) {
@@ -178,7 +178,7 @@ export default function WeatherWidget({
 									</svg>
 								</button>
 								<div className="flex flex-col items-center mx-auto w-full">
-									<h2 className="text-lg font-semibold text-white">Weather</h2>
+									<h2 className="text-lg font-semibold text-white">{t('weather.title')}</h2>
 									<span className="text-xs text-zinc-500 mt-1 px-2 rounded-xl bg-zinc-800/35">
 										{weatherData
 											? weatherData.lastUpdated
@@ -275,11 +275,11 @@ export default function WeatherWidget({
 														{weatherData.temp}
 													</h1>
 													<p className="text-zinc-400">
-														{weatherData.condition}
+														{t(`weather.conditions.${weatherData.condition.toLowerCase().replace(/ /g, '_')}`)}
 													</p>
 													{weatherData.feelsLike && (
 														<p className="text-sm text-zinc-500 mt-1">
-															Feels like {weatherData.feelsLike}
+															{t('weather.feelsLike')} {weatherData.feelsLike}
 														</p>
 													)}
 												</div>
@@ -295,7 +295,7 @@ export default function WeatherWidget({
 													<div className="flex items-center gap-2 p-2 bg-zinc-800/20 rounded-lg outline-none outline-[0px] outline-dashed outline-offset-2 hover:outline hover:outline-2 hover:outline-dashed hover:outline-zinc-700 hover:-translate-y-0.5 transition-all">
 														<Droplets className="w-5 h-5 text-blue-400" />
 														<div>
-															<p className="text-xs text-zinc-500">Humidity</p>
+															<p className="text-xs text-zinc-500">{t('weather.humidity')}</p>
 															<p className="text-white">
 																{weatherData.humidity}
 															</p>
@@ -306,7 +306,7 @@ export default function WeatherWidget({
 													<div className="flex items-center gap-2 p-2 bg-zinc-800/20 rounded-lg outline-none outline-[0px] outline-dashed outline-offset-2 hover:outline hover:outline-2 hover:outline-dashed hover:outline-zinc-700 hover:-translate-y-0.5 transition-all">
 														<Wind className="w-5 h-5 text-blue-300" />
 														<div>
-															<p className="text-xs text-zinc-500">Wind</p>
+															<p className="text-xs text-zinc-500">{t('weather.wind')}</p>
 															<p className="text-white">
 																{weatherData.windSpeed}
 															</p>
@@ -317,7 +317,7 @@ export default function WeatherWidget({
 													<div className="flex items-center gap-2 p-2 bg-zinc-800/20 rounded-lg outline-none outline-[0px] outline-dashed outline-offset-2 hover:outline hover:outline-2 hover:outline-dashed hover:outline-zinc-700 hover:-translate-y-0.5 transition-all">
 														<Compass className="w-5 h-5 text-zinc-400" />
 														<div>
-															<p className="text-xs text-zinc-500">Direction</p>
+															<p className="text-xs text-zinc-500">{t('weather.direction')}</p>
 															<p className="text-white">
 																{weatherData.windDirection}
 															</p>
@@ -328,9 +328,7 @@ export default function WeatherWidget({
 													<div className="flex items-center gap-2 p-2 bg-zinc-800/20 rounded-lg outline-none outline-[0px] outline-dashed outline-offset-2 hover:outline hover:outline-2 hover:outline-dashed hover:outline-zinc-700 hover:-translate-y-0.5 transition-all">
 														<Eye className="w-5 h-5 text-zinc-400" />
 														<div>
-															<p className="text-xs text-zinc-500">
-																Visibility
-															</p>
+															<p className="text-xs text-zinc-500">{t('weather.visibility')}</p>
 															<p className="text-white">
 																{weatherData.visibility}
 															</p>
@@ -344,7 +342,7 @@ export default function WeatherWidget({
 											weatherData.forecast.length > 0 && (
 												<div className="w-full">
 													<h3 className="text-sm font-medium text-zinc-400 mb-3 text-center">
-														3-Day Forecast
+														{t('weather.forecast')}
 													</h3>
 													<div className="grid grid-cols-3 gap-2">
 														{weatherData.forecast.map((day, index) => (

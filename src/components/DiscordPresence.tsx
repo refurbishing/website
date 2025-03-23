@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Icon } from "@iconify/react";
 import React from "react";
+import { useLanguage } from "@/hooks/LanguageContext";
+import { getTranslation } from "@/utils/translations";
 
 interface UserAreaProps {
 	isOpen: boolean;
@@ -39,6 +41,8 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 	const [bannerUrl, setBannerUrl] = useState<string | null>(null);
 	const [isBannerLoaded, setIsBannerLoaded] = useState(false);
 	const currentBannerUrl = useRef<string | null>(null);
+	const { language } = useLanguage();
+	const t = (key: string) => getTranslation(language, key);
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout;
@@ -372,7 +376,6 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 
 			if (!isOverflowing) return text;
 
-			// Split text into chunks of 50 characters
 			const lines = [];
 			let remainingText = text;
 
@@ -692,9 +695,11 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															className="text-xs font-medium text-white bg-indigo-500 hover:bg-indigo-600 transition-colors px-2.5 py-1.5 rounded-md flex items-center gap-1.5 w-fit whitespace-nowrap"
 														>
 															<span className="hidden zsm:block">
-																Add on Discord
+																{t("discordPresence.addOnDiscord")}
 															</span>
-															<span className="block zsm:hidden">Add</span>
+															<span className="block zsm:hidden">
+																{t("discordPresence.add")}
+															</span>
 															<svg
 																xmlns="http://www.w3.org/2000/svg"
 																viewBox="0 0 20 20"
@@ -841,10 +846,10 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															/>
 														</svg>
 														<p className="text-sm text-zinc-400">
-															Nothing is happening
+															{t("discordPresence.nothingHappening")}
 														</p>
 														<p className="text-xs text-zinc-500 mt-1">
-															No active activity to display
+															{t("discordPresence.noActiveActivity")}
 														</p>
 													</motion.div>
 												</motion.div>
@@ -907,10 +912,10 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															/>
 														</svg>
 														<p className="text-sm text-zinc-400">
-															Currently offline
+															{t("discordPresence.currentlyOffline")}
 														</p>
 														<p className="text-xs text-zinc-500 mt-1">
-															No connection to Discord
+															{t("discordPresence.noDiscordConnection")}
 														</p>
 													</motion.div>
 												</motion.div>
@@ -1121,17 +1126,13 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																	<p className="text-xs text-zinc-500">
 																		{(() => {
 																			const elapsed = activityTimes[index]
-																				? Math.floor(
-																						activityTimes[index] / 1000,
-																					)
+																				? Math.floor(activityTimes[index] / 1000)
 																				: 0;
 																			const hours = Math.floor(elapsed / 3600);
-																			const minutes = Math.floor(
-																				(elapsed % 3600) / 60,
-																			);
+																			const minutes = Math.floor((elapsed % 3600) / 60);
 																			const seconds = elapsed % 60;
 
-																			return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")} elapsed`;
+																			return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")} ${t("discordPresence.elapsed")}`;
 																		})()}
 																	</p>
 																)}
@@ -1293,28 +1294,20 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																	)}
 															</div>
 															<p className="text-xs text-zinc-400">
-																by{" "}
+																{t("discordPresence.by")}{" "}
 																{data.spotify.artist
 																	.split("; ")
-																	.map(
-																		(
-																			artist: string,
-																			index: number,
-																			array: string[],
-																		) => {
-																			if (array.length === 1) return artist;
-																			if (index === array.length - 2)
-																				return `${artist} `;
-																			if (index === array.length - 1)
-																				return `& ${artist}`;
-																			return `${artist}, `;
-																		},
-																	)}
+																	.map((artist: string, index: number, array: string[]) => {
+																		if (array.length === 1) return artist;
+																		if (index === array.length - 2) return `${artist} `;
+																		if (index === array.length - 1) return `& ${artist}`;
+																		return `${artist}, `;
+																	})}
 															</p>
 															<p
 																className={`text-xs text-zinc-500 ${!hasOverflow && (data.spotify.song.length > 35 || data.spotify.artist.length > 35) ? "mt-1" : ""}`}
 															>
-																on {data.spotify.album}
+																{t("discordPresence.on")} {data.spotify.album}
 															</p>
 															<div
 																className={`mt-3 ${!data.spotify.album_art_url || !data.spotify.track_id ? "flex justify-center" : ""}`}
