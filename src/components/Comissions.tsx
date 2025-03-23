@@ -64,18 +64,20 @@ export default function Comissions() {
 										>
 											<BugOff className="w-6 h-6 sm:w-5 sm:h-5 text-white/70 transform -rotate-12 transition-transform duration-300 hover:scale-125 hover:rotate-[20deg]" />
 										</motion.div>
-										<motion.div
-											whileTap={{ scale: 0.9, rotate: 15 }}
-											className="relative flex items-center"
-										>
-											<Globe className="w-12 h-12 sm:w-16 sm:h-16 text-white/80 sm:-mb-1 sm:-ml-1 transition-transform duration-300 hover:scale-110 hover:rotate-6" />
+										<div className="relative flex items-center">
+											<motion.div
+												whileTap={{ scale: 0.9, rotate: 15 }}
+												className="relative"
+											>
+												<Globe className="w-12 h-12 sm:w-16 sm:h-16 text-white/80 sm:-mb-1 sm:-ml-1 transition-transform duration-300 hover:scale-110 hover:rotate-6" />
+											</motion.div>
 											<motion.div
 												whileTap={{ scale: 0.8, rotate: -20 }}
 												className="hidden sm:block absolute sm:bottom-[-22px] sm:right-[-26px]"
 											>
 												<GitFork className="w-5 h-5 sm:w-6 sm:h-6 text-white/70 transform rotate-6 transition-transform duration-300 hover:scale-125 hover:rotate-[15deg]" />
 											</motion.div>
-										</motion.div>
+										</div>
 									</div>
 									<motion.div
 										whileTap={{ scale: 0.8, rotate: -20 }}

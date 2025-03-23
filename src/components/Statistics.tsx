@@ -50,7 +50,7 @@ export default function Statistics() {
 		fetch("/api/stats")
 			.then((res) => {
 				if (!res.ok) {
-					throw new Error(`Error fetching GitHub stats: ${res.status}`);
+					throw new Error(`Error fetching Stats: ${res.status}`);
 				}
 				return res.json();
 			})
@@ -79,8 +79,8 @@ export default function Statistics() {
 				setLoading(false);
 			})
 			.catch((error) => {
-				console.error("Error fetching GitHub data:", error);
-				setError("Failed to load GitHub statistics. Please try again later.");
+				console.error("Error fetching Stats data:", error);
+				setError("Failed to load Statistics. Please try again later.");
 				setLoading(false);
 			});
 	}, [language]);
@@ -233,7 +233,7 @@ export default function Statistics() {
 													.then((res) => {
 														if (!res.ok)
 															throw new Error(
-																`Error fetching GitHub stats: ${res.status}`,
+																`Error fetching Stats: ${res.status}`,
 															);
 														return res.json();
 													})
@@ -249,7 +249,7 @@ export default function Statistics() {
 													.catch((error) => {
 														console.error("Error fetching GitHub data:", error);
 														setError(
-															"Failed to load GitHub statistics. Please try again later.",
+															"Failed to load Statistics. Please try again later.",
 														);
 														setLoading(false);
 													});

@@ -107,6 +107,7 @@ export async function GET() {
 		});
 	} catch (error) {
 		console.error("Error fetching weather:", error);
+
 		const cache = global.weatherCache as WeatherCache;
 
 		if (cache.data) {
@@ -153,6 +154,14 @@ export async function GET() {
 			});
 		} catch (fallbackError) {
 			console.error("Fallback weather fetch failed:", fallbackError);
+
+			const cache = global.weatherCache as WeatherCache;
+			if (cache.data) {
+				return NextResponse.json({
+					...cache.data,
+					cached: true,
+				});
+			}
 			return NextResponse.json(
 				{ error: "Unable to fetch weather data" },
 				{ status: 500 },

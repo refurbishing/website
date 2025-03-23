@@ -151,6 +151,9 @@ export default function MusicPlayer() {
 			if (shouldPlayAfterLoad.current) {
 				audioRef.current
 					.play()
+					.then(() => {
+						setIsPlaying(true);
+					})
 					.catch((error) => console.error("Autoplay failed:", error));
 				shouldPlayAfterLoad.current = false;
 			} else if (isPlaying) {
@@ -188,17 +191,9 @@ export default function MusicPlayer() {
 			setSlideDirection(1);
 			setIsAudioLoading(true);
 			setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.length);
-			if (wasPlaying) {
-				const playNewSong = () => {
-					audioRef.current
-						?.play()
-						.catch((error) => console.error("Autoplay failed:", error));
-					audioRef.current?.removeEventListener("loadedmetadata", playNewSong);
-				};
-				audioRef.current?.addEventListener("loadedmetadata", playNewSong);
-			}
-			setIsPlaying(wasPlaying);
+			
 			shouldPlayAfterLoad.current = wasPlaying;
+			setIsPlaying(wasPlaying);
 		}
 	}, [songs.length, isPlaying]);
 
@@ -215,20 +210,12 @@ export default function MusicPlayer() {
 			} else {
 				if (audioRef.current?.currentTime !== undefined) {
 					audioRef.current.currentTime = 0;
+					setIsAudioLoading(false);
 				}
 			}
 
-			if (wasPlaying) {
-				const playNewSong = () => {
-					audioRef.current
-						?.play()
-						.catch((error) => console.error("Autoplay failed:", error));
-					audioRef.current?.removeEventListener("loadedmetadata", playNewSong);
-				};
-				audioRef.current?.addEventListener("loadedmetadata", playNewSong);
-			}
-			setIsPlaying(wasPlaying);
 			shouldPlayAfterLoad.current = wasPlaying;
+			setIsPlaying(wasPlaying);
 		}
 	}, [songs.length, isPlaying, currentTime]);
 
@@ -366,6 +353,26 @@ export default function MusicPlayer() {
 		const x = e.clientX - rect.left;
 		setHoverVolume((x / rect.width) * 100);
 	};
+
+	useEffect(() => {
+		if (currentSong.file) {
+			setIsAudioLoading(true);
+		}
+	}, [currentSong.file]);
+
+	useEffect(() => {
+		const handleCanPlay = () => {
+			setIsAudioLoading(false);
+		};
+
+		if (audioRef.current) {
+			audioRef.current.addEventListener('canplay', handleCanPlay);
+			
+			return () => {
+				audioRef.current?.removeEventListener('canplay', handleCanPlay);
+			};
+		}
+	}, [audioRef.current]);
 
 	return (
 		<motion.div
