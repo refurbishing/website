@@ -23,9 +23,36 @@ export default function Statistics() {
 
 	useEffect(() => {
 		const getLastTwelveMonths = () => {
-			const monthNames = language === 'es' 
-				? ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-				: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+			const monthNames =
+				language === "es"
+					? [
+							"Ene",
+							"Feb",
+							"Mar",
+							"Abr",
+							"May",
+							"Jun",
+							"Jul",
+							"Ago",
+							"Sep",
+							"Oct",
+							"Nov",
+							"Dic",
+						]
+					: [
+							"Jan",
+							"Feb",
+							"Mar",
+							"Apr",
+							"May",
+							"Jun",
+							"Jul",
+							"Aug",
+							"Sep",
+							"Oct",
+							"Nov",
+							"Dec",
+						];
 			const current = new Date();
 			const months = [];
 
@@ -70,7 +97,7 @@ export default function Statistics() {
 				} else {
 					setLanguages({});
 				}
-				
+
 				if (data.wakatime) {
 					setWakatime(data.wakatime);
 				}
@@ -152,7 +179,7 @@ export default function Statistics() {
 									</div>
 								</div>
 							</div>
-							
+
 							<div className="mt-4 flex flex-col md:flex-row gap-4">
 								<div className="flex-1 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4">
 									<div className="flex flex-col gap-2">
@@ -165,7 +192,7 @@ export default function Statistics() {
 										))}
 									</div>
 								</div>
-								
+
 								<div className="flex-1 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4">
 									<div className="flex w-full items-center">
 										<div className="relative flex-shrink-0 w-[150px] h-[150px]">
@@ -406,16 +433,8 @@ export default function Statistics() {
 														</div>
 														<div className="grid grid-flow-col auto-cols-min grid-rows-[repeat(7,_minmax(0,_1fr))] gap-1 md:gap-[3.5px]">
 															{contributions.map(
-																({ date, level, count }, index) => (
-																	<div
-																		key={date}
-																		className="relative"
-																		style={{
-																			animation: isInView
-																				? `fadeScale 0.35s ease-out ${Math.floor(index / 7) * 0.02}s backwards`
-																				: "none",
-																		}}
-																	>
+																({ date, level, count }, _index) => (
+																	<div key={date} className="relative">
 																		<div
 																			className={`group relative h-3 w-3 rounded-sm ${
 																				[
@@ -427,9 +446,7 @@ export default function Statistics() {
 																				][level]
 																			}`}
 																		>
-																			<div
-																				className="pointer-events-none fixed bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block z-[100] transition-all duration-200 ease-in-out transform-gpu translate-y-1 group-hover:translate-y-0 opacity-0 group-hover:opacity-100"
-																			>
+																			<div className="pointer-events-none fixed bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 hidden group-hover:block z-[100] transition-all duration-200 ease-in-out transform-gpu translate-y-1 group-hover:translate-y-0 opacity-0 group-hover:opacity-100">
 																				<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
 																					{(() => {
 																						const day = new Date(
@@ -484,12 +501,17 @@ export default function Statistics() {
 												);
 												return Object.entries(languages)
 													.sort(([, a], [, b]) => b - a)
-													.filter(([, bytes]) => (bytes / totalBytes) * 100 >= 1)
+													.filter(
+														([, bytes]) => (bytes / totalBytes) * 100 >= 1,
+													)
 													.slice(0, 8)
 													.map(([lang, bytes]) => {
 														const percentage = (bytes / totalBytes) * 100;
 														return (
-															<div key={lang} className="flex items-center gap-2 group">
+															<div
+																key={lang}
+																className="flex items-center gap-2 group"
+															>
 																<span className="text-xs text-white/60 w-20 truncate group-hover:text-white/80 transition-colors">
 																	{lang}
 																</span>
@@ -518,174 +540,295 @@ export default function Statistics() {
 											})()}
 										</div>
 									</motion.div>
-									
-									{wakatime && wakatime.languages && wakatime.languages.length > 0 && (
-										<motion.div
-											whileHover={{ scale: 1.005 }}
-											className="flex-1 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4"
-										>
-											<div className="flex w-full items-center">
-												<div className="relative flex-shrink-0">
-													<div className="relative">
-														<div className="relative">
-															<svg viewBox="0 0 100 100" className="w-[150px] h-[150px] -rotate-90 drop-shadow-lg overflow-visible">
-																<circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-																<circle cx="50" cy="50" r="30" fill="rgba(0,0,0,0.1)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
-																
-																{(() => {
-																	const languages = wakatime.languages || [];
-																	const total = languages.reduce((sum: number, lang: any) => sum + lang.total_seconds, 0);
-																	let currentAngle = 0;
-																	
-																	const colors = [
-																		"rgba(255, 255, 255, 0.9)", 
-																		"rgba(255, 255, 255, 0.75)", 
-																		"rgba(255, 255, 255, 0.6)", 
-																		"rgba(255, 255, 255, 0.45)",
-																		"rgba(255, 255, 255, 0.3)", 
-																		"rgba(255, 255, 255, 0.15)"
-																	];
-																	
-																	return languages
-																		.filter((lang: any) => lang.percent >= 1)
-																		.map((lang: any, index: number) => {
-																			const percentage = lang.percent;
-																			const angle = (percentage / 100) * 360;
-																			const startAngle = currentAngle;
-																			currentAngle += angle;
-																		
-																			const x1 = 50 + 40 * Math.cos((startAngle * Math.PI) / 180);
-																			const y1 = 50 + 40 * Math.sin((startAngle * Math.PI) / 180);
-																			const x2 = 50 + 40 * Math.cos(((startAngle + angle) * Math.PI) / 180);
-																			const y2 = 50 + 40 * Math.sin(((startAngle + angle) * Math.PI) / 180);
-																		
-																			const innerRadius = 30;
-																			const x3 = 50 + innerRadius * Math.cos(((startAngle + angle) * Math.PI) / 180);
-																			const y3 = 50 + innerRadius * Math.sin(((startAngle + angle) * Math.PI) / 180);
-																			const x4 = 50 + innerRadius * Math.cos((startAngle * Math.PI) / 180);
-																			const y4 = 50 + innerRadius * Math.sin((startAngle * Math.PI) / 180);
-																		
-																			const largeArcFlag = angle > 180 ? 1 : 0;
-																		
-																			return (
-																				<motion.path
-																					key={lang.name}
-																					d={`M ${x1} ${y1} A 40 40 0 ${largeArcFlag} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4} Z`}
-																					fill={colors[index % colors.length]}
-																					className="transition-all duration-300 hover:opacity-90 hover:scale-105 origin-center cursor-pointer"
-																					stroke="rgba(0,0,0,0.2)"
-																					strokeWidth="0.5"
-																					initial={{ opacity: 0, scale: 0.8 }}
-																					animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-																					transition={{ 
-																						duration: 0.5, 
-																						delay: index * 0.1,
-																						ease: "easeOut"
-																					}}
-																					onMouseOver={() => {
-																						const tooltip = document.getElementById('chart-tooltip');
-																						if (tooltip) {
-																							tooltip.innerHTML = `${lang.name}: ${lang.text} (${lang.percent.toFixed(1)}%)`;
-																							tooltip.style.display = 'block';
-																						}
-																					}}
-																					onMouseOut={() => {
-																						const tooltip = document.getElementById('chart-tooltip');
-																						if (tooltip) {
-																							tooltip.style.display = 'none';
-																						}
-																					}}
-																				/>
-																			);
-																		});
-																})()}
-																
-																<circle cx="50" cy="50" r="20" fill="url(#gradientCenter)" />
-																<defs>
-																	<radialGradient id="gradientCenter" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-																		<stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
-																		<stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
-																	</radialGradient>
-																</defs>
-															</svg>
-															
-															<div 
-																id="chart-tooltip" 
-																className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[100px] bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-lg whitespace-nowrap shadow-xl z-50 pointer-events-none hidden"
-															></div>
-														</div>
-													</div>
-												</div>
 
-												<div className="flex-1 pl-4 flex flex-col gap-1.5 justify-center">
-													<motion.div 
-														className="mb-3 flex items-center gap-2"
-														initial={{ opacity: 0, y: -10 }}
-														animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-														transition={{ duration: 0.4 }}
-													>
-														<span className="text-lg font-semibold text-white/90 block">
-															{wakatime.human_readable_total || "0 hrs"}
-														</span>
-														<div className="group relative overflow-visible">
-															<Icon
-																icon="material-symbols:info-outline-rounded"
-																className="w-4 h-4 text-white/60 hover:text-white/80 hover:scale-110 transition-all duration-200 cursor-help"
-															/>
-															<div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-[100]">
-																<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
-																	{t("stats.codingActivity")}
-																</div>
+									{wakatime &&
+										wakatime.languages &&
+										wakatime.languages.length > 0 && (
+											<motion.div
+												whileHover={{ scale: 1.005 }}
+												className="flex-1 border border-white/[0.03] bg-white/[0.01] backdrop-blur-sm rounded-2xl p-4"
+											>
+												<div className="flex w-full items-center">
+													<div className="relative flex-shrink-0">
+														<div className="relative">
+															<div className="relative">
+																<svg
+																	viewBox="0 0 100 100"
+																	className="w-[150px] h-[150px] -rotate-90 drop-shadow-lg overflow-visible"
+																>
+																	<circle
+																		cx="50"
+																		cy="50"
+																		r="40"
+																		fill="rgba(255,255,255,0.03)"
+																		stroke="rgba(255,255,255,0.05)"
+																		strokeWidth="0.5"
+																	/>
+																	<circle
+																		cx="50"
+																		cy="50"
+																		r="30"
+																		fill="rgba(0,0,0,0.1)"
+																		stroke="rgba(255,255,255,0.08)"
+																		strokeWidth="0.5"
+																	/>
+
+																	{(() => {
+																		const languages = wakatime.languages || [];
+																		const _total = languages.reduce(
+																			(sum: number, lang: any) =>
+																				sum + lang.total_seconds,
+																			0,
+																		);
+																		let currentAngle = 0;
+
+																		const colors = [
+																			"rgba(255, 255, 255, 0.9)",
+																			"rgba(255, 255, 255, 0.75)",
+																			"rgba(255, 255, 255, 0.6)",
+																			"rgba(255, 255, 255, 0.45)",
+																			"rgba(255, 255, 255, 0.3)",
+																			"rgba(255, 255, 255, 0.15)",
+																		];
+
+																		return languages
+																			.filter((lang: any) => lang.percent >= 1)
+																			.map((lang: any, index: number) => {
+																				const percentage = lang.percent;
+																				const angle = (percentage / 100) * 360;
+																				const startAngle = currentAngle;
+																				currentAngle += angle;
+
+																				const x1 =
+																					50 +
+																					40 *
+																						Math.cos(
+																							(startAngle * Math.PI) / 180,
+																						);
+																				const y1 =
+																					50 +
+																					40 *
+																						Math.sin(
+																							(startAngle * Math.PI) / 180,
+																						);
+																				const x2 =
+																					50 +
+																					40 *
+																						Math.cos(
+																							((startAngle + angle) * Math.PI) /
+																								180,
+																						);
+																				const y2 =
+																					50 +
+																					40 *
+																						Math.sin(
+																							((startAngle + angle) * Math.PI) /
+																								180,
+																						);
+
+																				const innerRadius = 30;
+																				const x3 =
+																					50 +
+																					innerRadius *
+																						Math.cos(
+																							((startAngle + angle) * Math.PI) /
+																								180,
+																						);
+																				const y3 =
+																					50 +
+																					innerRadius *
+																						Math.sin(
+																							((startAngle + angle) * Math.PI) /
+																								180,
+																						);
+																				const x4 =
+																					50 +
+																					innerRadius *
+																						Math.cos(
+																							(startAngle * Math.PI) / 180,
+																						);
+																				const y4 =
+																					50 +
+																					innerRadius *
+																						Math.sin(
+																							(startAngle * Math.PI) / 180,
+																						);
+
+																				const largeArcFlag =
+																					angle > 180 ? 1 : 0;
+
+																				return (
+																					<motion.path
+																						key={lang.name}
+																						d={`M ${x1} ${y1} A 40 40 0 ${largeArcFlag} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4} Z`}
+																						fill={colors[index % colors.length]}
+																						className="transition-all duration-300 hover:opacity-90 hover:scale-105 origin-center cursor-pointer"
+																						stroke="rgba(0,0,0,0.2)"
+																						strokeWidth="0.5"
+																						initial={{ opacity: 0, scale: 0.8 }}
+																						animate={
+																							isInView
+																								? { opacity: 1, scale: 1 }
+																								: { opacity: 0, scale: 0.8 }
+																						}
+																						transition={{
+																							duration: 0.5,
+																							delay: index * 0.1,
+																							ease: "easeOut",
+																						}}
+																						onMouseOver={() => {
+																							const tooltip =
+																								document.getElementById(
+																									"chart-tooltip",
+																								);
+																							if (tooltip) {
+																								tooltip.innerHTML = `${lang.name}: ${lang.text} (${lang.percent.toFixed(1)}%)`;
+																								tooltip.style.display = "block";
+																							}
+																						}}
+																						onMouseOut={() => {
+																							const tooltip =
+																								document.getElementById(
+																									"chart-tooltip",
+																								);
+																							if (tooltip) {
+																								tooltip.style.display = "none";
+																							}
+																						}}
+																					/>
+																				);
+																			});
+																	})()}
+
+																	<circle
+																		cx="50"
+																		cy="50"
+																		r="20"
+																		fill="url(#gradientCenter)"
+																	/>
+																	<defs>
+																		<radialGradient
+																			id="gradientCenter"
+																			cx="50%"
+																			cy="50%"
+																			r="50%"
+																			fx="50%"
+																			fy="50%"
+																		>
+																			<stop
+																				offset="0%"
+																				stopColor="rgba(255,255,255,0.15)"
+																			/>
+																			<stop
+																				offset="100%"
+																				stopColor="rgba(255,255,255,0.05)"
+																			/>
+																		</radialGradient>
+																	</defs>
+																</svg>
+
+																<div
+																	id="chart-tooltip"
+																	className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[100px] bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-lg whitespace-nowrap shadow-xl z-50 pointer-events-none hidden"
+																></div>
 															</div>
 														</div>
-													</motion.div>
-													
-													{wakatime.languages && wakatime.languages
-														.filter((lang: any) => lang.percent >= 3)
-														.slice(0, 6)
-														.map((lang: any, index: number) => {
-															const colors = [
-																"rgba(255, 255, 255, 0.9)", 
-																"rgba(255, 255, 255, 0.75)", 
-																"rgba(255, 255, 255, 0.6)", 
-																"rgba(255, 255, 255, 0.45)",
-																"rgba(255, 255, 255, 0.3)", 
-																"rgba(255, 255, 255, 0.15)"
-															];
-															return (
-																<motion.div 
-																	key={lang.name} 
-																	className="flex items-center gap-1.5 group"
-																	initial={{ opacity: 0, x: -5 }}
-																	animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -5 }}
-																	transition={{ delay: index * 0.1, duration: 0.3 }}
-																>
-																	<span 
-																		className="w-2.5 h-2.5 rounded-full transition-transform group-hover:scale-125 duration-300" 
-																		style={{ backgroundColor: colors[index % colors.length] }}
-																	></span>
-																	<span className="text-xs text-white/70 font-medium group-hover:text-white/90 transition-colors">
-																		{lang.name}
-																	</span>
-																	<div className="flex-1 h-1.5 bg-white/10 rounded-full mx-2 overflow-hidden">
-																		<motion.div 
-																			className="h-full rounded-full"
-																			style={{ backgroundColor: colors[index % colors.length] }}
-																			initial={{ width: 0 }}
-																			animate={isInView ? { width: `${lang.percent}%` } : { width: 0 }}
-																			transition={{ duration: 0.8, delay: 0.2 + index * 0.1 }}
-																		/>
+													</div>
+
+													<div className="flex-1 pl-4 flex flex-col gap-1.5 justify-center">
+														<motion.div
+															className="mb-3 flex items-center gap-2"
+															initial={{ opacity: 0, y: -10 }}
+															animate={
+																isInView
+																	? { opacity: 1, y: 0 }
+																	: { opacity: 0, y: -10 }
+															}
+															transition={{ duration: 0.4 }}
+														>
+															<span className="text-lg font-semibold text-white/90 block">
+																{wakatime.human_readable_total || "0 hrs"}
+															</span>
+															<div className="group relative overflow-visible">
+																<Icon
+																	icon="material-symbols:info-outline-rounded"
+																	className="w-4 h-4 text-white/60 hover:text-white/80 hover:scale-110 transition-all duration-200 cursor-help"
+																/>
+																<div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-[100]">
+																	<div className="relative bg-zinc-950/95 border border-white/10 text-white/90 text-xs px-2 py-1 rounded-xl whitespace-nowrap shadow-xl">
+																		{t("stats.codingActivity")}
 																	</div>
-																	<span className="text-xs text-white/50 group-hover:text-white/70 transition-colors">
-																		{lang.percent.toFixed(0)}%
-																	</span>
-																</motion.div>
-															);
-														})}
+																</div>
+															</div>
+														</motion.div>
+
+														{wakatime.languages &&
+															wakatime.languages
+																.filter((lang: any) => lang.percent >= 3)
+																.slice(0, 6)
+																.map((lang: any, index: number) => {
+																	const colors = [
+																		"rgba(255, 255, 255, 0.9)",
+																		"rgba(255, 255, 255, 0.75)",
+																		"rgba(255, 255, 255, 0.6)",
+																		"rgba(255, 255, 255, 0.45)",
+																		"rgba(255, 255, 255, 0.3)",
+																		"rgba(255, 255, 255, 0.15)",
+																	];
+																	return (
+																		<motion.div
+																			key={lang.name}
+																			className="flex items-center gap-1.5 group"
+																			initial={{ opacity: 0, x: -5 }}
+																			animate={
+																				isInView
+																					? { opacity: 1, x: 0 }
+																					: { opacity: 0, x: -5 }
+																			}
+																			transition={{
+																				delay: index * 0.1,
+																				duration: 0.3,
+																			}}
+																		>
+																			<span
+																				className="w-2.5 h-2.5 rounded-full transition-transform group-hover:scale-125 duration-300"
+																				style={{
+																					backgroundColor:
+																						colors[index % colors.length],
+																				}}
+																			></span>
+																			<span className="text-xs text-white/70 font-medium group-hover:text-white/90 transition-colors">
+																				{lang.name}
+																			</span>
+																			<div className="flex-1 h-1.5 bg-white/10 rounded-full mx-2 overflow-hidden">
+																				<motion.div
+																					className="h-full rounded-full"
+																					style={{
+																						backgroundColor:
+																							colors[index % colors.length],
+																					}}
+																					initial={{ width: 0 }}
+																					animate={
+																						isInView
+																							? { width: `${lang.percent}%` }
+																							: { width: 0 }
+																					}
+																					transition={{
+																						duration: 0.8,
+																						delay: 0.2 + index * 0.1,
+																					}}
+																				/>
+																			</div>
+																			<span className="text-xs text-white/50 group-hover:text-white/70 transition-colors">
+																				{lang.percent.toFixed(0)}%
+																			</span>
+																		</motion.div>
+																	);
+																})}
+													</div>
 												</div>
-											</div>
-										</motion.div>
-									)}
+											</motion.div>
+										)}
 								</div>
 							)}
 						</CardBody>

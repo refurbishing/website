@@ -1,8 +1,7 @@
 "use client";
-import { Card, CardHeader, CardBody } from "@heroui/react";
+import { Card, CardHeader } from "@heroui/react";
 import { motion } from "framer-motion";
-import { useEffect, useState, useMemo, useRef } from "react";
-import Typewriter from "typewriter-effect/dist/core";
+import { useRef } from "react";
 import { Code } from "lucide-react";
 import { TextFade } from "../app/structure/TextFade";
 import { useInview } from "../lib/animateInscroll";
@@ -30,7 +29,7 @@ export default function About() {
 					<TextFade
 						fullLoadedDuration={1.9}
 						duration={1.85}
-						words={t('aboutMe.title')}
+						words={t("aboutMe.title")}
 						className="text-2xl font-bold text-white/90"
 						slideDirection="up"
 						slideDistance={25}
@@ -68,7 +67,7 @@ export default function About() {
 									}}
 									className="text-white text-sm flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.003] to-transparent backdrop-blur-sm px-3 py-1 rounded-2xl shadow-lg border border-white/[0.02]"
 								>
-									{t('aboutMe.description')}
+									{t("aboutMe.description")}
 								</motion.div>
 								<motion.div
 									initial={{ opacity: 0, y: 40 }}
@@ -104,7 +103,7 @@ export default function About() {
 										}}
 										className="text-white text-xs flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.003] to-transparent backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
-										{t('aboutMe.currentFocus')}
+										{t("aboutMe.currentFocus")}
 									</motion.div>
 									<motion.div
 										whileHover={{
@@ -118,7 +117,7 @@ export default function About() {
 											<Code className="w-3.5 h-3.5 text-white/80" />
 										</div>
 										<span className="text-white/80 text-xs">
-											{t('aboutMe.experience')}
+											{t("aboutMe.experience")}
 										</span>
 									</motion.div>
 								</div>

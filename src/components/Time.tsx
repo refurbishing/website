@@ -20,7 +20,7 @@ const Time: React.FC = () => {
 
 	useEffect(() => {
 		updateTime();
-	});
+	}, []);
 
 	return (
 		<div className="text-sm flex justify-center items-center font-semibold non-selectable">

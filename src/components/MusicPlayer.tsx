@@ -191,7 +191,7 @@ export default function MusicPlayer() {
 			setSlideDirection(1);
 			setIsAudioLoading(true);
 			setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.length);
-			
+
 			shouldPlayAfterLoad.current = wasPlaying;
 			setIsPlaying(wasPlaying);
 		}
@@ -366,10 +366,10 @@ export default function MusicPlayer() {
 		};
 
 		if (audioRef.current) {
-			audioRef.current.addEventListener('canplay', handleCanPlay);
-			
+			audioRef.current.addEventListener("canplay", handleCanPlay);
+
 			return () => {
-				audioRef.current?.removeEventListener('canplay', handleCanPlay);
+				audioRef.current?.removeEventListener("canplay", handleCanPlay);
 			};
 		}
 	}, [audioRef.current]);

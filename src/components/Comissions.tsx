@@ -5,7 +5,16 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { useInview } from "@/lib/animateInscroll";
 import { TextFade } from "../app/structure/TextFade";
-import { Paintbrush, Globe, Laptop, DollarSign, Coffee, BugOff, MousePointer2, GitFork } from "lucide-react";
+import {
+	Paintbrush,
+	Globe,
+	Laptop,
+	DollarSign,
+	Coffee,
+	BugOff,
+	MousePointer2,
+	GitFork,
+} from "lucide-react";
 import { useLanguage } from "@/hooks/LanguageContext";
 import { getTranslation } from "@/utils/translations";
 
@@ -13,7 +22,7 @@ export default function Comissions() {
 	const ref = useRef<HTMLDivElement>(null);
 	const isInView = useInview(ref);
 	const { language } = useLanguage();
-	
+
 	const t = (key: string) => getTranslation(language, key);
 
 	return (
@@ -31,7 +40,7 @@ export default function Comissions() {
 					<TextFade
 						fullLoadedDuration={1.9}
 						duration={1.85}
-						words={t('commissions')}
+						words={t("commissions")}
 						className="text-2xl font-bold text-white/90"
 						slideDirection="up"
 						slideDistance={25}
@@ -109,14 +118,14 @@ export default function Comissions() {
 										</motion.div>
 									</div>
 								</div>
-								
+
 								<motion.div
 									whileTap={{ scale: 0.8, rotate: -20 }}
 									className="block sm:hidden -mt-2"
 								>
 									<MousePointer2 className="w-6 h-6 text-white/70 transform -rotate-12 transition-transform duration-300 hover:scale-125 hover:rotate-12" />
 								</motion.div>
-								
+
 								<div className="flex flex-col items-center">
 									<div className="block sm:hidden w-56 h-[1px] my-2 mx-auto bg-gradient-to-r from-transparent via-[#dbdbdb] to-transparent opacity-50 relative">
 										<div className="absolute w-16 h-[3px] bg-white/20 blur-sm -top-[1px]" />
@@ -143,7 +152,7 @@ export default function Comissions() {
 										}}
 										className="text-white text-sm flex-[1.5] bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-transparent backdrop-blur-sm px-3 py-1 rounded-xl shadow-lg border border-white/[0.02]"
 									>
-										{t('commissionsText.openFor')}
+										{t("commissionsText.openFor")}
 									</motion.div>
 
 									<motion.div
@@ -158,7 +167,7 @@ export default function Comissions() {
 											<DollarSign className="w-3.5 h-3.5 text-white/80" />
 										</div>
 										<span className="text-white/80 text-xs">
-											{t('commissionsText.affordableServices')}
+											{t("commissionsText.affordableServices")}
 										</span>
 									</motion.div>
 								</div>

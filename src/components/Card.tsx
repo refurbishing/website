@@ -66,7 +66,7 @@ export default function CardComponent() {
 	useEffect(() => {
 		const typewriterElement = document.getElementById("typewriter");
 		if (!typewriterElement) return;
-		
+
 		const typewriter = new Typewriter("#typewriter", {
 			cursor: "|",
 			delay: 50,
@@ -74,14 +74,15 @@ export default function CardComponent() {
 		});
 
 		const translatedQuotes = getTranslatedQuotes(language);
-		
+
 		translatedQuotes
 			.reduce(
-				(tw: Typewriter, quote: string) => tw.typeString(quote).pauseFor(1250).deleteAll(),
+				(tw: Typewriter, quote: string) =>
+					tw.typeString(quote).pauseFor(1250).deleteAll(),
 				typewriter,
 			)
 			.start();
-		
+
 		const loadIcons = async () => {
 			try {
 				await Promise.all(
@@ -125,89 +126,87 @@ export default function CardComponent() {
 				<CardHeader className="pb-2">
 					<h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white overflow-hidden">
 						{[
-							getTranslation(language, 'card.intro'),
-							`${age} ${getTranslation(language, 'card.yearOld')}`,
-							getTranslation(language, 'card.developer'),
-							getTranslation(language, 'card.country')
-						].map(
-							(text, index) => (
-								<div key={index} className="relative inline-block">
+							getTranslation(language, "card.intro"),
+							`${age} ${getTranslation(language, "card.yearOld")}`,
+							getTranslation(language, "card.developer"),
+							getTranslation(language, "card.country"),
+						].map((text, index) => (
+							<div key={index} className="relative inline-block">
+								<motion.span
+									className={`inline-block relative mr-[0.25em]`}
+									initial={{ y: "100%", opacity: 0, filter: "blur(2.5px)" }}
+									animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+									transition={{
+										duration: 1.4,
+										delay: index * 0.2,
+										ease: [0.2, 0.8, 0.2, 1],
+										filter: {
+											duration: 1.2,
+											delay: index * 0.15,
+											ease: [0.4, 0, 0.2, 1],
+										},
+									}}
+								>
 									<motion.span
-										className={`inline-block relative mr-[0.25em]`}
-										initial={{ y: "100%", opacity: 0, filter: "blur(2.5px)" }}
-										animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+										className="inline-block bg-gradient-to-r bg-clip-text text-transparent"
+										initial={{
+											backgroundPosition: "-100%",
+											opacity: 0.5,
+											backgroundImage:
+												index === 0 || index === 2
+													? "linear-gradient(to right, rgb(229, 231, 235), rgb(209, 213, 219), rgb(229, 231, 235))"
+													: "linear-gradient(to right, rgb(161, 161, 170), rgb(212, 212, 216), rgb(161, 161, 170))",
+										}}
+										animate={{
+											backgroundPosition: "200%",
+											opacity: 1,
+											backgroundImage:
+												index === 1
+													? "linear-gradient(to top,rgb(169, 110, 225),rgb(193, 119, 220))"
+													: index === 3
+														? "linear-gradient(to right, rgba(84, 215, 255, 0.8), rgba(183, 231, 247, 0.8), rgba(84, 215, 255, 0.8))"
+														: "linear-gradient(to right, rgb(229, 231, 235), rgb(209, 213, 219), rgb(229, 231, 235))",
+										}}
 										transition={{
-											duration: 1.4,
-											delay: index * 0.2,
-											ease: [0.2, 0.8, 0.2, 1],
-											filter: {
+											duration: 2.5,
+											delay: index * 0.25 + 0.5,
+											ease: "linear",
+											repeat: Infinity,
+											repeatDelay: 3.5,
+											times: [0, 1],
+											opacity: {
+												duration: 0.6,
+												ease: "circOut",
+											},
+											backgroundImage: {
+												delay: index * 0.25 + 0.5,
 												duration: 1.2,
-												delay: index * 0.15,
-												ease: [0.4, 0, 0.2, 1],
+												ease: [0.22, 1, 0.36, 1],
 											},
 										}}
 									>
-										<motion.span
-											className="inline-block bg-gradient-to-r bg-clip-text text-transparent"
-											initial={{
-												backgroundPosition: "-100%",
-												opacity: 0.5,
-												backgroundImage:
-													index === 0 || index === 2
-														? "linear-gradient(to right, rgb(229, 231, 235), rgb(209, 213, 219), rgb(229, 231, 235))"
-														: "linear-gradient(to right, rgb(161, 161, 170), rgb(212, 212, 216), rgb(161, 161, 170))",
-											}}
-											animate={{
-												backgroundPosition: "200%",
-												opacity: 1,
-												backgroundImage:
-													index === 1
-														? "linear-gradient(to top,rgb(169, 110, 225),rgb(193, 119, 220))"
-														: index === 3
-															? "linear-gradient(to right, rgba(84, 215, 255, 0.8), rgba(183, 231, 247, 0.8), rgba(84, 215, 255, 0.8))"
-															: "linear-gradient(to right, rgb(229, 231, 235), rgb(209, 213, 219), rgb(229, 231, 235))",
-											}}
-											transition={{
-												duration: 2.5,
-												delay: index * 0.25 + 0.5,
-												ease: "linear",
-												repeat: Infinity,
-												repeatDelay: 3.5,
-												times: [0, 1],
-												opacity: {
-													duration: 0.6,
-													ease: "circOut",
-												},
-												backgroundImage: {
-													delay: index * 0.25 + 0.5,
-													duration: 1.2,
-													ease: [0.22, 1, 0.36, 1],
-												},
-											}}
-										>
-											{text}
-										</motion.span>
+										{text}
 									</motion.span>
+								</motion.span>
 
-									<motion.div
-										className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/25 to-transparent"
-										initial={{ scaleX: 0, opacity: 0 }}
-										animate={{
-											scaleX: 1,
-											opacity: [0, 1, 1, 0],
-										}}
-										transition={{
-											duration: 1.4,
-											delay: index * 0.2,
-											ease: [0.2, 0.8, 0.2, 1],
-											opacity: {
-												times: [0, 0.3, 0.7, 1],
-											},
-										}}
-									/>
-								</div>
-							),
-						)}
+								<motion.div
+									className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/25 to-transparent"
+									initial={{ scaleX: 0, opacity: 0 }}
+									animate={{
+										scaleX: 1,
+										opacity: [0, 1, 1, 0],
+									}}
+									transition={{
+										duration: 1.4,
+										delay: index * 0.2,
+										ease: [0.2, 0.8, 0.2, 1],
+										opacity: {
+											times: [0, 0.3, 0.7, 1],
+										},
+									}}
+								/>
+							</div>
+						))}
 					</h1>
 				</CardHeader>
 				<CardBody>

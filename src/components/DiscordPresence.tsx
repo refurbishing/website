@@ -582,13 +582,16 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 												</div>
 											</div>
 										</div>
-										
+
 										<div className="relative py-1">
-											<div className="absolute inset-x-0 bottom-0" aria-hidden="true">
+											<div
+												className="absolute inset-x-0 bottom-0"
+												aria-hidden="true"
+											>
 												<div className="w-3/4 mx-auto h-[2px] bg-gradient-to-r from-transparent via-zinc-700/30 to-transparent" />
 											</div>
 										</div>
-										
+
 										<div className="space-y-3">
 											<div className="bg-zinc-800/50 rounded-lg p-3 flex items-center gap-3">
 												<div className="w-[80px] h-[80px] rounded-xl bg-zinc-700/50" />
@@ -1126,10 +1129,14 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																	<p className="text-xs text-zinc-500">
 																		{(() => {
 																			const elapsed = activityTimes[index]
-																				? Math.floor(activityTimes[index] / 1000)
+																				? Math.floor(
+																						activityTimes[index] / 1000,
+																					)
 																				: 0;
 																			const hours = Math.floor(elapsed / 3600);
-																			const minutes = Math.floor((elapsed % 3600) / 60);
+																			const minutes = Math.floor(
+																				(elapsed % 3600) / 60,
+																			);
 																			const seconds = elapsed % 60;
 
 																			return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")} ${t("discordPresence.elapsed")}`;
@@ -1297,12 +1304,20 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																{t("discordPresence.by")}{" "}
 																{data.spotify.artist
 																	.split("; ")
-																	.map((artist: string, index: number, array: string[]) => {
-																		if (array.length === 1) return artist;
-																		if (index === array.length - 2) return `${artist} `;
-																		if (index === array.length - 1) return `& ${artist}`;
-																		return `${artist}, `;
-																	})}
+																	.map(
+																		(
+																			artist: string,
+																			index: number,
+																			array: string[],
+																		) => {
+																			if (array.length === 1) return artist;
+																			if (index === array.length - 2)
+																				return `${artist} `;
+																			if (index === array.length - 1)
+																				return `& ${artist}`;
+																			return `${artist}, `;
+																		},
+																	)}
 															</p>
 															<p
 																className={`text-xs text-zinc-500 ${!hasOverflow && (data.spotify.song.length > 35 || data.spotify.artist.length > 35) ? "mt-1" : ""}`}

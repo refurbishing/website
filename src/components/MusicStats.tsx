@@ -317,7 +317,9 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 											onClick={() => handleTabChange("artists")}
 										>
 											<UserRound className="w-4 h-4" />
-											<span className="hidden zssm:block">{t('musicStats.top_artists')}</span>
+											<span className="hidden zssm:block">
+												{t("musicStats.top_artists")}
+											</span>
 										</button>
 										<button
 											className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
@@ -328,11 +330,13 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 											onClick={() => handleTabChange("tracks")}
 										>
 											<AudioLines className="w-4 h-4" />
-											<span className="hidden zssm:block">{t('musicStats.top_tracks')}</span>
+											<span className="hidden zssm:block">
+												{t("musicStats.top_tracks")}
+											</span>
 										</button>
 									</div>
 									<span className="text-xs text-zinc-500 mt-2 px-2 rounded-xl bg-zinc-800/35">
-										{t('musicStats.since_weeks')}
+										{t("musicStats.since_weeks")}
 									</span>
 								</div>
 							</CardHeader>
@@ -525,7 +529,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																		</div>
 																		<div className="flex flex-col items-end justify-center gap-0.5 pr-2 ml-auto">
 																			<span className="text-[10px] text-zinc-400">
-																				{t('musicStats.popularity')}
+																				{t("musicStats.popularity")}
 																			</span>
 																			<div className="flex items-center gap-1">
 																				<div
@@ -656,7 +660,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																		</div>
 																		<div className="flex flex-col items-end justify-center gap-0.5 pr-2 ml-auto">
 																			<span className="text-[10px] text-zinc-400">
-																				{t('musicStats.popularity')}
+																				{t("musicStats.popularity")}
 																			</span>
 																			<div className="flex items-center gap-1">
 																				<div

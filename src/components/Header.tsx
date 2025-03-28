@@ -95,7 +95,7 @@ export default function Header() {
 	let isScrolling = false;
 	function smoothScrollTo(targetY: number, duration: number) {
 		if (isScrolling) return;
-		
+
 		isScrolling = true;
 		const startY = window.scrollY;
 		const distance = targetY - startY;
@@ -252,7 +252,7 @@ export default function Header() {
 									}}
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
-									{t('home')}
+									{t("home")}
 								</a>
 								<a
 									href="#about"
@@ -266,7 +266,7 @@ export default function Header() {
 									}}
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
-									{t('about')}
+									{t("about")}
 								</a>
 								<a
 									href="#commissions"
@@ -281,7 +281,7 @@ export default function Header() {
 									}}
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
-									{t('commissions')}
+									{t("commissions")}
 								</a>
 								<div className="h-6 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent mx-1.5" />
 								<a
@@ -357,7 +357,7 @@ export default function Header() {
 											}}
 											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
 										>
-											{t('home')}
+											{t("home")}
 										</a>
 										<a
 											href="#about"
@@ -371,7 +371,7 @@ export default function Header() {
 											}}
 											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
 										>
-											{t('about')}
+											{t("about")}
 										</a>
 										<a
 											href="#commissions"
@@ -386,7 +386,7 @@ export default function Header() {
 											}}
 											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
 										>
-											{t('commissions')}
+											{t("commissions")}
 										</a>
 										<a
 											href="mailto:me@cortex.rest"

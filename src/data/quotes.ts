@@ -1,18 +1,18 @@
 import { getTranslation } from "@/utils/translations";
-import { Language } from '@/hooks/LanguageContext';
+import { Language } from "@/hooks/LanguageContext";
 
-import enTranslations from '../translations/en.json';
-import esTranslations from '../translations/es.json';
+import enTranslations from "../translations/en.json";
+import esTranslations from "../translations/es.json";
 
 export const quotes = {
 	en: enTranslations.quotes,
-	es: esTranslations.quotes
+	es: esTranslations.quotes,
 };
 
 export const defaultQuotes = enTranslations.quotes;
 
 export const getTranslatedQuotes = (language: Language) => {
-	return quotes[language].map(quote => getTranslation(language, quote));
+	return quotes[language].map((quote) => getTranslation(language, quote));
 };
 
 export const shuffleArray = (array: string[]) => {

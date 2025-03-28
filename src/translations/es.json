@@ -1,104 +1,104 @@
 {
-  "home": "Inicio",
-  "about": "Identidad",
-  "commissions": "Comisiones",
-  "source": "Código Fuente",
-  "aboutMe": {
-    "title": "Quien soy?",
-    "description": "En mi adolescencia temprana, desarrollé un interés en programación, diseño y ciberseguridad que me llevó a seguir una carrera en el campo por el cual tengo pasión y siempre estoy buscando aprender más y crear algo nuevo y único.",
-    "currentFocus": "Actualmente enfocado en desarrollo web y diseño, mientras exploro nuevas tecnologías para mejorar mis habilidades.",
-    "experience": "~2 Años de Experiencia"
-  },
-  "statistics": {
-    "title": "Estadísticas"
-  },
-  "projects": {
-    "title": "Proyectos",
-    "subtitle": "... tambien he contribuido a múltiples proyectos frontend",
-    "equibop": "Una aplicación personalizada de Discord que busca brindarte mejor rendimiento y mejoras, derivada de Vesktop",
-    "vnrez": "Suite de utilidades para Linux que te permite grabar y capturar fácilmente y subirlos a un host de archivos si lo deseas"
-  },
-  "technologies": {
-    "title": "Tecnologías"
-  },
-  "discordPresence": {
-    "nothingHappening": "Nada está pasando",
-    "noActiveActivity": "No hay actividad activa para mostrar",
-    "currentlyOffline": "Actualmente sin conexión",
-    "noDiscordConnection": "No hay conexión a Discord",
-    "addOnDiscord": "Agregar en Discord",
-    "add": "Agregar",
-    "elapsed": "transcurrido",
-    "editing": "Editando",
-    "workspace": "Trabajando",
-    "by": "por",
-    "on": "en"
-  },
-  "contact": "Contacto",
-  "commissionsText": {
-    "openFor": "Actualmente disponible para comisiones en desarrollo web y diseño. Aunque pueda ser joven, soy apasionado y estoy dispuesto a demostrar todo mi potencial. Disponible para contratar y comprometido a entregar trabajo de calidad que ayude a dar vida a tus ideas y hacer crecer tu negocio mientras exploro oportunidades para mejorar.",
-    "affordableServices": "Servicios de Calidad Baratos"
-  },
-  "weather": {
-    "title": "Clima",
-    "feelsLike": "Sensación térmica",
-    "humidity": "Humedad",
-    "wind": "Viento",
-    "direction": "Dirección",
-    "visibility": "Visibilidad",
-    "forecast": "Pronóstico de 3 días",
-    "conditions": {
-      "clear": "Despejado",
-      "sunny": "Soleado",
-      "thunder": "Tormenta eléctrica",
-      "fog": "Niebla",
-      "heavy_rain": "Lluvia intensa",
-      "rain": "Lluvia",
-      "snow": "Nieve",
-      "blizzard": "Ventisca",
-      "partly_cloudy": "Parcialmente nublado",
-      "overcast": "Cubierto",
-      "cloudy": "Nublado"
-    }
-  },
-  "quotes": [
-    "Desarrollador creando interfaces modernas y diseños con facilidad.",
-    "Creando diseños enfocados en la estética y experiencia de usuario.",
-    "Programación, diseño UI/UX y creación de experiencias intuitivas.",
-    "Diseñando y desarrollando interfaces y experiencias amigables.",
-    "Construyendo interfaces que cuentan historias y a veces resuelven problemas.",
-    "Diseños minimalistas modernos que son tanto hermosos como funcionales.",
-    "Entusiasta apasionado de la Ciberseguridad y desarrollador full-stack."
-  ],
-  "stats": {
-    "title": "Estadísticas",
-    "codingActivity": "Programación de los últimos 7 días",
-    "error": "Error al cargar estadísticas de GitHub. Por favor intenta más tarde.",
-    "retry": "Reintentar",
-    "contributionsLastYear": "Contribuciones en el último año",
-    "githubWakatimeActivity": "Toda la actividad de GitHub y Wakatime",
-    "less": "Menos",
-    "more": "Más",
-    "dayMon": "Lun",
-    "dayWed": "Mié",
-    "dayFri": "Vie",
-    "contributionSingular": "contribución el",
-    "contributionPlural": "contribuciones el"
-  },
-  "footer": {
-    "madeWith": "Hecho con NextJS & TailwindCSS",
-    "allRightsReserved": "© 2025 Cortex. Todos los derechos reservados."
-  },
-  "card": {
-    "intro": "Soy un desarrollador de",
-    "yearOld": "años",
-    "developer": "de",
-    "country": "Honduras"
-  },
-  "musicStats": {
-    "top_artists": "Top Artistas",
-    "top_tracks": "Top Canciones",
-    "since_weeks": "desde hace 4 semanas",
-    "popularity": "Popularidad"
-  }
-} 
+	"home": "Inicio",
+	"about": "Identidad",
+	"commissions": "Comisiones",
+	"source": "Código Fuente",
+	"aboutMe": {
+		"title": "Quien soy?",
+		"description": "En mi adolescencia temprana, desarrollé un interés en programación, diseño y ciberseguridad que me llevó a seguir una carrera en el campo por el cual tengo pasión y siempre estoy buscando aprender más y crear algo nuevo y único.",
+		"currentFocus": "Actualmente enfocado en desarrollo web y diseño, mientras exploro nuevas tecnologías para mejorar mis habilidades.",
+		"experience": "~2 Años de Experiencia"
+	},
+	"statistics": {
+		"title": "Estadísticas"
+	},
+	"projects": {
+		"title": "Proyectos",
+		"subtitle": "... tambien he contribuido a múltiples proyectos frontend",
+		"equibop": "Una aplicación personalizada de Discord que busca brindarte mejor rendimiento y mejoras, derivada de Vesktop",
+		"vnrez": "Suite de utilidades para Linux que te permite grabar y capturar fácilmente y subirlos a un host de archivos si lo deseas"
+	},
+	"technologies": {
+		"title": "Tecnologías"
+	},
+	"discordPresence": {
+		"nothingHappening": "Nada está pasando",
+		"noActiveActivity": "No hay actividad activa para mostrar",
+		"currentlyOffline": "Actualmente sin conexión",
+		"noDiscordConnection": "No hay conexión a Discord",
+		"addOnDiscord": "Agregar en Discord",
+		"add": "Agregar",
+		"elapsed": "transcurrido",
+		"editing": "Editando",
+		"workspace": "Trabajando",
+		"by": "por",
+		"on": "en"
+	},
+	"contact": "Contacto",
+	"commissionsText": {
+		"openFor": "Actualmente disponible para comisiones en desarrollo web y diseño. Aunque pueda ser joven, soy apasionado y estoy dispuesto a demostrar todo mi potencial. Disponible para contratar y comprometido a entregar trabajo de calidad que ayude a dar vida a tus ideas y hacer crecer tu negocio mientras exploro oportunidades para mejorar.",
+		"affordableServices": "Servicios de Calidad Baratos"
+	},
+	"weather": {
+		"title": "Clima",
+		"feelsLike": "Sensación térmica",
+		"humidity": "Humedad",
+		"wind": "Viento",
+		"direction": "Dirección",
+		"visibility": "Visibilidad",
+		"forecast": "Pronóstico de 3 días",
+		"conditions": {
+			"clear": "Despejado",
+			"sunny": "Soleado",
+			"thunder": "Tormenta eléctrica",
+			"fog": "Niebla",
+			"heavy_rain": "Lluvia intensa",
+			"rain": "Lluvia",
+			"snow": "Nieve",
+			"blizzard": "Ventisca",
+			"partly_cloudy": "Parcialmente nublado",
+			"overcast": "Cubierto",
+			"cloudy": "Nublado"
+		}
+	},
+	"quotes": [
+		"Desarrollador creando interfaces modernas y diseños con facilidad.",
+		"Creando diseños enfocados en la estética y experiencia de usuario.",
+		"Programación, diseño UI/UX y creación de experiencias intuitivas.",
+		"Diseñando y desarrollando interfaces y experiencias amigables.",
+		"Construyendo interfaces que cuentan historias y a veces resuelven problemas.",
+		"Diseños minimalistas modernos que son tanto hermosos como funcionales.",
+		"Entusiasta apasionado de la Ciberseguridad y desarrollador full-stack."
+	],
+	"stats": {
+		"title": "Estadísticas",
+		"codingActivity": "Programación de los últimos 7 días",
+		"error": "Error al cargar estadísticas de GitHub. Por favor intenta más tarde.",
+		"retry": "Reintentar",
+		"contributionsLastYear": "Contribuciones en el último año",
+		"githubWakatimeActivity": "Toda la actividad de GitHub y Wakatime",
+		"less": "Menos",
+		"more": "Más",
+		"dayMon": "Lun",
+		"dayWed": "Mié",
+		"dayFri": "Vie",
+		"contributionSingular": "contribución el",
+		"contributionPlural": "contribuciones el"
+	},
+	"footer": {
+		"madeWith": "Hecho con NextJS & TailwindCSS",
+		"allRightsReserved": "© 2025 Cortex. Todos los derechos reservados."
+	},
+	"card": {
+		"intro": "Soy un desarrollador de",
+		"yearOld": "años",
+		"developer": "de",
+		"country": "Honduras"
+	},
+	"musicStats": {
+		"top_artists": "Top Artistas",
+		"top_tracks": "Top Canciones",
+		"since_weeks": "desde hace 4 semanas",
+		"popularity": "Popularidad"
+	}
+}
