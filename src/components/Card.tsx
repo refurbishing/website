@@ -50,7 +50,7 @@ export default function CardComponent() {
 				alt: "Steam",
 			},
 			{
-				href: "https://stats.fm/Cortex",
+				href: "https://stats.fm/maduro",
 				icon: "/assets/statsfm.png",
 				alt: "stats.fm",
 			},

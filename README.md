@@ -8,8 +8,8 @@
 ```bash
 git clone https://github.com/refurbishing/website.git
 cd website
-pnpm i
-pnpm dev
+bun install
+bun dev
 ```
 
 #### Environment variables:
