@@ -19,10 +19,10 @@ const config: Config = {
 	theme: {
 		extend: {
 			screens: {
-				'xs': {'max': '639px'},
-				'zsm': '490px',
-				'zssm': '415px',
-				'xsm': '730px',
+				xs: { max: "639px" },
+				zsm: "490px",
+				zssm: "415px",
+				xsm: "730px",
 			},
 			colors: {
 				background: "var(--background)",
@@ -31,8 +31,8 @@ const config: Config = {
 			animation: {
 				pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
 				slider: "slider var(--duration, 30s) linear infinite",
-				'fadeIn': 'fadeIn 1s ease-in-out',
-				'float': 'float 20s ease-in-out infinite alternate',
+				fadeIn: "fadeIn 1s ease-in-out",
+				float: "float 20s ease-in-out infinite alternate",
 			},
 			keyframes: {
 				slider: {
@@ -42,21 +42,21 @@ const config: Config = {
 					"50%": { opacity: "0.5" },
 				},
 				fadeIn: {
-					'0%': { opacity: '0' },
-					'100%': { opacity: '1' },
+					"0%": { opacity: "0" },
+					"100%": { opacity: "1" },
 				},
 				float: {
-					'0%, 100%': { 
-						transform: 'translate(0%, 0%) scale(1)',
+					"0%, 100%": {
+						transform: "translate(0%, 0%) scale(1)",
 					},
-					'25%': { 
-						transform: 'translate(-0.5%, 1%) scale(1.01)',
+					"25%": {
+						transform: "translate(-0.5%, 1%) scale(1.01)",
 					},
-					'50%': { 
-						transform: 'translate(0.5%, -0.5%) scale(1)',
+					"50%": {
+						transform: "translate(0.5%, -0.5%) scale(1)",
 					},
-					'75%': { 
-						transform: 'translate(-0.25%, 0.5%) scale(1.005)',
+					"75%": {
+						transform: "translate(-0.25%, 0.5%) scale(1.005)",
 					},
 				},
 			},
@@ -69,17 +69,17 @@ const config: Config = {
 				{
 					"bg-grid": (value: any) => ({
 						backgroundImage: `url("data:image/svg+xml;base64,${btoa(
-							`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`
+							`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
 						)}")`,
 					}),
 					"bg-grid-small": (value: any) => ({
 						backgroundImage: `url("data:image/svg+xml;base64,${btoa(
-							`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="8" height="8" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`
+							`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="8" height="8" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
 						)}")`,
 					}),
 					"bg-dot": (value: any) => ({
 						backgroundImage: `url("data:image/svg+xml;base64,${btoa(
-							`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="1.6257413380501518"></circle></svg>`
+							`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="1.6257413380501518"></circle></svg>`,
 						)}")`,
 					}),
 				},

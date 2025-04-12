@@ -3,37 +3,40 @@
 	"version": "1.5.2",
 	"description": "Cortex Portfolio",
 	"license": "AGPL-3.0-only",
-	"private": true,
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"build": "next build",
-		"lint": "biome lint --write ./src",
-		"lint:unsafe": "biome lint --unsafe --write ./src",
+		"lint": "biome lint --write .",
+		"lint:unsafe": "biome lint --unsafe --write .",
 		"start": "next start",
-		"format": "biome format --write ./src"
+		"format": "biome format --write ."
 	},
 	"dependencies": {
-		"@heroui/react": "^2.7.5",
-		"@iconify/react": "^5.2.0",
+		"@heroui/react": "^2.7.6",
+		"@iconify/react": "^5.2.1",
 		"@vercel/analytics": "^1.5.0",
 		"@vercel/speed-insights": "^1.2.0",
-		"framer-motion": "^12.5.0",
+		"framer-motion": "^12.6.5",
 		"lenis": "^1.2.3",
 		"lucide-react": "^0.471.2",
 		"next": "15.2.3",
 		"next-intl": "^4.0.2",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
+		"react": "^19.1.0",
+		"react-dom": "^19.1.0",
 		"typewriter-effect": "^2.21.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-		"@types/node": "^22.13.11",
-		"@types/react": "^19.0.12",
-		"@types/react-dom": "^19.0.4",
+		"@types/node": "^22.14.1",
+		"@types/react": "^19.1.1",
+		"@types/react-dom": "^19.1.2",
 		"postcss": "^8.5.3",
 		"tailwindcss": "^3.4.17",
-		"typescript": "^5.8.2"
+		"typescript": "^5.8.3"
 	},
-	"packageManager": "pnpm@9.14.4"
+	"trustedDependencies": [
+		"@biomejs/biome",
+		"@heroui/shared-utils",
+		"@vercel/speed-insights"
+	]
 }
