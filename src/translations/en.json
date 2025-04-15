@@ -91,7 +91,12 @@
 			"blizzard": "Blizzard",
 			"partly_cloudy": "Partly cloudy",
 			"overcast": "Overcast",
-			"cloudy": "Cloudy"
+			"cloudy": "Cloudy",
+			"patchy_rain_nearby": "Patchy rain nearby",
+			"patchy_snow_nearby": "Patchy snow nearby",
+			"patchy_sleet_nearby": "Patchy sleet nearby",
+			"patchy_freezing_drizzle_nearby": "Patchy freezing drizzle nearby",
+			"thundery_outbreaks_possible": "Thundery outbreaks possible"
 		}
 	},
 	"musicStats": {

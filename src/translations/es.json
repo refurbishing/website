@@ -58,7 +58,12 @@
 			"blizzard": "Ventisca",
 			"partly_cloudy": "Parcialmente nublado",
 			"overcast": "Cubierto",
-			"cloudy": "Nublado"
+			"cloudy": "Nublado",
+			"patchy_rain_nearby": "Lluvia dispersa",
+			"patchy_snow_nearby": "Nieve dispersa",
+			"patchy_sleet_nearby": "Lluvia y nieve dispersa",
+			"patchy_freezing_drizzle_nearby": "Lluvia congelante dispersa",
+			"thundery_outbreaks_possible": "Posible tormenta eléctrica"
 		}
 	},
 	"quotes": [

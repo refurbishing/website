@@ -58,16 +58,20 @@ export async function GET() {
 			throw new Error("Invalid response from weather service");
 		}
 
-		const data = await response.json();
+		let data;
+		try {
+			data = await response.json();
+		} catch (jsonError) {
+			console.error("Invalid JSON response:", jsonError);
+			throw new Error("Invalid JSON response from weather service");
+		}
 
 		if (!data || !data.current_condition || !data.current_condition[0]) {
 			throw new Error("Invalid weather data format");
 		}
 
 		const current = data.current_condition[0];
-		const _region = data.nearest_area?.[0]?.region?.[0]?.value || "";
-		const _country = data.nearest_area?.[0]?.country?.[0]?.value || "";
-
+		
 		const forecast =
 			data.weather?.slice(0, 3).map((day: any) => ({
 				date: day.date,
@@ -92,6 +96,7 @@ export async function GET() {
 				hour: "numeric",
 				minute: "numeric",
 				hour12: true,
+				timeZone: "America/Tegucigalpa",
 			}),
 			forecast,
 		};
@@ -140,6 +145,7 @@ export async function GET() {
 					hour: "numeric",
 					minute: "numeric",
 					hour12: true,
+					timeZone: "America/Tegucigalpa",
 				}),
 			};
 
