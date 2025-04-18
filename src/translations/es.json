@@ -63,7 +63,13 @@
 			"patchy_snow_nearby": "Nieve dispersa",
 			"patchy_sleet_nearby": "Lluvia y nieve dispersa",
 			"patchy_freezing_drizzle_nearby": "Lluvia congelante dispersa",
-			"thundery_outbreaks_possible": "Posible tormenta eléctrica"
+			"thundery_outbreaks_possible": "Posible tormenta eléctrica",
+			"light_rain_shower": "Lluvia ligera",
+			"light_rain": "Lluvia ligera",
+			"heavy_rain_shower": "Lluvia intensa",
+			"sleet_shower": "Lluvia y nieve",
+			"sleet": "Lluvia y nieve",
+			"freezing_rain": "Lluvia congelante"
 		}
 	},
 	"quotes": [

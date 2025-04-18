@@ -96,7 +96,13 @@
 			"patchy_snow_nearby": "Patchy snow nearby",
 			"patchy_sleet_nearby": "Patchy sleet nearby",
 			"patchy_freezing_drizzle_nearby": "Patchy freezing drizzle nearby",
-			"thundery_outbreaks_possible": "Thundery outbreaks possible"
+			"thundery_outbreaks_possible": "Thundery outbreaks possible",
+			"light_rain_shower": "Light Rain Shower",
+			"light_rain": "Light Rain",
+			"heavy_rain_shower": "Heavy Rain Shower",
+			"sleet_shower": "Sleet Shower",
+			"sleet": "Sleet",
+			"freezing_rain": "Freezing Rain"
 		}
 	},
 	"musicStats": {
