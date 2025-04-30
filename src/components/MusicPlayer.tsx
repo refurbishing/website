@@ -11,7 +11,7 @@ import {
 	Volume,
 	VolumeX,
 } from "lucide-react";
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, memo, useMemo } from "react";
 import Image from "next/image";
 import { useInview } from "@/lib/animateInscroll";
 
@@ -20,7 +20,7 @@ interface Song {
 	artist: string;
 }
 
-export default function MusicPlayer() {
+const MusicPlayer = memo(() => {
 	const audioRef = useRef<HTMLAudioElement>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [isMuted, setIsMuted] = useState(false);
@@ -53,16 +53,16 @@ export default function MusicPlayer() {
 	const currentSong =
 		songs.length > 0
 			? {
-					...songs[currentSongIndex % songs.length],
-					cover: `/songs/covers/${encodeURIComponent(songs[currentSongIndex].title)}.png`,
-					file: `/songs/${encodeURIComponent(`${songs[currentSongIndex].artist} - ${songs[currentSongIndex].title}.mp3`)}`,
-				}
+				...songs[currentSongIndex % songs.length],
+				cover: `/songs/covers/${encodeURIComponent(songs[currentSongIndex].title)}.png`,
+				file: `/songs/${encodeURIComponent(`${songs[currentSongIndex].artist} - ${songs[currentSongIndex].title}.mp3`)}`,
+			}
 			: {
-					title: "Loading...",
-					artist: "Please wait",
-					file: null,
-					cover: "",
-				};
+				title: "Loading...",
+				artist: "Please wait",
+				file: null,
+				cover: "",
+			};
 
 	useEffect(() => {
 		if (loadedImages.current[currentSong.cover]) {
@@ -72,10 +72,10 @@ export default function MusicPlayer() {
 		}
 	}, [currentSong.cover]);
 
-	const handleImageLoad = () => {
+	const handleImageLoad = useCallback(() => {
 		loadedImages.current[currentSong.cover] = true;
 		setIsImageLoaded(true);
-	};
+	}, []);
 
 	useEffect(() => {
 		const loadSongs = async () => {
@@ -164,14 +164,17 @@ export default function MusicPlayer() {
 		}
 	};
 
-	const handleVolumeChange = (e: React.MouseEvent<HTMLDivElement>) => {
+	const handleVolumeChange = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
 		const rect = e.currentTarget.getBoundingClientRect();
 		const x = e.clientX - rect.left;
-		const newVolume = Math.round((x / rect.width) * 100);
-		setVolume(Math.max(0, Math.min(100, newVolume)));
-	};
+		const newVolume = Math.max(0, Math.min(x / rect.width, 1));
+		if (audioRef.current) {
+			audioRef.current.volume = newVolume;
+			setVolume(newVolume);
+		}
+	}, []);
 
-	const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+	const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
 		if (audioRef.current) {
 			const rect = e.currentTarget.getBoundingClientRect();
 			const x = e.clientX - rect.left;
@@ -183,7 +186,7 @@ export default function MusicPlayer() {
 			audioRef.current.currentTime = newTime;
 			setCurrentTime(newTime);
 		}
-	};
+	}, [duration]);
 
 	const playNextSong = useCallback(() => {
 		if (songs.length > 0) {
@@ -374,6 +377,16 @@ export default function MusicPlayer() {
 		}
 	}, [audioRef.current]);
 
+	const slideAnimation = useMemo(() => ({
+		initial: { x: 10 * slideDirection, opacity: 0, y: 0 },
+		animate: { x: 0, opacity: 1, y: 0 },
+		transition: {
+			duration: 0.2,
+			ease: "easeOut",
+			opacity: { duration: 0.15 }
+		}
+	}), [slideDirection]);
+
 	return (
 		<motion.div
 			ref={playerRef}
@@ -490,9 +503,9 @@ export default function MusicPlayer() {
 								<>
 									<motion.div
 										key={currentSongIndex}
-										initial={{ x: 10 * slideDirection, opacity: 0, y: 0 }}
-										animate={{ x: 0, opacity: 1, y: 0 }}
-										transition={{ duration: 0.3, ease: "easeOut" }}
+										initial={slideAnimation.initial}
+										animate={slideAnimation.animate}
+										transition={slideAnimation.transition}
 										onAnimationComplete={() => setSlideDirection(0)}
 										className="overflow-hidden"
 									>
@@ -522,11 +535,10 @@ export default function MusicPlayer() {
 											<motion.button
 												whileHover={{ scale: isAudioLoading ? 1 : 1.1 }}
 												whileTap={{ scale: isAudioLoading ? 1 : 0.9 }}
-												className={`text-zinc-400 transition-all ${
-													isAudioLoading
+												className={`text-zinc-400 transition-all ${isAudioLoading
 														? "opacity-50 cursor-not-allowed"
 														: "hover:text-zinc-200 hover:filter hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]"
-												}`}
+													}`}
 												onClick={isAudioLoading ? undefined : togglePlayPause}
 											>
 												{isPlaying ? (
@@ -660,4 +672,6 @@ export default function MusicPlayer() {
 			</Card>
 		</motion.div>
 	);
-}
+});
+
+export default MusicPlayer;
