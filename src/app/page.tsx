@@ -9,36 +9,16 @@ import Time from "@/components/Time";
 import Loading from "@/app/loading";
 import { SocketProvider } from "@/hooks/SocketContext";
 
-const Cat = dynamic(() => import("@/components/Cat"), {
-	loading: () => <Loading />
-});
-const Technologies = dynamic(() => import("@/components/Technologies"), {
-	loading: () => <Loading />
-});
-const CardComponent = dynamic(() => import("@/components/Card"), {
-	loading: () => <Loading />
-});
-const Projects = dynamic(() => import("@/components/Projects"), {
-	loading: () => <Loading />
-});
-const Footer = dynamic(() => import("@/components/Footer"), {
-	loading: () => <Loading />
-});
-const MusicPlayer = dynamic(() => import("@/components/MusicPlayer"), {
-	loading: () => <Loading />
-});
-const About = dynamic(() => import("@/components/About"), {
-	loading: () => <Loading />
-});
-const Statistics = dynamic(() => import("@/components/Statistics"), {
-	loading: () => <Loading />
-});
-const Comissions = dynamic(() => import("@/components/Comissions"), {
-	loading: () => <Loading />
-});
-const TranslateGlobe = dynamic(() => import("@/components/Globe"), {
-	loading: () => <Loading />
-});
+const Cat = dynamic(() => import("@/components/Cat"));
+const Technologies = dynamic(() => import("@/components/Technologies"));
+const CardComponent = dynamic(() => import("@/components/Card"));
+const Projects = dynamic(() => import("@/components/Projects"));
+const Footer = dynamic(() => import("@/components/Footer"));
+const MusicPlayer = dynamic(() => import("@/components/MusicPlayer"));
+const About = dynamic(() => import("@/components/About"));
+const Statistics = dynamic(() => import("@/components/Statistics"));
+const Comissions = dynamic(() => import("@/components/Comissions"));
+const TranslateGlobe = dynamic(() => import("@/components/Globe"));
 
 export default function Home() {
 	return (
