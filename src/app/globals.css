@@ -49,6 +49,7 @@ body {
 .hamburger-line.middle {
 	opacity: 1;
 }
+
 .hamburger-line.bottom {
 	transform-origin: bottom left;
 }
@@ -138,17 +139,22 @@ body {
 .animate-slider {
 	animation: slider var(--duration, 30s) linear infinite;
 	transition: animation-play-state 0.5s ease;
+	animation-play-state: running;
 }
 
 .animate-slider .hover-effect {
 	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.hover-effect:hover > div {
+.hover-effect:hover>div {
 	background-color: rgba(128, 128, 128, 0.1);
 	box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
 	transform: scale(1.02);
 	transition: all 0.2s ease;
+}
+
+.hover-effect:hover~.animate-slider {
+	animation-play-state: paused;
 }
 
 .nav-link {
@@ -230,15 +236,19 @@ body {
 	0% {
 		opacity: 0;
 	}
+
 	25% {
 		opacity: 0.25;
 	}
+
 	50% {
 		opacity: 0.5;
 	}
+
 	75% {
 		opacity: 0.75;
 	}
+
 	90% {
 		opacity: 0.9;
 	}
@@ -253,19 +263,23 @@ body {
 		opacity: 0;
 		transform: scale(0.6);
 	}
+
 	70% {
 		opacity: 0.7;
 		transform: scale(1.05);
 	}
+
 	100% {
 		opacity: 1;
 		transform: scale(1);
 	}
 }
+
 @keyframes gradient {
 	0% {
 		background-position: -200% 50%;
 	}
+
 	100% {
 		background-position: 200% 50%;
 	}
@@ -280,4 +294,55 @@ body {
 .animate-gradient:hover {
 	animation: gradient 3s linear infinite;
 	text-shadow: 0 0 5px rgba(240, 237, 255, 0.7);
+}
+
+.will-change-contents {
+	will-change: contents;
+}
+
+.transform-gpu {
+	transform: translateZ(0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
+.pause-animation {
+	animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.animate-float,
+	.animate-gradient,
+	.animate-slider {
+		animation: none !important;
+		transform: none !important;
+	}
+
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+@keyframes gentleFloat {
+
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+
+	25% {
+		transform: translate3d(-0.5%, 1%, 0) scale(1.01);
+	}
+
+	50% {
+		transform: translate3d(0.5%, -0.5%, 0) scale(1);
+	}
+
+	75% {
+		transform: translate3d(0.5%, 0.5%, 0) scale(0.99);
+	}
 }

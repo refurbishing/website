@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/hooks/LanguageContext";
 import { getTranslation } from "@/utils/translations";
 
-export function Footer() {
+const Footer = () => {
 	const { language } = useLanguage();
 	const t = (key: string) => getTranslation(language, key);
 
@@ -31,3 +31,5 @@ export function Footer() {
 		</motion.footer>
 	);
 }
+
+export default Footer;

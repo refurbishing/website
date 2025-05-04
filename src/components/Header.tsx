@@ -1,99 +1,96 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { useSocket } from "@/hooks/SocketContext";
 import { motion, AnimatePresence } from "framer-motion";
-import UserArea from "./DiscordPresence";
-import Weather from "./Weather";
+import UserArea from "@/components/DiscordPresence";
+import Weather from "@/components/Weather";
 import { useLanguage } from "@/hooks/LanguageContext";
 import { getTranslation } from "@/utils/translations";
 
-export default function Header() {
-	const [hamburgerTriggered, setHamburgerTriggered] = useState(false);
-	const { status } = useSocket();
-	const [showUserArea, setShowUserArea] = useState(false);
+interface NavLinkProps {
+	href: string;
+	onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+	children: React.ReactNode;
+	className?: string;
+	target?: string;
+	rel?: string;
+}
+
+const NavLink = memo(({ href, onClick, children, className, target, rel }: NavLinkProps) => (
+	<a href={href} onClick={onClick} className={className} target={target} rel={rel}>
+		{children}
+	</a>
+));
+
+NavLink.displayName = "NavLink";
+
+const Header = () => {
 	const [scrolled, setScrolled] = useState(false);
-	const [isDesktop, setIsDesktop] = useState(false);
+	const [showUserArea, setShowUserArea] = useState(false);
+	const [hamburgerTriggered, setHamburgerTriggered] = useState(false);
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+	const [isDesktop, setIsDesktop] = useState(true);
 	const [isHovered, setIsHovered] = useState(false);
+	const { status } = useSocket();
 	const { language } = useLanguage();
-
-	const statusColor = {
-		online: {
-			normal:
-				"bg-green-500 shadow-[0_0_3px_rgba(34,197,94,0.2),_0_0_5px_rgba(34,197,94,0.12),_0_0_8px_rgba(34,197,94,0.05)]",
-			hover:
-				"hover:bg-green-400 hover:shadow-[0_0_5px_rgba(34,197,94,0.3),_0_0_8px_rgba(34,197,94,0.2),_0_0_12px_rgba(34,197,94,0.1)]",
-		},
-		dnd: {
-			normal:
-				"bg-red-500 shadow-[0_0_3px_rgba(239,68,68,0.2),_0_0_5px_rgba(239,68,68,0.12),_0_0_8px_rgba(239,68,68,0.05)]",
-			hover:
-				"hover:bg-red-400 hover:shadow-[0_0_5px_rgba(239,68,68,0.3),_0_0_8px_rgba(239,68,68,0.2),_0_0_12px_rgba(239,68,68,0.1)]",
-		},
-		idle: {
-			normal:
-				"bg-yellow-500 shadow-[0_0_3px_rgba(234,179,8,0.2),_0_0_5px_rgba(234,179,8,0.12),_0_0_8px_rgba(234,179,8,0.05)]",
-			hover:
-				"hover:bg-yellow-400 hover:shadow-[0_0_5px_rgba(234,179,8,0.3),_0_0_8px_rgba(234,179,8,0.2),_0_0_12px_rgba(234,179,8,0.1)]",
-		},
-		offline: {
-			normal:
-				"bg-gray-500 shadow-[0_0_3px_rgba(107,114,128,0.2),_0_0_5px_rgba(107,114,128,0.12),_0_0_8px_rgba(107,114,128,0.05)]",
-			hover:
-				"hover:bg-gray-400 hover:shadow-[0_0_5px_rgba(107,114,128,0.3),_0_0_8px_rgba(107,114,128,0.2),_0_0_12px_rgba(107,114,128,0.1)]",
-		},
-	} as const;
-
-	const statusClass =
-		status in statusColor
-			? `${statusColor[status as keyof typeof statusColor].normal} ${statusColor[status as keyof typeof statusColor].hover} transition-all duration-300`
-			: `${statusColor.offline.normal} ${statusColor.offline.hover} transition-all duration-300`;
-
 	const t = (key: string) => getTranslation(language, key);
 
+	const statusClass: Record<string, string> = {
+		online: "bg-green-500 shadow-[0_0_3px_rgba(34,197,94,0.2),_0_0_5px_rgba(34,197,94,0.12),_0_0_8px_rgba(34,197,94,0.05)]",
+		idle: "bg-yellow-500 shadow-[0_0_3px_rgba(234,179,8,0.2),_0_0_5px_rgba(234,179,8,0.12),_0_0_8px_rgba(234,179,8,0.05)]",
+		dnd: "bg-red-500 shadow-[0_0_3px_rgba(239,68,68,0.2),_0_0_5px_rgba(239,68,68,0.12),_0_0_8px_rgba(239,68,68,0.05)]",
+		offline: "bg-zinc-500 shadow-[0_0_3px_rgba(161,161,170,0.2),_0_0_5px_rgba(161,161,170,0.12),_0_0_8px_rgba(161,161,170,0.05)]",
+	};
+
+	const currentStatusClass = status in statusClass ? statusClass[status] : statusClass.offline;
+
+	const handleScroll = useCallback(() => {
+		const isScrolled = window.scrollY > 50;
+		setScrolled(isScrolled);
+	}, []);
+
+	const handleResize = useCallback(() => {
+		setIsDesktop(window.innerWidth >= 1024);
+	}, []);
+
 	useEffect(() => {
-		const handleResize = () => {
-			setIsDesktop(window.innerWidth >= 1024);
-			if (window.innerWidth >= 1100) {
-				setHamburgerTriggered(false);
-			}
-		};
+		handleScroll();
 		handleResize();
 
-		window.addEventListener("resize", handleResize);
-		return () => window.removeEventListener("resize", handleResize);
-	}, []);
-
-	useEffect(() => {
-		const handleScroll = () => {
-			const isScrolled = window.scrollY > 50;
-			setScrolled(isScrolled);
+		let scrollTimer: NodeJS.Timeout;
+		const debouncedScroll = () => {
+			clearTimeout(scrollTimer);
+			scrollTimer = setTimeout(handleScroll, 10);
 		};
-		handleScroll();
 
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
+		let resizeTimer: NodeJS.Timeout;
+		const debouncedResize = () => {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(handleResize, 100);
+		};
 
-	useEffect(() => {
-		document.documentElement.style.scrollBehavior = "xsmooth";
+		window.addEventListener("scroll", debouncedScroll);
+		window.addEventListener("resize", debouncedResize);
 
 		return () => {
-			document.documentElement.style.scrollBehavior = "auto";
+			window.removeEventListener("scroll", debouncedScroll);
+			window.removeEventListener("resize", debouncedResize);
+			clearTimeout(scrollTimer);
+			clearTimeout(resizeTimer);
 		};
-	}, []);
+	}, [handleScroll, handleResize]);
 
-	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+	const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
 		const rect = e.currentTarget.getBoundingClientRect();
 		setMousePosition({
 			x: e.clientX - rect.left,
 			y: e.clientY - rect.top,
 		});
-	};
+	}, []);
 
-	let isScrolling = false;
-	function smoothScrollTo(targetY: number, duration: number) {
+	const smoothScrollTo = useCallback((targetY: number, duration: number) => {
+		let isScrolling = false;
 		if (isScrolling) return;
 
 		isScrolling = true;
@@ -101,7 +98,10 @@ export default function Header() {
 		const distance = targetY - startY;
 		let startTime: number | null = null;
 
-		function animation(currentTime: number) {
+		const easeInOutQuad = (t: number) =>
+			t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+		const animation = (currentTime: number) => {
 			if (startTime === null) startTime = currentTime;
 			const timeElapsed = currentTime - startTime;
 			const progress = Math.min(timeElapsed / duration, 1);
@@ -113,14 +113,10 @@ export default function Header() {
 			} else {
 				isScrolling = false;
 			}
-		}
-
-		function easeInOutQuad(t: number) {
-			return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-		}
+		};
 
 		requestAnimationFrame(animation);
-	}
+	}, []);
 
 	return (
 		<div>
@@ -134,7 +130,7 @@ export default function Header() {
 						exit={{ opacity: 0 }}
 						className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-200"
 						onClick={() => setHamburgerTriggered(false)}
-					></motion.div>
+					/>
 				)}
 			</AnimatePresence>
 
@@ -152,8 +148,7 @@ export default function Header() {
 					marginLeft: { type: "spring", stiffness: 150, damping: 35, mass: 1 },
 					marginRight: { type: "spring", stiffness: 150, damping: 35, mass: 1 },
 				}}
-				className={`fixed top-0 left-0 right-0 mt-4 bg-dark/85 text-white border border-[#999a9e]/30 backdrop-blur-[5px] rounded-2xl shadow-md non-selectable relative z-50`}
-				style={{ position: "fixed", top: 0, left: 0, right: 0 }}
+				className="fixed top-0 left-0 right-0 mt-4 bg-dark/85 text-white border border-[#999a9e]/30 backdrop-blur-[5px] rounded-2xl shadow-md non-selectable z-50"
 				onMouseMove={handleMouseMove}
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
@@ -191,23 +186,21 @@ export default function Header() {
 									</span>
 								</h1>
 								<div
-									className={`w-2 h-2 rounded-full ${statusClass} non-selectable ml-0.5`}
+									className={`w-2 h-2 rounded-full ${currentStatusClass} non-selectable ml-0.5`}
 								></div>
 							</div>
 						</div>
 
 						<div className="flex-grow flex justify-center zsm:w-2/4">
 							<div className="pl-4 zsm:pl-8 xsm:pl-0 xsm:mx-auto w-full flex justify-center items-center">
-								<div className="w-full max-w-[250px] flex justify-center">
-									<Weather />
-								</div>
+								<Weather />
 							</div>
 						</div>
 
-						<div className="flex items-center w-1/4 justify-end">
+						<div className="flex items-center justify-end gap-4 xsm:w-1/4">
 							<button
-								className="lg:hidden flex items-center justify-center non-selectable"
 								onClick={() => setHamburgerTriggered(!hamburgerTriggered)}
+								className="lg:hidden p-2 hover:bg-white/5 rounded-lg transition-colors"
 								aria-label="Toggle menu"
 							>
 								<div className="relative w-8 h-8 flex items-center justify-center">
@@ -243,7 +236,7 @@ export default function Header() {
 								</div>
 							</button>
 							<nav className="hidden lg:flex gap-2.5 items-center non-selectable">
-								<a
+								<NavLink
 									href="#"
 									onClick={(e) => {
 										e.preventDefault();
@@ -253,8 +246,8 @@ export default function Header() {
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
 									{t("home")}
-								</a>
-								<a
+								</NavLink>
+								<NavLink
 									href="#about"
 									onClick={(e) => {
 										e.preventDefault();
@@ -267,8 +260,8 @@ export default function Header() {
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
 									{t("about")}
-								</a>
-								<a
+								</NavLink>
+								<NavLink
 									href="#commissions"
 									onClick={(e) => {
 										e.preventDefault();
@@ -282,9 +275,9 @@ export default function Header() {
 									className="nav-link text-white/80 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]non-selectable"
 								>
 									{t("commissions")}
-								</a>
+								</NavLink>
 								<div className="h-6 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent mx-1.5" />
-								<a
+								<NavLink
 									href="mailto:me@cortex.rest"
 									onClick={() => setHamburgerTriggered(false)}
 									className="nav-link-icon text-white/80 hover:text-white transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
@@ -302,8 +295,8 @@ export default function Header() {
 											d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
 										/>
 									</svg>
-								</a>
-								<a
+								</NavLink>
+								<NavLink
 									href="https://github.com/refurbishing/website"
 									onClick={() => setHamburgerTriggered(false)}
 									className="nav-link-icon text-white/80 hover:text-white transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
@@ -328,124 +321,126 @@ export default function Header() {
 										<path d="M4 17v2" />
 										<path d="M5 18H3" />
 									</svg>
-								</a>
+								</NavLink>
 							</nav>
 						</div>
-					</div>
 
-					<AnimatePresence>
-						{hamburgerTriggered && (
-							<motion.div
-								initial={{ opacity: 0, y: -20 }}
-								animate={{ opacity: 1, y: 0 }}
-								exit={{ opacity: 0, y: -20 }}
-								transition={{ duration: 0.2 }}
-								className="fixed left-0 right-0 mt-2 mx-4 bg-dark/70 text-white border border-[#898c91] rounded-2xl shadow-md lg:hidden non-selectable"
-								style={{
-									top: "4.5rem",
-									zIndex: 45,
-								}}
-							>
-								<nav className="index-nav p-4 non-selectable">
-									<div className="flex flex-col non-selectable">
-										<a
-											href="#"
-											onClick={(e) => {
-												e.preventDefault();
-												smoothScrollTo(0, 800);
-												setHamburgerTriggered(false);
-											}}
-											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-										>
-											{t("home")}
-										</a>
-										<a
-											href="#about"
-											onClick={(e) => {
-												e.preventDefault();
-												const aboutElement = document.getElementById("about");
-												if (aboutElement) {
-													smoothScrollTo(aboutElement.offsetTop - 80, 800);
-												}
-												setHamburgerTriggered(false);
-											}}
-											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-										>
-											{t("about")}
-										</a>
-										<a
-											href="#commissions"
-											onClick={(e) => {
-												e.preventDefault();
-												const projectsElement =
-													document.getElementById("commissions");
-												if (projectsElement) {
-													smoothScrollTo(projectsElement.offsetTop - 80, 800);
-												}
-												setHamburgerTriggered(false);
-											}}
-											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-										>
-											{t("commissions")}
-										</a>
-										<a
-											href="mailto:me@cortex.rest"
-											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-										>
-											<div className="flex items-center">
-												<svg
-													className="w-5 h-5 mr-2"
-													fill="none"
-													stroke="currentColor"
-													viewBox="0 0 24 24"
-												>
-													<path
+						<AnimatePresence>
+							{hamburgerTriggered && (
+								<motion.div
+									initial={{ opacity: 0, y: -20 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: -20 }}
+									transition={{ duration: 0.2 }}
+									className="fixed left-0 right-0 mt-2 mx-4 bg-dark/70 text-white border border-[#898c91] rounded-2xl shadow-md lg:hidden non-selectable"
+									style={{
+										top: "4.5rem",
+										zIndex: 45,
+									}}
+								>
+									<nav className="index-nav p-4 non-selectable">
+										<div className="flex flex-col non-selectable">
+											<NavLink
+												href="#"
+												onClick={(e) => {
+													e.preventDefault();
+													smoothScrollTo(0, 800);
+													setHamburgerTriggered(false);
+												}}
+												className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+											>
+												{t("home")}
+											</NavLink>
+											<NavLink
+												href="#about"
+												onClick={(e) => {
+													e.preventDefault();
+													const aboutElement = document.getElementById("about");
+													if (aboutElement) {
+														smoothScrollTo(aboutElement.offsetTop - 80, 800);
+													}
+													setHamburgerTriggered(false);
+												}}
+												className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+											>
+												{t("about")}
+											</NavLink>
+											<NavLink
+												href="#commissions"
+												onClick={(e) => {
+													e.preventDefault();
+													const projectsElement =
+														document.getElementById("commissions");
+													if (projectsElement) {
+														smoothScrollTo(projectsElement.offsetTop - 80, 800);
+													}
+													setHamburgerTriggered(false);
+												}}
+												className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+											>
+												{t("commissions")}
+											</NavLink>
+											<NavLink
+												href="mailto:me@cortex.rest"
+												className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+											>
+												<div className="flex items-center">
+													<svg
+														className="w-5 h-5 mr-2"
+														fill="none"
+														stroke="currentColor"
+														viewBox="0 0 24 24"
+													>
+														<path
+															strokeLinecap="round"
+															strokeLinejoin="round"
+															strokeWidth="2"
+															d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+														/>
+													</svg>
+													{t("contact")}
+												</div>
+											</NavLink>
+											<NavLink
+												href="https://github.com/refurbishing/website"
+												className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												<div className="flex items-center">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="24"
+														height="24"
+														viewBox="0 0 24 24"
+														fill="none"
+														stroke="currentColor"
+														strokeWidth="2"
 														strokeLinecap="round"
 														strokeLinejoin="round"
-														strokeWidth="2"
-														d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-													/>
-												</svg>
-												{t("contact")}
-											</div>
-										</a>
-										<a
-											href="https://github.com/refurbishing/website"
-											className="hamburger-navlink text-white/80 hover:text-white py-2 hover:bg-white/10 transition-all duration-300 hover:text-shadow-[0_0_12px_rgba(255,255,255,0.7)] non-selectable"
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											<div className="flex items-center">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="24"
-													height="24"
-													viewBox="0 0 24 24"
-													fill="none"
-													stroke="currentColor"
-													strokeWidth="2"
-													strokeLinecap="round"
-													strokeLinejoin="round"
-													className="w-5 h-5 mr-2"
-												>
-													<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
-													<path d="M20 3v4" />
-													<path d="M22 5h-4" />
-													<path d="M4 17v2" />
-													<path d="M5 18H3" />
-												</svg>
-												{t("source")}
-											</div>
-										</a>
-									</div>
-								</nav>
-							</motion.div>
-						)}
-					</AnimatePresence>
+														className="w-5 h-5 mr-2"
+													>
+														<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+														<path d="M20 3v4" />
+														<path d="M22 5h-4" />
+														<path d="M4 17v2" />
+														<path d="M5 18H3" />
+													</svg>
+													{t("source")}
+												</div>
+											</NavLink>
+										</div>
+									</nav>
+								</motion.div>
+							)}
+						</AnimatePresence>
+					</div>
 				</div>
 			</motion.div>
 
 			<UserArea isOpen={showUserArea} onClose={() => setShowUserArea(false)} />
 		</div>
 	);
-}
+};
+
+export default memo(Header);
