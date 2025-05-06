@@ -55,7 +55,7 @@ export default function CardComponent() {
 				alt: "GitHub",
 			},
 			{
-				href: "https://steamcommunity.com/id/webassembly",
+				href: "https://steamcommunity.com/id/substellar",
 				icon: "mdi:steam",
 				alt: "Steam",
 			},
