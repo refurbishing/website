@@ -16,6 +16,7 @@
 		"@iconify/react": "^5.2.1",
 		"@vercel/analytics": "^1.5.0",
 		"@vercel/speed-insights": "^1.2.0",
+		"clsx": "^2.1.1",
 		"framer-motion": "^12.6.5",
 		"lenis": "^1.2.3",
 		"lucide-react": "^0.471.2",
@@ -23,6 +24,7 @@
 		"next-intl": "^4.0.2",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",
+		"tailwind-merge": "^3.2.0",
 		"typewriter-effect": "^2.21.0"
 	},
 	"devDependencies": {

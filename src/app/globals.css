@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -230,19 +231,6 @@ body {
 	0% {
 		opacity: 0;
 	}
-	25% {
-		opacity: 0.25;
-	}
-	50% {
-		opacity: 0.5;
-	}
-	75% {
-		opacity: 0.75;
-	}
-	90% {
-		opacity: 0.9;
-	}
-
 	100% {
 		opacity: 1;
 	}
@@ -280,4 +268,60 @@ body {
 .animate-gradient:hover {
 	animation: gradient 3s linear infinite;
 	text-shadow: 0 0 5px rgba(240, 237, 255, 0.7);
+}
+
+.animate-gradient:hover {
+	animation-play-state: paused;
+}
+
+.shadow-glow {
+	position: relative;
+	text-shadow: 0 0 3px rgba(255, 255, 255, 0.15);
+	filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.15));
+	transition: all 0.3s ease;
+}
+
+.shadow-glow:hover {
+	text-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
+	filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.25));
+}
+
+@keyframes float {
+	0% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-20px);
+	}
+	100% {
+		transform: translateY(0px);
+	}
+}
+
+@keyframes twinkle {
+	0% { opacity: 0.5; }
+	50% { opacity: 0.8; }
+	100% { opacity: 0.5; }
+}
+
+.animate-float {
+	animation: float 20s ease-in-out infinite;
+}
+
+.animate-fadeIn {
+	animation: fadeIn 1s ease-in-out;
+}
+
+.stars {
+	background-image: 
+		radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+		radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+		radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+		radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+		radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+		radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+	background-repeat: repeat;
+	background-size: 200px 200px;
+	animation: twinkle 5s ease-in-out infinite;
+	opacity: 0.5;
 }
