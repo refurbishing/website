@@ -71,7 +71,7 @@ export async function GET() {
 		}
 
 		const current = data.current_condition[0];
-		
+
 		const forecast =
 			data.weather?.slice(0, 3).map((day: any) => ({
 				date: day.date,

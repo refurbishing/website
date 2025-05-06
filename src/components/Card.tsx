@@ -70,12 +70,12 @@ export default function CardComponent() {
 				alt: "Ko-fi",
 			},
 		],
-		[]
+		[],
 	);
-	
+
 	const translatedQuotes = useMemo(
 		() => getTranslatedQuotes(language),
-		[language]
+		[language],
 	);
 
 	useEffect(() => {
@@ -118,9 +118,11 @@ export default function CardComponent() {
 		<motion.div
 			ref={cardRef}
 			initial={{ opacity: 0, y: 50, scale: 0.98, rotateX: -10 }}
-			animate={isInView 
-				? { opacity: 1, y: 0, scale: 1, rotateX: 0 }
-				: { opacity: 0, y: 50, scale: 0.98, rotateX: -10 }}
+			animate={
+				isInView
+					? { opacity: 1, y: 0, scale: 1, rotateX: 0 }
+					: { opacity: 0, y: 50, scale: 0.98, rotateX: -10 }
+			}
 			transition={{
 				duration: 0.7,
 				ease: [0.2, 0.8, 0.2, 1],
