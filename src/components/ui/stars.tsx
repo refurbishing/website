@@ -149,13 +149,19 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
 		let animationFrameId: number;
 
 		const render = (currentTime: number) => {
-			const deltaTime = Math.min((currentTime - lastTime.current) / 1000, 0.1);
+			const _deltaTime = Math.min((currentTime - lastTime.current) / 1000, 0.1);
 			lastTime.current = currentTime;
 
 			const smoothingFactor = 0.08;
 			mousePosition.current = {
-				x: mousePosition.current.x + (targetMousePosition.current.x - mousePosition.current.x) * smoothingFactor,
-				y: mousePosition.current.y + (targetMousePosition.current.y - mousePosition.current.y) * smoothingFactor,
+				x:
+					mousePosition.current.x +
+					(targetMousePosition.current.x - mousePosition.current.x) *
+						smoothingFactor,
+				y:
+					mousePosition.current.y +
+					(targetMousePosition.current.y - mousePosition.current.y) *
+						smoothingFactor,
 			};
 
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -195,7 +201,7 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
 					0,
 					star.x,
 					star.y,
-					star.radius * 4
+					star.radius * 4,
 				);
 				gradient.addColorStop(0, `${star.color}${star.opacity})`);
 				gradient.addColorStop(1, `${star.color}0)`);
