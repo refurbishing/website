@@ -233,14 +233,6 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 		}
 	}, [data?.spotify?.album_art_url]);
 
-	const _statusColor =
-		{
-			online: "bg-green-500",
-			dnd: "bg-red-500",
-			idle: "bg-yellow-500",
-			offline: "bg-gray-500",
-		}[status] || "bg-gray-500";
-
 	const getPlatformIndicator = (data: any) => {
 		const statusColor =
 			{
@@ -249,59 +241,98 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 				idle: "text-yellow-500",
 				offline: "text-gray-500",
 			}[status] || "text-gray-500";
-
+	
 		if (SOCKET_CONFIG.MOBILE_INDICATOR_ONLY) {
 			if (data?.active_on_discord_mobile) {
 				return (
-					<div
+					<motion.div
+						initial={{ scale: 0.8, opacity: 0 }}
+						animate={{ scale: 1, opacity: 1 }}
+						exit={{ scale: 0.8, opacity: 0 }}
+						transition={{ duration: 0.2, ease: "easeOut" }}
 						className={`${statusColor} px-0.25 py-1 rounded-lg bg-zinc-900/90`}
 					>
 						{PLATFORM_ICONS.mobile.icon}
-					</div>
+					</motion.div>
 				);
 			}
 			return (
-				<div
+				<motion.div
+					initial={{ scale: 0.8, opacity: 0 }}
+					animate={{ scale: 1, opacity: 1 }}
+					exit={{ scale: 0.8, opacity: 0 }}
+					transition={{ duration: 0.2, ease: "easeOut" }}
 					className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
 				/>
 			);
 		}
-
+	
 		if (SOCKET_CONFIG.PLATFORM_INDICATOR) {
-			if (data?.active_on_discord_mobile) {
-				return (
-					<div
-						className={`${statusColor} px-0.25 py-1 rounded-lg bg-zinc-900/90`}
-					>
-						{PLATFORM_ICONS.mobile.icon}
-					</div>
-				);
-			}
-			if (data?.active_on_discord_desktop) {
-				return (
-					<div className={`${statusColor} p-1 rounded-full bg-zinc-900/90`}>
-						{PLATFORM_ICONS.desktop.icon}
-					</div>
-				);
-			}
-			if (data?.active_on_discord_web) {
-				return (
-					<div className={`${statusColor} p-1 rounded-full bg-zinc-900/90`}>
-						{PLATFORM_ICONS.web.icon}
-					</div>
-				);
-			}
-			if (data?.active_on_discord_embedded) {
-				return (
-					<div className={`${statusColor} p-1 rounded-full bg-zinc-900/90`}>
-						{PLATFORM_ICONS.embedded.icon}
-					</div>
-				);
-			}
+			return (
+				<AnimatePresence mode="wait">
+					{data?.active_on_discord_mobile ? (
+						<motion.div
+							key="mobile"
+							initial={{ scale: 0.8, opacity: 0, rotate: -15 }}
+							animate={{ scale: 1, opacity: 1, rotate: 0 }}
+							exit={{ scale: 0.8, opacity: 0, rotate: 15 }}
+							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} px-0.25 py-1 rounded-lg bg-zinc-900/90`}
+						>
+							{PLATFORM_ICONS.mobile.icon}
+						</motion.div>
+					) : data?.active_on_discord_desktop ? (
+						<motion.div
+							key="desktop"
+							initial={{ scale: 0.8, opacity: 0, y: 5 }}
+							animate={{ scale: 1, opacity: 1, y: 0 }}
+							exit={{ scale: 0.8, opacity: 0, y: -5 }}
+							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} p-1 rounded-full bg-zinc-900/90`}
+						>
+							{PLATFORM_ICONS.desktop.icon}
+						</motion.div>
+					) : data?.active_on_discord_web ? (
+						<motion.div
+							key="web"
+							initial={{ scale: 0.8, opacity: 0, x: -5 }}
+							animate={{ scale: 1, opacity: 1, x: 0 }}
+							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} p-1 rounded-full bg-zinc-900/90`}
+						>
+							{PLATFORM_ICONS.web.icon}
+						</motion.div>
+					) : data?.active_on_discord_embedded ? (
+						<motion.div
+							key="embedded"
+							initial={{ scale: 0.8, opacity: 0, rotate: 45 }}
+							animate={{ scale: 1, opacity: 1, rotate: 0 }}
+							exit={{ scale: 0.8, opacity: 0, rotate: -45 }}
+							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} p-1 rounded-full bg-zinc-900/90`}
+						>
+							{PLATFORM_ICONS.embedded.icon}
+						</motion.div>
+					) : (
+						<motion.div
+							key="status"
+							initial={{ scale: 0.8, opacity: 0 }}
+							animate={{ scale: 1, opacity: 1 }}
+							exit={{ scale: 0.8, opacity: 0 }}
+							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+							className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
+						/>
+					)}
+				</AnimatePresence>
+			);
 		}
-
+	
 		return (
-			<div
+			<motion.div
+				initial={{ scale: 0.8, opacity: 0 }}
+				animate={{ scale: 1, opacity: 1 }}
+				exit={{ scale: 0.8, opacity: 0 }}
+				transition={{ duration: 0.2, ease: "easeOut" }}
 				className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
 			/>
 		);
