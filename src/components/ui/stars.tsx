@@ -174,9 +174,9 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
 				const mouseX = mousePosition.current.x;
 				const mouseY = mousePosition.current.y;
 
-				const timeMovement = currentTime * 0.001 * star.movementSpeed;
-				star.baseX += Math.cos(star.movementAngle) * timeMovement * 0.02;
-				star.baseY += Math.sin(star.movementAngle) * timeMovement * 0.02;
+				const movement = star.movementSpeed * 0.02;
+				star.baseX += Math.cos(star.movementAngle) * movement;
+				star.baseY += Math.sin(star.movementAngle) * movement;
 
 				if (star.baseX < 0) star.baseX = canvas.width;
 				if (star.baseX > canvas.width) star.baseX = 0;

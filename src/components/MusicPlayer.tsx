@@ -20,6 +20,37 @@ interface Song {
 	artist: string;
 }
 
+const SONGS: Song[] = [
+	{
+		title: "just not sure",
+		artist: "kurtains & glaive",
+	},
+	{
+		title: "La Dueña del Swing",
+		artist: "Los Hermanos Rosario",
+	},
+	{
+		title: "Keep it Tucked",
+		artist: "ThxSoMuch",
+	},
+	{
+		title: "cbd",
+		artist: "brakence",
+	},
+	{
+		title: "the internet is where we met",
+		artist: "kempachii",
+	},
+	{
+		title: "keygen.exe",
+		artist: "siouxxie sixxsta",
+	},
+	{
+		title: "swear to god",
+		artist: "twikipedia",
+	}
+];
+
 export default function MusicPlayer() {
 	const audioRef = useRef<HTMLAudioElement>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
@@ -78,30 +109,14 @@ export default function MusicPlayer() {
 	};
 
 	useEffect(() => {
-		const loadSongs = async () => {
-			setIsLoading(true);
-			try {
-				const response = await fetch("/api/songs");
-				const data = await response.json();
-				const songList = data.songs || [];
-				setSongs(songList);
-				setCurrentSongIndex(Math.floor(Math.random() * songList.length));
-				if ("mediaSession" in navigator) {
-					navigator.mediaSession.setActionHandler(
-						"previoustrack",
-						playPreviousSong,
-					);
-					navigator.mediaSession.setActionHandler("nexttrack", playNextSong);
-				}
-			} catch (error) {
-				console.error("Error loading songs:", error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
+		setSongs(SONGS);
+		setCurrentSongIndex(Math.floor(Math.random() * SONGS.length));
+		if ("mediaSession" in navigator) {
+			navigator.mediaSession.setActionHandler("previoustrack", playPreviousSong);
+			navigator.mediaSession.setActionHandler("nexttrack", playNextSong);
+		}
+	}, []);
 
-		loadSongs();
-	}, [setSongs, setCurrentSongIndex]);
 	useEffect(() => {
 		if ("mediaSession" in navigator && currentSong) {
 			navigator.mediaSession.metadata = new MediaMetadata({
