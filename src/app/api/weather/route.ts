@@ -35,6 +35,17 @@ if (!global.weatherCache) {
 const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
 const API_URL = "https://wttr.in/Honduras?format=j1";
 
+const getCachedData = () => {
+	const cache = global.weatherCache as WeatherCache;
+	if (cache.data) {
+		return NextResponse.json({
+			...cache.data,
+			cached: true,
+		});
+	}
+	return null;
+};
+
 export async function GET() {
 	try {
 		const now = Date.now();
@@ -43,6 +54,15 @@ export async function GET() {
 		if (cache.data && now - cache.timestamp < CACHE_DURATION) {
 			return NextResponse.json({
 				...cache.data,
+				lastUpdated: new Date(cache.timestamp).toLocaleString("en-US", {
+					month: "long",
+					day: "numeric",
+					year: "numeric",
+					hour: "numeric",
+					minute: "numeric",
+					hour12: true,
+					timeZone: "America/Tegucigalpa",
+				}),
 				cached: true,
 			});
 		}
@@ -51,10 +71,16 @@ export async function GET() {
 			next: { revalidate: 900 }, // Cache for 15 minutes
 		});
 
-		if (!response.ok) throw new Error("Weather service unavailable");
+		if (!response.ok) {
+			const cachedResponse = getCachedData();
+			if (cachedResponse) return cachedResponse;
+			throw new Error("Weather service unavailable");
+		}
 
 		const contentType = response.headers.get("content-type");
 		if (!contentType || !contentType.includes("application/json")) {
+			const cachedResponse = getCachedData();
+			if (cachedResponse) return cachedResponse;
 			throw new Error("Invalid response from weather service");
 		}
 
@@ -62,11 +88,15 @@ export async function GET() {
 		try {
 			data = await response.json();
 		} catch (jsonError) {
+			const cachedResponse = getCachedData();
+			if (cachedResponse) return cachedResponse;
 			console.error("Invalid JSON response:", jsonError);
 			throw new Error("Invalid JSON response from weather service");
 		}
 
 		if (!data || !data.current_condition || !data.current_condition[0]) {
+			const cachedResponse = getCachedData();
+			if (cachedResponse) return cachedResponse;
 			throw new Error("Invalid weather data format");
 		}
 
@@ -113,14 +143,8 @@ export async function GET() {
 	} catch (error) {
 		console.error("Error fetching weather:", error);
 
-		const cache = global.weatherCache as WeatherCache;
-
-		if (cache.data) {
-			return NextResponse.json({
-				...cache.data,
-				cached: true,
-			});
-		}
+		const cachedResponse = getCachedData();
+		if (cachedResponse) return cachedResponse;
 
 		try {
 			const basicResponse = await fetch(
@@ -130,7 +154,11 @@ export async function GET() {
 				},
 			);
 
-			if (!basicResponse.ok) throw new Error("Weather service unavailable");
+			if (!basicResponse.ok) {
+				const cachedResponse = getCachedData();
+				if (cachedResponse) return cachedResponse;
+				throw new Error("Weather service unavailable");
+			}
 
 			const basicData = await basicResponse.text();
 			const [temp, condition] = basicData.split("|");
@@ -161,13 +189,9 @@ export async function GET() {
 		} catch (fallbackError) {
 			console.error("Fallback weather fetch failed:", fallbackError);
 
-			const cache = global.weatherCache as WeatherCache;
-			if (cache.data) {
-				return NextResponse.json({
-					...cache.data,
-					cached: true,
-				});
-			}
+			const cachedResponse = getCachedData();
+			if (cachedResponse) return cachedResponse;
+
 			return NextResponse.json(
 				{ error: "Unable to fetch weather data" },
 				{ status: 500 },
