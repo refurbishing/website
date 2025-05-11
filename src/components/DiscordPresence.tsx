@@ -8,6 +8,7 @@ import React from "react";
 import { useLanguage } from "@/hooks/LanguageContext";
 import { getTranslation } from "@/utils/translations";
 import { SOCKET_CONFIG } from "@/data/socket";
+import { LanyardData } from "@/types/socket";
 
 const PLATFORM_ICONS = {
 	desktop: {
@@ -76,6 +77,13 @@ const PLATFORM_ICONS = {
 	},
 } as const;
 
+interface ExtendedLanyardData extends LanyardData {
+	active_on_discord_mobile?: boolean;
+	active_on_discord_desktop?: boolean;
+	active_on_discord_web?: boolean;
+	active_on_discord_embedded?: boolean;
+}
+
 interface UserAreaProps {
 	isOpen: boolean;
 	onClose: () => void;
@@ -83,12 +91,10 @@ interface UserAreaProps {
 
 export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 	const socketData = useSocket();
-	const { status, data } = socketData;
+	const { status, data } = socketData as { status: string; data: ExtendedLanyardData | null };
 	const [progress, setProgress] = useState(0);
 	const [currentTime, setCurrentTime] = useState(0);
-	const [activityTimes, setActivityTimes] = useState<{ [key: number]: number }>(
-		{},
-	);
+	const [activityTimes, setActivityTimes] = useState<{ [key: number]: number }>({});
 	const [dominantColor, setDominantColor] = useState("#1DB954");
 	const [isCalculatingColor, setIsCalculatingColor] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -96,21 +102,22 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 	const [spotifyImageLoaded, setSpotifyImageLoaded] = useState(false);
 	const [hasOverflow, setHasOverflow] = useState(false);
 	const [needsWiderSpotifyCard, setNeedsWiderSpotifyCard] = useState(false);
-	const [avatarColors, setAvatarColors] = useState<{
-		primary: string;
-		secondary: string;
-	} | null>(null);
-	const [activityImagesLoaded, setActivityImagesLoaded] = useState<{
-		[key: string]: boolean;
-	}>({});
-	const [smallActivityImagesLoaded, setSmallActivityImagesLoaded] = useState<{
-		[key: string]: boolean;
-	}>({});
+	const [avatarColors, setAvatarColors] = useState<{ primary: string; secondary: string; } | null>(null);
+	const [activityImagesLoaded, setActivityImagesLoaded] = useState<{ [key: string]: boolean; }>({});
+	const [smallActivityImagesLoaded, setSmallActivityImagesLoaded] = useState<{ [key: string]: boolean; }>({});
 	const [bannerUrl, setBannerUrl] = useState<string | null>(null);
 	const [isBannerLoaded, setIsBannerLoaded] = useState(false);
+	const [delayedPlatformIndicator, setDelayedPlatformIndicator] = useState<string | null>(null);
 	const currentBannerUrl = useRef<string | null>(null);
+	const isFirstRender = useRef(true);
 	const { language } = useLanguage();
 	const t = (key: string) => getTranslation(language, key);
+
+	useEffect(() => {
+		if (isOpen) {
+			isFirstRender.current = false;
+		}
+	}, [isOpen]);
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout;
@@ -118,15 +125,17 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 		if (data?.spotify) {
 			interval = setInterval(() => {
 				const now = Date.now();
-				const start = data.spotify.timestamps.start;
-				const end = data.spotify.timestamps.end;
+				const start = data.spotify?.timestamps?.start;
+				const end = data.spotify?.timestamps?.end;
 
-				const elapsed = now - start;
-				const total = end - start;
-				const newProgress = (elapsed / total) * 100;
+				if (start && end) {
+					const elapsed = now - start;
+					const total = end - start;
+					const newProgress = (elapsed / total) * 100;
 
-				setProgress(newProgress);
-				setCurrentTime(elapsed);
+					setProgress(newProgress);
+					setCurrentTime(elapsed);
+				}
 			}, 1000);
 		}
 
@@ -158,6 +167,19 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 
 		return () => clearInterval(interval);
 	}, [data?.activities]);
+
+	useEffect(() => {
+		if (data?.active_on_discord_mobile) {
+			const timer = setTimeout(() => {
+				setDelayedPlatformIndicator('mobile');
+			}, 1000);
+			return () => clearTimeout(timer);
+		} else {
+			setDelayedPlatformIndicator(data?.active_on_discord_desktop ? 'desktop' : 
+				data?.active_on_discord_web ? 'web' : 
+				data?.active_on_discord_embedded ? 'embedded' : null);
+		}
+	}, [data?.active_on_discord_mobile, data?.active_on_discord_desktop, data?.active_on_discord_web, data?.active_on_discord_embedded]);
 
 	const extractDominantColor = (imageData: Uint8ClampedArray) => {
 		const sampleSize = 10;
@@ -233,7 +255,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 		}
 	}, [data?.spotify?.album_art_url]);
 
-	const getPlatformIndicator = (data: any) => {
+	const getPlatformIndicator = (data: ExtendedLanyardData) => {
 		const statusColor =
 			{
 				online: "text-green-500",
@@ -242,84 +264,95 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 				offline: "text-gray-500",
 			}[status] || "text-gray-500";
 	
-		if (SOCKET_CONFIG.MOBILE_INDICATOR_ONLY) {
-			if (data?.active_on_discord_mobile) {
-				return (
-					<motion.div
-						initial={{ scale: 0.8, opacity: 0 }}
-						animate={{ scale: 1, opacity: 1 }}
-						exit={{ scale: 0.8, opacity: 0 }}
-						transition={{ duration: 0.2, ease: "easeOut" }}
-						className={`${statusColor} px-0.25 py-1 rounded-lg bg-zinc-900/90`}
-					>
-						{PLATFORM_ICONS.mobile.icon}
-					</motion.div>
-				);
+		const getInitialAnimation = () => {
+			if (isFirstRender.current) {
+				return { scale: 1, opacity: 1 };
 			}
+			return { scale: 0.8, opacity: 0 };
+		};
+	
+		if (SOCKET_CONFIG.MOBILE_INDICATOR_ONLY) {
 			return (
-				<motion.div
-					initial={{ scale: 0.8, opacity: 0 }}
-					animate={{ scale: 1, opacity: 1 }}
-					exit={{ scale: 0.8, opacity: 0 }}
-					transition={{ duration: 0.2, ease: "easeOut" }}
-					className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
-				/>
+				<AnimatePresence mode="wait">
+					{delayedPlatformIndicator === 'mobile' ? (
+						<motion.div
+							key="mobile"
+							initial={getInitialAnimation()}
+							animate={{ scale: 1, opacity: 1, rotate: 0 }}
+							exit={{ scale: 0.8, opacity: 0, rotate: 15 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} px-0.25 py-1 rounded-lg bg-black/${bannerUrl ? "40" : "50"}`}
+						>
+							{PLATFORM_ICONS.mobile.icon}
+						</motion.div>
+					) : (
+						<motion.div
+							key="status"
+							initial={getInitialAnimation()}
+							animate={{ scale: 1, opacity: 1 }}
+							exit={{ scale: 0.8, opacity: 0 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
+						/>
+					)}
+				</AnimatePresence>
 			);
 		}
 	
 		if (SOCKET_CONFIG.PLATFORM_INDICATOR) {
 			return (
 				<AnimatePresence mode="wait">
-					{data?.active_on_discord_mobile ? (
+					{delayedPlatformIndicator === 'mobile' ? (
 						<motion.div
 							key="mobile"
-							initial={{ scale: 0.8, opacity: 0, rotate: -15 }}
+							initial={getInitialAnimation()}
 							animate={{ scale: 1, opacity: 1, rotate: 0 }}
 							exit={{ scale: 0.8, opacity: 0, rotate: 15 }}
-							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-							className={`${statusColor} px-0.25 py-1 rounded-lg bg-zinc-900/90`}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} px-0.25 py-1 rounded-lg bg-black/${bannerUrl ? "40" : "50"}`}
 						>
 							{PLATFORM_ICONS.mobile.icon}
 						</motion.div>
-					) : data?.active_on_discord_desktop ? (
+					) : delayedPlatformIndicator === 'desktop' ? (
 						<motion.div
 							key="desktop"
-							initial={{ scale: 0.8, opacity: 0, y: 5 }}
+							initial={getInitialAnimation()}
 							animate={{ scale: 1, opacity: 1, y: 0 }}
 							exit={{ scale: 0.8, opacity: 0, y: -5 }}
-							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-							className={`${statusColor} p-1 rounded-full bg-zinc-900/90`}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} p-1 rounded-full bg-black/${bannerUrl ? "40" : "50"}`}
 						>
 							{PLATFORM_ICONS.desktop.icon}
 						</motion.div>
-					) : data?.active_on_discord_web ? (
+					) : delayedPlatformIndicator === 'web' ? (
 						<motion.div
 							key="web"
-							initial={{ scale: 0.8, opacity: 0, x: -5 }}
+							initial={getInitialAnimation()}
 							animate={{ scale: 1, opacity: 1, x: 0 }}
-							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-							className={`${statusColor} p-1 rounded-full bg-zinc-900/90`}
+							exit={{ scale: 0.8, opacity: 0, x: 5 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} p-1 rounded-full bg-black/${bannerUrl ? "40" : "50"}`}
 						>
 							{PLATFORM_ICONS.web.icon}
 						</motion.div>
-					) : data?.active_on_discord_embedded ? (
+					) : delayedPlatformIndicator === 'embedded' ? (
 						<motion.div
 							key="embedded"
-							initial={{ scale: 0.8, opacity: 0, rotate: 45 }}
+							initial={getInitialAnimation()}
 							animate={{ scale: 1, opacity: 1, rotate: 0 }}
 							exit={{ scale: 0.8, opacity: 0, rotate: -45 }}
-							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-							className={`${statusColor} p-1 rounded-full bg-zinc-900/90`}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} p-1 rounded-full bg-black/${bannerUrl ? "40" : "50"}`}
 						>
 							{PLATFORM_ICONS.embedded.icon}
 						</motion.div>
 					) : (
 						<motion.div
 							key="status"
-							initial={{ scale: 0.8, opacity: 0 }}
+							initial={getInitialAnimation()}
 							animate={{ scale: 1, opacity: 1 }}
 							exit={{ scale: 0.8, opacity: 0 }}
-							transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
 							className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
 						/>
 					)}
@@ -328,13 +361,16 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 		}
 	
 		return (
-			<motion.div
-				initial={{ scale: 0.8, opacity: 0 }}
-				animate={{ scale: 1, opacity: 1 }}
-				exit={{ scale: 0.8, opacity: 0 }}
-				transition={{ duration: 0.2, ease: "easeOut" }}
-				className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
-			/>
+			<AnimatePresence mode="wait">
+				<motion.div
+					key="status"
+					initial={getInitialAnimation()}
+					animate={{ scale: 1, opacity: 1 }}
+					exit={{ scale: 0.8, opacity: 0 }}
+					transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+					className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
+				/>
+			</AnimatePresence>
 		);
 	};
 
