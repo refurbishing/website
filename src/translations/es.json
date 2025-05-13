@@ -50,7 +50,9 @@
 		"conditions": {
 			"clear": "Despejado",
 			"sunny": "Soleado",
-			"thunder": "Tormenta eléctrica",
+			"thunder": "Tormenta",
+			"thunderstorm": "Tormenta eléctrica",
+			"mist": "Niebla",
 			"fog": "Niebla",
 			"heavy_rain": "Lluvia intensa",
 			"rain": "Lluvia",

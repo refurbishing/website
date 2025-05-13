@@ -7,6 +7,82 @@ import { Icon } from "@iconify/react";
 import React from "react";
 import { useLanguage } from "@/hooks/LanguageContext";
 import { getTranslation } from "@/utils/translations";
+import { SOCKET_CONFIG } from "@/data/socket";
+import { LanyardData } from "@/types/socket";
+
+const PLATFORM_ICONS = {
+	desktop: {
+		icon: (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				className="w-5 h-5"
+				fill="currentColor"
+				stroke="currentColor"
+				strokeWidth="0.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			>
+				<path d="M4 2.5c-1.103 0-2 .897-2 2v11c0 1.104.897 2 2 2h7v2H7v2h10v-2h-4v-2h7c1.103 0 2-.896 2-2v-11c0-1.103-.897-2-2-2H4Zm16 2v9H4v-9h16Z" />
+			</svg>
+		),
+	},
+	web: {
+		icon: (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				className="w-5 h-5"
+				fill="currentColor"
+				stroke="currentColor"
+				strokeWidth="0.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			>
+				<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93Zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39Z" />
+			</svg>
+		),
+	},
+	mobile: {
+		icon: (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 1000 1500"
+				className="w-5 h-5"
+				fill="currentColor"
+				stroke="currentColor"
+				strokeWidth="0.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			>
+				<path d="M 187 0 L 813 0 C 916.277 0 1000 83.723 1000 187 L 1000 1313 C 1000 1416.277 916.277 1500 813 1500 L 187 1500 C 83.723 1500 0 1416.277 0 1313 L 0 187 C 0 83.723 83.723 0 187 0 Z M 125 1000 L 875 1000 L 875 250 L 125 250 Z M 500 1125 C 430.964 1125 375 1180.964 375 1250 C 375 1319.036 430.964 1375 500 1375 C 569.036 1375 625 1319.036 625 1250 C 625 1180.964 569.036 1125 500 1125 Z" />
+			</svg>
+		),
+	},
+	embedded: {
+		icon: (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				className="w-5 h-5"
+				fill="currentColor"
+				stroke="currentColor"
+				strokeWidth="0.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			>
+				<path d="M3.06 20.4q-1.53 0-2.37-1.065T.06 16.74l1.26-9q.27-1.8 1.605-2.97T6.06 3.6h11.88q1.8 0 3.135 1.17t1.605 2.97l1.26 9q.21 1.53-.63 2.595T20.94 20.4q-.63 0-1.17-.225T18.78 19.5l-2.7-2.7H7.92l-2.7 2.7q-.45.45-.99.675t-1.17.225Zm14.94-7.2q.51 0 .855-.345T19.2 12q0-.51-.345-.855T18 10.8q-.51 0-.855.345T16.8 12q0 .51.345 .855T18 13.2Zm-2.4-3.6q.51 0 .855-.345T16.8 8.4q0-.51-.345-.855T15.6 7.2q-.51 0-.855.345T14.4 8.4q0 .51.345 .855T15.6 9.6ZM6.9 13.2h1.8v-2.1h2.1v-1.8h-2.1v-2.1h-1.8v2.1h-2.1v1.8h2.1v2.1Z" />
+			</svg>
+		),
+	},
+} as const;
+
+interface ExtendedLanyardData extends LanyardData {
+	active_on_discord_mobile?: boolean;
+	active_on_discord_desktop?: boolean;
+	active_on_discord_web?: boolean;
+	active_on_discord_embedded?: boolean;
+}
 
 interface UserAreaProps {
 	isOpen: boolean;
@@ -15,12 +91,10 @@ interface UserAreaProps {
 
 export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 	const socketData = useSocket();
-	const { status, data } = socketData;
+	const { status, data } = socketData as { status: string; data: ExtendedLanyardData | null };
 	const [progress, setProgress] = useState(0);
 	const [currentTime, setCurrentTime] = useState(0);
-	const [activityTimes, setActivityTimes] = useState<{ [key: number]: number }>(
-		{},
-	);
+	const [activityTimes, setActivityTimes] = useState<{ [key: number]: number }>({});
 	const [dominantColor, setDominantColor] = useState("#1DB954");
 	const [isCalculatingColor, setIsCalculatingColor] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -28,21 +102,22 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 	const [spotifyImageLoaded, setSpotifyImageLoaded] = useState(false);
 	const [hasOverflow, setHasOverflow] = useState(false);
 	const [needsWiderSpotifyCard, setNeedsWiderSpotifyCard] = useState(false);
-	const [avatarColors, setAvatarColors] = useState<{
-		primary: string;
-		secondary: string;
-	} | null>(null);
-	const [activityImagesLoaded, setActivityImagesLoaded] = useState<{
-		[key: string]: boolean;
-	}>({});
-	const [smallActivityImagesLoaded, setSmallActivityImagesLoaded] = useState<{
-		[key: string]: boolean;
-	}>({});
+	const [avatarColors, setAvatarColors] = useState<{ primary: string; secondary: string; } | null>(null);
+	const [activityImagesLoaded, setActivityImagesLoaded] = useState<{ [key: string]: boolean; }>({});
+	const [smallActivityImagesLoaded, setSmallActivityImagesLoaded] = useState<{ [key: string]: boolean; }>({});
 	const [bannerUrl, setBannerUrl] = useState<string | null>(null);
 	const [isBannerLoaded, setIsBannerLoaded] = useState(false);
+	const [delayedPlatformIndicator, setDelayedPlatformIndicator] = useState<string | null>(null);
 	const currentBannerUrl = useRef<string | null>(null);
+	const isFirstRender = useRef(true);
 	const { language } = useLanguage();
 	const t = (key: string) => getTranslation(language, key);
+
+	useEffect(() => {
+		if (isOpen) {
+			isFirstRender.current = false;
+		}
+	}, [isOpen]);
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout;
@@ -50,15 +125,17 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 		if (data?.spotify) {
 			interval = setInterval(() => {
 				const now = Date.now();
-				const start = data.spotify.timestamps.start;
-				const end = data.spotify.timestamps.end;
+				const start = data.spotify?.timestamps?.start;
+				const end = data.spotify?.timestamps?.end;
 
-				const elapsed = now - start;
-				const total = end - start;
-				const newProgress = (elapsed / total) * 100;
+				if (start && end) {
+					const elapsed = now - start;
+					const total = end - start;
+					const newProgress = (elapsed / total) * 100;
 
-				setProgress(newProgress);
-				setCurrentTime(elapsed);
+					setProgress(newProgress);
+					setCurrentTime(elapsed);
+				}
 			}, 1000);
 		}
 
@@ -90,6 +167,19 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 
 		return () => clearInterval(interval);
 	}, [data?.activities]);
+
+	useEffect(() => {
+		if (data?.active_on_discord_mobile) {
+			const timer = setTimeout(() => {
+				setDelayedPlatformIndicator('mobile');
+			}, 1000);
+			return () => clearTimeout(timer);
+		} else {
+			setDelayedPlatformIndicator(data?.active_on_discord_desktop ? 'desktop' : 
+				data?.active_on_discord_web ? 'web' : 
+				data?.active_on_discord_embedded ? 'embedded' : null);
+		}
+	}, [data?.active_on_discord_mobile, data?.active_on_discord_desktop, data?.active_on_discord_web, data?.active_on_discord_embedded]);
 
 	const extractDominantColor = (imageData: Uint8ClampedArray) => {
 		const sampleSize = 10;
@@ -165,13 +255,124 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 		}
 	}, [data?.spotify?.album_art_url]);
 
-	const statusColor =
-		{
-			online: "bg-green-500",
-			dnd: "bg-red-500",
-			idle: "bg-yellow-500",
-			offline: "bg-gray-500",
-		}[status] || "bg-gray-500";
+	const getPlatformIndicator = (data: ExtendedLanyardData) => {
+		const statusColor =
+			{
+				online: "text-green-500",
+				dnd: "text-red-500",
+				idle: "text-yellow-500",
+				offline: "text-gray-500",
+			}[status] || "text-gray-500";
+	
+		const getInitialAnimation = () => {
+			if (isFirstRender.current) {
+				return { scale: 1, opacity: 1 };
+			}
+			return { scale: 0.8, opacity: 0 };
+		};
+	
+		if (SOCKET_CONFIG.MOBILE_INDICATOR_ONLY) {
+			return (
+				<AnimatePresence mode="wait">
+					{delayedPlatformIndicator === 'mobile' ? (
+						<motion.div
+							key="mobile"
+							initial={getInitialAnimation()}
+							animate={{ scale: 1, opacity: 1, rotate: 0 }}
+							exit={{ scale: 0.8, opacity: 0, rotate: 15 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} px-0.25 py-1 rounded-lg bg-black/${bannerUrl ? "40" : "50"}`}
+						>
+							{PLATFORM_ICONS.mobile.icon}
+						</motion.div>
+					) : (
+						<motion.div
+							key="status"
+							initial={getInitialAnimation()}
+							animate={{ scale: 1, opacity: 1 }}
+							exit={{ scale: 0.8, opacity: 0 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
+						/>
+					)}
+				</AnimatePresence>
+			);
+		}
+	
+		if (SOCKET_CONFIG.PLATFORM_INDICATOR) {
+			return (
+				<AnimatePresence mode="wait">
+					{delayedPlatformIndicator === 'mobile' ? (
+						<motion.div
+							key="mobile"
+							initial={getInitialAnimation()}
+							animate={{ scale: 1, opacity: 1, rotate: 0 }}
+							exit={{ scale: 0.8, opacity: 0, rotate: 15 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} px-0.25 py-1 rounded-lg bg-black/${bannerUrl ? "40" : "50"}`}
+						>
+							{PLATFORM_ICONS.mobile.icon}
+						</motion.div>
+					) : delayedPlatformIndicator === 'desktop' ? (
+						<motion.div
+							key="desktop"
+							initial={getInitialAnimation()}
+							animate={{ scale: 1, opacity: 1, y: 0 }}
+							exit={{ scale: 0.8, opacity: 0, y: -5 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} p-1 rounded-full bg-black/${bannerUrl ? "40" : "50"}`}
+						>
+							{PLATFORM_ICONS.desktop.icon}
+						</motion.div>
+					) : delayedPlatformIndicator === 'web' ? (
+						<motion.div
+							key="web"
+							initial={getInitialAnimation()}
+							animate={{ scale: 1, opacity: 1, x: 0 }}
+							exit={{ scale: 0.8, opacity: 0, x: 5 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} p-1 rounded-full bg-black/${bannerUrl ? "40" : "50"}`}
+						>
+							{PLATFORM_ICONS.web.icon}
+						</motion.div>
+					) : delayedPlatformIndicator === 'embedded' ? (
+						<motion.div
+							key="embedded"
+							initial={getInitialAnimation()}
+							animate={{ scale: 1, opacity: 1, rotate: 0 }}
+							exit={{ scale: 0.8, opacity: 0, rotate: -45 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`${statusColor} p-1 rounded-full bg-black/${bannerUrl ? "40" : "50"}`}
+						>
+							{PLATFORM_ICONS.embedded.icon}
+						</motion.div>
+					) : (
+						<motion.div
+							key="status"
+							initial={getInitialAnimation()}
+							animate={{ scale: 1, opacity: 1 }}
+							exit={{ scale: 0.8, opacity: 0 }}
+							transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
+						/>
+					)}
+				</AnimatePresence>
+			);
+		}
+	
+		return (
+			<AnimatePresence mode="wait">
+				<motion.div
+					key="status"
+					initial={getInitialAnimation()}
+					animate={{ scale: 1, opacity: 1 }}
+					exit={{ scale: 0.8, opacity: 0 }}
+					transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+					className={`w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor.replace("text-", "bg-")}`}
+				/>
+			</AnimatePresence>
+		);
+	};
 
 	const getAvatarUrl = useCallback(() => {
 		if (!data?.discord_user) return null;
@@ -651,9 +852,16 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															}}
 														/>
 													)}
-												<div
-													className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-zinc-900/90 ${statusColor}`}
-												/>
+												<div className="absolute bottom-0 right-0">
+													<div className="relative">
+														<div className="absolute inset-0 text-zinc-900/90">
+															{getPlatformIndicator(data)}
+														</div>
+														<div className="relative">
+															{getPlatformIndicator(data)}
+														</div>
+													</div>
+												</div>
 											</div>
 											<div className="flex-1">
 												<div className="flex items-start justify-between">
@@ -845,7 +1053,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															<path
 																strokeLinecap="round"
 																strokeLinejoin="round"
-																d="M9.348 14.652a3.75 3.75 0 0 1 0-5.304m5.304 0a3.75 3.75 0 0 1 0 5.304m-7.425 2.121a6.75 6.75 0 0 1 0-9.546m9.546 0a6.75 6.75 0 0 1 0 9.546M5.106 18.894c-3.808-3.807-3.808-9.98 0-13.788m13.788 0c3.808 3.807 3.808 9.98 0 13.788M12 12h.008v.008H12V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+																d="M9.348 14.652a3.75 3.75 0 0 1 0-5.304m5.304 0a3.75 3.75 0 0 1 0 5.304m-7.425 2.121a6.75 6.75 0 0 1 0-9.546m9.546 0a6.75 6.75 0 0 1 0 9.546M5.106 18.894c-3.808-3.807-3.808-9.98 0-13.788m13.788 0c3.808 3.807 3.808 9.98 0 13.788M12 12h.008v.008H12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
 															/>
 														</svg>
 														<p className="text-sm text-zinc-400">
@@ -911,7 +1119,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															<path
 																strokeLinecap="round"
 																strokeLinejoin="round"
-																d="m3 3 8.735 8.735m0 0a.374.374 0 1 1 .53.53m-.53-.53.53.53m0 0L21 21M14.652 9.348a3.75 3.75 0 0 1 0 5.304m2.121-7.425a6.75 6.75 0 0 1 0 9.546m2.121-11.667c3.808 3.807 3.808 9.98 0 13.788m-9.546-4.242a3.733 3.733 0 0 1-1.06-2.122m-1.061 4.243a6.75 6.75 0 0 1-1.625-6.929m-.496 9.05c-3.068-3.067-3.664-7.67-1.79-11.334M12 12h.008v.008H12V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+																d="m3 3 8.735 8.735m0 0a.374.374 0 1 1 .53.53m-.53-.53.53.53m0 0L21 21M14.652 9.348a3.75 3.75 0 0 1 0 5.304m2.121-7.425a6.75 6.75 0 0 1 0 9.546m2.121-11.667c3.808 3.807 3.808 9.98 0 13.788m-9.546-4.242a3.733 3.733 0 0 1-1.06-2.122m-1.061 4.243a6.75 6.75 0 0 1-1.625-6.929m-.496 9.05c-3.068-3.067-3.664-7.67-1.79-11.334M12 12h.008v.008H12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
 															/>
 														</svg>
 														<p className="text-sm text-zinc-400">

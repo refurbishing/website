@@ -14,14 +14,14 @@ const projects = [
 		name: "Equibop",
 		descriptionKey: "projects.equibop",
 		url: "https://github.com/Equicord/Equibop",
-		icon: "https://github.com/Equicord/Equibop/raw/main/static/icon.png",
+		icon: "https://raw.githubusercontent.com/Equicord/Equibop/main/static/icon.png",
 		language: "TypeScript",
 	},
 	{
 		name: "VNREZ",
 		descriptionKey: "projects.vnrez",
 		url: "https://github.com/refurbishing/vnrez",
-		icon: "https://github.com/refurbishing/vnrez/raw/main/assets/logo.png",
+		icon: "https://raw.githubusercontent.com/refurbishing/vnrez/main/assets/logo.png",
 		language: "Bash",
 	},
 ];

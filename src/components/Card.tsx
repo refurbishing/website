@@ -1,23 +1,25 @@
 "use client";
-import { Card, CardHeader, CardBody } from "@heroui/react";
-import { motion } from "framer-motion";
 import { useEffect, useState, useMemo, useRef } from "react";
+import { motion } from "framer-motion";
+import { Card, CardHeader, CardBody } from "@heroui/react";
 import Typewriter from "typewriter-effect/dist/core";
 import { Icon, loadIcon } from "@iconify/react";
-import { getTranslatedQuotes, quotes } from "@/data/quotes";
 import Image from "next/image";
+
+import { getTranslatedQuotes } from "@/data/quotes";
 import { useInview } from "@/lib/animateInscroll";
 import { useLanguage } from "@/hooks/LanguageContext";
 import { getTranslation } from "@/utils/translations";
 
-export default function CardComponent() {
-	const cardRef = useRef(null);
-	const isInView = useInview(cardRef);
-	const [iconsLoaded, setIconsLoaded] = useState(false);
-	const { language } = useLanguage();
+interface SocialLink {
+	href: string;
+	icon: string;
+	alt: string;
+}
 
-	const age = useMemo(() => {
-		const birthDate = new Date("2009-08-29");
+const useAge = (birthDateString: string): number => {
+	return useMemo(() => {
+		const birthDate = new Date(birthDateString);
 		const today = new Date();
 		let age = today.getFullYear() - birthDate.getFullYear();
 		const monthDiff = today.getMonth() - birthDate.getMonth();
@@ -30,9 +32,17 @@ export default function CardComponent() {
 		}
 
 		return age;
-	}, []);
+	}, [birthDateString]);
+};
 
-	const socialLinks = useMemo(
+export default function CardComponent() {
+	const cardRef = useRef<HTMLDivElement>(null);
+	const isInView = useInview(cardRef);
+	const [iconsLoaded, setIconsLoaded] = useState(false);
+	const { language } = useLanguage();
+	const age = useAge("2009-08-29");
+
+	const socialLinks: SocialLink[] = useMemo(
 		() => [
 			{
 				href: "https://t.me/backdropped",
@@ -45,7 +55,7 @@ export default function CardComponent() {
 				alt: "GitHub",
 			},
 			{
-				href: "https://steamcommunity.com/id/webassembly",
+				href: "https://steamcommunity.com/id/substellar",
 				icon: "mdi:steam",
 				alt: "Steam",
 			},
@@ -63,6 +73,11 @@ export default function CardComponent() {
 		[],
 	);
 
+	const translatedQuotes = useMemo(
+		() => getTranslatedQuotes(language),
+		[language],
+	);
+
 	useEffect(() => {
 		const typewriterElement = document.getElementById("typewriter");
 		if (!typewriterElement) return;
@@ -73,8 +88,6 @@ export default function CardComponent() {
 			loop: true,
 		});
 
-		const translatedQuotes = getTranslatedQuotes(language);
-
 		translatedQuotes
 			.reduce(
 				(tw: Typewriter, quote: string) =>
@@ -83,6 +96,7 @@ export default function CardComponent() {
 			)
 			.start();
 
+		// Load icons only once
 		const loadIcons = async () => {
 			try {
 				await Promise.all(
@@ -98,7 +112,7 @@ export default function CardComponent() {
 		};
 
 		loadIcons();
-	}, [socialLinks, language]);
+	}, [translatedQuotes, socialLinks]);
 
 	return (
 		<motion.div
@@ -133,7 +147,7 @@ export default function CardComponent() {
 						].map((text, index) => (
 							<div key={index} className="relative inline-block">
 								<motion.span
-									className={`inline-block relative mr-[0.25em]`}
+									className="inline-block relative mr-[0.25em]"
 									initial={{ y: "100%", opacity: 0, filter: "blur(2.5px)" }}
 									animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
 									transition={{
@@ -148,7 +162,9 @@ export default function CardComponent() {
 									}}
 								>
 									<motion.span
-										className="inline-block bg-gradient-to-r bg-clip-text text-transparent"
+										className={`inline-block bg-gradient-to-r bg-clip-text text-transparent ${
+											index === 1 || index === 3 ? "shadow-glow" : ""
+										}`}
 										initial={{
 											backgroundPosition: "-100%",
 											opacity: 0.5,

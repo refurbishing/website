@@ -1,42 +1,44 @@
 {
-	"name": "cortex-portfolio",
-	"version": "1.5.2",
-	"description": "Cortex Portfolio",
-	"license": "AGPL-3.0-only",
-	"scripts": {
-		"dev": "next dev --turbopack",
-		"build": "next build",
-		"lint": "biome lint --write .",
-		"lint:unsafe": "biome lint --unsafe --write .",
-		"start": "next start",
-		"format": "biome format --write ."
-	},
-	"dependencies": {
-		"@heroui/react": "^2.7.8",
-		"@iconify/react": "^5.2.1",
-		"@vercel/analytics": "^1.5.0",
-		"@vercel/speed-insights": "^1.2.0",
-		"framer-motion": "^12.9.2",
-		"lenis": "^1.3.1",
-		"lucide-react": "^0.471.2",
-		"next": "15.2.3",
-		"next-intl": "^4.1.0",
-		"react": "^19.1.0",
-		"react-dom": "^19.1.0",
-		"typewriter-effect": "^2.22.0"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@types/node": "^22.15.3",
-		"@types/react": "^19.1.2",
-		"@types/react-dom": "^19.1.3",
-		"postcss": "^8.5.3",
-		"tailwindcss": "^3.4.17",
-		"typescript": "^5.8.3"
-	},
-	"trustedDependencies": [
-		"@biomejs/biome",
-		"@heroui/shared-utils",
-		"@vercel/speed-insights"
-	]
+  "name": "cortex-portfolio",
+  "version": "1.5.2",
+  "description": "Cortex Portfolio",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "lint": "biome lint --write .",
+    "lint:unsafe": "biome lint --unsafe --write .",
+    "start": "next start",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@heroui/react": "^2.7.8",
+    "@iconify/react": "^5.2.1",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.9.7",
+    "lenis": "^1.3.1",
+    "lucide-react": "^0.471.2",
+    "next": "15.2.3",
+    "next-intl": "^4.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^3.2.0",
+    "typewriter-effect": "^2.22.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.15.11",
+    "@types/react": "^19.1.3",
+    "@types/react-dom": "^19.1.3",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
+  },
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@heroui/shared-utils",
+    "@vercel/speed-insights"
+  ]
 }

@@ -4,4 +4,6 @@ export const SOCKET_CONFIG = {
 	SOCKET_URL: "wss://api.lanyard.rest/socket",
 	MAX_RECONNECT_ATTEMPTS: 5,
 	BACKOFF_MULTIPLIER: 1.5,
+	PLATFORM_INDICATOR: false,
+	MOBILE_INDICATOR_ONLY: true,
 } as const;
