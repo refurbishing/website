@@ -1,12 +1,10 @@
 "use client";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import Background from "@/components/Background";
 import Header from "@/components/Header";
 import Time from "@/components/Time";
-import Loading from "@/app/loading";
 import { SocketProvider } from "@/hooks/SocketContext";
 
 const Cat = dynamic(() => import("@/components/Cat"));
@@ -30,21 +28,16 @@ export default function Home() {
 
 			<Time />
 
-			<Suspense fallback={<Loading />}>
-				<CardComponent />
-			</Suspense>
-
-			<Suspense fallback={<Loading />}>
-				<MusicPlayer />
-				<Technologies />
-				<About />
-				<Statistics />
-				<Comissions />
-				<Projects />
-				<Footer />
-				<Cat />
-				<TranslateGlobe />
-			</Suspense>
+			<CardComponent />
+			<MusicPlayer />
+			<Technologies />
+			<About />
+			<Statistics />
+			<Comissions />
+			<Projects />
+			<Footer />
+			<Cat />
+			<TranslateGlobe />
 
 			<SpeedInsights />
 			<Analytics />
