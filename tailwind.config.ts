@@ -33,6 +33,7 @@ const config: Config = {
 				slider: "slider var(--duration, 30s) linear infinite",
 				fadeIn: "fadeIn 1s ease-in-out",
 				float: "float 20s ease-in-out infinite alternate",
+				maskReveal: "maskReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
 			},
 			keyframes: {
 				slider: {
@@ -57,6 +58,16 @@ const config: Config = {
 					},
 					"75%": {
 						transform: "translate(-0.25%, 0.5%) scale(1.005)",
+					},
+				},
+				maskReveal: {
+					"0%": {
+						opacity: "0",
+						transform: "scale(0.8)",
+					},
+					"100%": {
+						opacity: "1",
+						transform: "scale(1)",
 					},
 				},
 			},

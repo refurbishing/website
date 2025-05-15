@@ -36,7 +36,7 @@ const BackgroundClient = memo(() => {
         }}
       />
       <div className="absolute inset-0 w-full h-full">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(220,220,220,0.03)_0%,rgba(0,0,0,0.35)_80%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(220,220,220,0.03)_0%,rgba(0,0,0,0.35)_80%)] animate-maskReveal origin-center" />
         <StarsBackground
           allStarsTwinkle={true}
           minTwinkleSpeed={0.5}
