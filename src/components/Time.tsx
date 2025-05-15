@@ -1,26 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, memo } from "react";
 import { TextFade } from "../app/structure/TextFade";
 import { motion } from "framer-motion";
 
-const Time: React.FC = () => {
+const Time = memo(() => {
 	const [time, setTime] = useState<string>("");
 
-	const updateTime = () => {
-		setTime(
-			new Date().toLocaleTimeString("en-US", {
-				hour: "2-digit",
-				minute: "2-digit",
-				second: "2-digit",
-			}),
-		);
-		requestAnimationFrame(updateTime);
-	};
+	const updateTime = useCallback(() => {
+		let rafId: number;
+
+		const update = () => {
+			setTime(
+				new Date().toLocaleTimeString("en-US", {
+					hour: "2-digit",
+					minute: "2-digit",
+					second: "2-digit",
+				})
+			);
+			rafId = requestAnimationFrame(update);
+		};
+
+		update();
+		return () => cancelAnimationFrame(rafId);
+	}, []);
 
 	useEffect(() => {
-		updateTime();
-	}, []);
+		const cleanup = updateTime();
+		return cleanup;
+	}, [updateTime]);
 
 	return (
 		<div className="text-sm flex justify-center items-center font-semibold non-selectable">
@@ -37,5 +45,8 @@ const Time: React.FC = () => {
 			</motion.div>
 		</div>
 	);
-};
+});
+
+Time.displayName = "Time";
+
 export default Time;

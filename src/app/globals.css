@@ -40,7 +40,8 @@ body {
 }
 
 .hamburger-line {
-	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+		opacity 0.2s ease;
 }
 
 .hamburger-line.top {
@@ -50,6 +51,7 @@ body {
 .hamburger-line.middle {
 	opacity: 1;
 }
+
 .hamburger-line.bottom {
 	transform-origin: bottom left;
 }
@@ -139,6 +141,7 @@ body {
 .animate-slider {
 	animation: slider var(--duration, 30s) linear infinite;
 	transition: animation-play-state 0.5s ease;
+	animation-play-state: running;
 }
 
 .animate-slider .hover-effect {
@@ -150,6 +153,10 @@ body {
 	box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
 	transform: scale(1.02);
 	transition: all 0.2s ease;
+}
+
+.hover-effect:hover ~ .animate-slider {
+	animation-play-state: paused;
 }
 
 .nav-link {
@@ -231,6 +238,18 @@ body {
 	0% {
 		opacity: 0;
 	}
+	25% {
+		opacity: 0.25;
+	}
+	50% {
+		opacity: 0.5;
+	}
+	75% {
+		opacity: 0.75;
+	}
+	90% {
+		opacity: 0.9;
+	}
 	100% {
 		opacity: 1;
 	}
@@ -250,6 +269,7 @@ body {
 		transform: scale(1);
 	}
 }
+
 @keyframes gradient {
 	0% {
 		background-position: -200% 50%;
@@ -268,10 +288,52 @@ body {
 .animate-gradient:hover {
 	animation: gradient 3s linear infinite;
 	text-shadow: 0 0 5px rgba(240, 237, 255, 0.7);
+	animation-play-state: paused;
 }
 
-.animate-gradient:hover {
-	animation-play-state: paused;
+.will-change-contents {
+	will-change: contents;
+}
+
+.transform-gpu {
+	transform: translateZ(0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
+.pause-animation {
+	animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.animate-float,
+	.animate-gradient,
+	.animate-slider {
+		animation: none !important;
+		transform: none !important;
+	}
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+@keyframes gentleFloat {
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	25% {
+		transform: translate3d(-0.5%, 1%, 0) scale(1.01);
+	}
+	50% {
+		transform: translate3d(0.5%, -0.5%, 0) scale(1);
+	}
+	75% {
+		transform: translate3d(0.5%, 0.5%, 0) scale(0.99);
+	}
 }
 
 .shadow-glow {
@@ -319,11 +381,9 @@ body {
 }
 
 .stars {
-	background-image: radial-gradient(
-			2px 2px at 20px 30px,
-			#eee,
-			rgba(0, 0, 0, 0)
-		), radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
+	background-image: radial-gradient(2px 2px at 20px 30px, #eee, 
+			rgba(0, 0, 0, 0)),
+		radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
 		radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0, 0, 0, 0)),
 		radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0)),
 		radial-gradient(2px 2px at 130px 80px, #fff, rgba(0, 0, 0, 0)),
