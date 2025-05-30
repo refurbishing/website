@@ -451,9 +451,9 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 			hasOverflow &&
 			data?.spotify &&
 			(data.spotify.song.length > 35 ||
-				data.spotify.artist.length > 35 ||
-				data.spotify.album.length > 35 ||
-				data.spotify.song.length + data.spotify.artist.length > 60);
+				(data.spotify.artist && data.spotify.artist.length > 35) ||
+				(data.spotify.album && data.spotify.album.length > 35) ||
+				(data.spotify.artist && data.spotify.song.length + data.spotify.artist.length > 60));
 
 		if (needsWider !== needsWiderSpotifyCard) {
 			setNeedsWiderSpotifyCard(needsWider);
@@ -651,19 +651,21 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0.98, opacity: 0 }}
 						transition={{
-							duration: 0.25,
+							duration: 0.3,
 							ease: [0.25, 0.8, 0.25, 1],
 						}}
 						className={`relative z-10 w-[95%] max-w-lg
                             data-[wider=true]:max-w-2xl 
                             data-[overflow=true]:max-w-4xl
-                            data-[wider-spotify=true]:max-w-3xl`}
+                            data-[wider-spotify=true]:max-w-3xl
+                            transition-[max-width] duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)]`}
 						data-wider={false}
 						data-overflow={hasOverflow}
 						data-wider-spotify={needsWiderSpotifyCard}
+						onClick={(e) => e.stopPropagation()}
 					>
 						<Card
-							className={`rounded-lg border border-zinc-800 relative overflow-hidden transition-colors duration-300 ${
+							className={`rounded-lg border border-zinc-800 relative overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] ${
 								bannerUrl
 									? isBannerLoaded
 										? "bg-black/85"
@@ -1160,7 +1162,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																	ease: [0.25, 0.8, 0.25, 1],
 																},
 															}}
-															className={`bg-zinc-800/${bannerUrl ? "40" : "50"} rounded-lg p-3 flex items-center gap-3 relative before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:border-zinc-700/50 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300 hover:scale-[1.02] min-h-[88px] overflow-hidden`}
+															className={`bg-zinc-800/${bannerUrl ? "40" : "50"} rounded-lg p-3 flex items-center gap-3 relative before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:border-zinc-700/50 before:opacity-0 hover:before:opacity-100 before:transition-all before:duration-300 hover:scale-[1.02] min-h-[88px] overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.25,0.8,0.25,1)]`}
 														>
 															{activity.application_id ||
 															activity.assets?.large_image ? (
@@ -1376,7 +1378,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															ease: [0.25, 0.8, 0.25, 1],
 														},
 													}}
-													className={`rounded-lg p-3 flex items-center gap-3 relative before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300 before:[border-color:var(--border-color)] group min-h-[88px] overflow-hidden ${
+													className={`rounded-lg p-3 flex items-center gap-3 relative before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:opacity-0 hover:before:opacity-100 before:transition-all before:duration-300 before:[border-color:var(--border-color)] group min-h-[88px] overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.25,0.8,0.25,1)] ${
 														data.spotify.track_id
 															? "cursor-pointer hover:scale-[1.02]"
 															: ""
@@ -1390,6 +1392,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															"--border-color": isCalculatingColor
 																? "transparent"
 																: `color-mix(in srgb, ${dominantColor} var(--border-opacity, 30%), rgb(63, 63, 70))`,
+															transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
 														} as any
 													}
 													onMouseEnter={(e) => {
@@ -1488,10 +1491,10 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															className={`${!data.spotify.album_art_url || !data.spotify.track_id ? "text-center flex-1" : "flex-1"}`}
 														>
 															<div
-																className={`flex items-start gap-2 ${!data.spotify.album_art_url || !data.spotify.track_id ? "justify-center text-center flex" : ""}`}
+																className={`flex items-start gap-2 ${!data.spotify.album_art_url || !data.spotify.track_id ? "justify-center text-center flex" : "justify-between w-full"}`}
 															>
 																<p
-																	className={`text-sm font-medium text-white ${!data.spotify.album_art_url || !data.spotify.track_id ? "text-center px-6" : "pr-6"}`}
+																	className={`text-sm font-medium text-white ${!data.spotify.album_art_url || !data.spotify.track_id ? "text-center px-6" : ""}`}
 																>
 																	{data.spotify.song}
 																</p>
@@ -1508,30 +1511,34 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																		</div>
 																	)}
 															</div>
-															<p className="text-xs text-zinc-400">
-																{t("discordPresence.by")}{" "}
-																{data.spotify.artist
-																	.split("; ")
-																	.map(
-																		(
-																			artist: string,
-																			index: number,
-																			array: string[],
-																		) => {
-																			if (array.length === 1) return artist;
-																			if (index === array.length - 2)
-																				return `${artist} `;
-																			if (index === array.length - 1)
-																				return `& ${artist}`;
-																			return `${artist}, `;
-																		},
-																	)}
-															</p>
-															<p
-																className={`text-xs text-zinc-500 ${!hasOverflow && (data.spotify.song.length > 35 || data.spotify.artist.length > 35) ? "mt-1" : ""}`}
-															>
-																{t("discordPresence.on")} {data.spotify.album}
-															</p>
+															{data.spotify.artist && (
+																<p className="text-xs text-zinc-400">
+																	{t("discordPresence.by")}{" "}
+																	{data.spotify.artist
+																		.split("; ")
+																		.map(
+																			(
+																				artist: string,
+																				index: number,
+																				array: string[],
+																			) => {
+																				if (array.length === 1) return artist;
+																				if (index === array.length - 2)
+																					return `${artist} `;
+																				if (index === array.length - 1)
+																					return `& ${artist}`;
+																				return `${artist}, `;
+																			},
+																		)}
+																</p>
+															)}
+															{data.spotify.album && (
+																<p
+																	className={`text-xs text-zinc-500 truncate ${!hasOverflow && (data.spotify.song.length > 35 || (data.spotify.artist && data.spotify.artist.length > 35)) ? "mt-1" : ""}`}
+																>
+																	{t("discordPresence.on")} {data.spotify.album}
+																</p>
+															)}
 															<div
 																className={`mt-3 ${!data.spotify.album_art_url || !data.spotify.track_id ? "flex justify-center" : ""}`}
 															>
