@@ -91,10 +91,15 @@ interface UserAreaProps {
 
 export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 	const socketData = useSocket();
-	const { status, data } = socketData as { status: string; data: ExtendedLanyardData | null };
+	const { status, data } = socketData as {
+		status: string;
+		data: ExtendedLanyardData | null;
+	};
 	const [progress, setProgress] = useState(0);
 	const [currentTime, setCurrentTime] = useState(0);
-	const [activityTimes, setActivityTimes] = useState<{ [key: number]: number }>({});
+	const [activityTimes, setActivityTimes] = useState<{ [key: number]: number }>(
+		{},
+	);
 	const [dominantColor, setDominantColor] = useState("#1DB954");
 	const [isCalculatingColor, setIsCalculatingColor] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -102,12 +107,21 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 	const [spotifyImageLoaded, setSpotifyImageLoaded] = useState(false);
 	const [hasOverflow, setHasOverflow] = useState(false);
 	const [needsWiderSpotifyCard, setNeedsWiderSpotifyCard] = useState(false);
-	const [avatarColors, setAvatarColors] = useState<{ primary: string; secondary: string; } | null>(null);
-	const [activityImagesLoaded, setActivityImagesLoaded] = useState<{ [key: string]: boolean; }>({});
-	const [smallActivityImagesLoaded, setSmallActivityImagesLoaded] = useState<{ [key: string]: boolean; }>({});
+	const [avatarColors, setAvatarColors] = useState<{
+		primary: string;
+		secondary: string;
+	} | null>(null);
+	const [activityImagesLoaded, setActivityImagesLoaded] = useState<{
+		[key: string]: boolean;
+	}>({});
+	const [smallActivityImagesLoaded, setSmallActivityImagesLoaded] = useState<{
+		[key: string]: boolean;
+	}>({});
 	const [bannerUrl, setBannerUrl] = useState<string | null>(null);
 	const [isBannerLoaded, setIsBannerLoaded] = useState(false);
-	const [delayedPlatformIndicator, setDelayedPlatformIndicator] = useState<string | null>(null);
+	const [delayedPlatformIndicator, setDelayedPlatformIndicator] = useState<
+		string | null
+	>(null);
 	const currentBannerUrl = useRef<string | null>(null);
 	const isFirstRender = useRef(true);
 	const { language } = useLanguage();
@@ -171,15 +185,26 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 	useEffect(() => {
 		if (data?.active_on_discord_mobile) {
 			const timer = setTimeout(() => {
-				setDelayedPlatformIndicator('mobile');
+				setDelayedPlatformIndicator("mobile");
 			}, 1000);
 			return () => clearTimeout(timer);
 		} else {
-			setDelayedPlatformIndicator(data?.active_on_discord_desktop ? 'desktop' : 
-				data?.active_on_discord_web ? 'web' : 
-				data?.active_on_discord_embedded ? 'embedded' : null);
+			setDelayedPlatformIndicator(
+				data?.active_on_discord_desktop
+					? "desktop"
+					: data?.active_on_discord_web
+						? "web"
+						: data?.active_on_discord_embedded
+							? "embedded"
+							: null,
+			);
 		}
-	}, [data?.active_on_discord_mobile, data?.active_on_discord_desktop, data?.active_on_discord_web, data?.active_on_discord_embedded]);
+	}, [
+		data?.active_on_discord_mobile,
+		data?.active_on_discord_desktop,
+		data?.active_on_discord_web,
+		data?.active_on_discord_embedded,
+	]);
 
 	const extractDominantColor = (imageData: Uint8ClampedArray) => {
 		const sampleSize = 10;
@@ -263,18 +288,18 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 				idle: "text-yellow-500",
 				offline: "text-gray-500",
 			}[status] || "text-gray-500";
-	
+
 		const getInitialAnimation = () => {
 			if (isFirstRender.current) {
 				return { scale: 1, opacity: 1 };
 			}
 			return { scale: 0.8, opacity: 0 };
 		};
-	
+
 		if (SOCKET_CONFIG.MOBILE_INDICATOR_ONLY) {
 			return (
 				<AnimatePresence mode="wait">
-					{delayedPlatformIndicator === 'mobile' ? (
+					{delayedPlatformIndicator === "mobile" ? (
 						<motion.div
 							key="mobile"
 							initial={getInitialAnimation()}
@@ -298,11 +323,11 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 				</AnimatePresence>
 			);
 		}
-	
+
 		if (SOCKET_CONFIG.PLATFORM_INDICATOR) {
 			return (
 				<AnimatePresence mode="wait">
-					{delayedPlatformIndicator === 'mobile' ? (
+					{delayedPlatformIndicator === "mobile" ? (
 						<motion.div
 							key="mobile"
 							initial={getInitialAnimation()}
@@ -313,7 +338,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 						>
 							{PLATFORM_ICONS.mobile.icon}
 						</motion.div>
-					) : delayedPlatformIndicator === 'desktop' ? (
+					) : delayedPlatformIndicator === "desktop" ? (
 						<motion.div
 							key="desktop"
 							initial={getInitialAnimation()}
@@ -324,7 +349,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 						>
 							{PLATFORM_ICONS.desktop.icon}
 						</motion.div>
-					) : delayedPlatformIndicator === 'web' ? (
+					) : delayedPlatformIndicator === "web" ? (
 						<motion.div
 							key="web"
 							initial={getInitialAnimation()}
@@ -335,7 +360,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 						>
 							{PLATFORM_ICONS.web.icon}
 						</motion.div>
-					) : delayedPlatformIndicator === 'embedded' ? (
+					) : delayedPlatformIndicator === "embedded" ? (
 						<motion.div
 							key="embedded"
 							initial={getInitialAnimation()}
@@ -359,7 +384,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 				</AnimatePresence>
 			);
 		}
-	
+
 		return (
 			<AnimatePresence mode="wait">
 				<motion.div
@@ -453,7 +478,8 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 			(data.spotify.song.length > 35 ||
 				(data.spotify.artist && data.spotify.artist.length > 35) ||
 				(data.spotify.album && data.spotify.album.length > 35) ||
-				(data.spotify.artist && data.spotify.song.length + data.spotify.artist.length > 60));
+				(data.spotify.artist &&
+					data.spotify.song.length + data.spotify.artist.length > 60));
 
 		if (needsWider !== needsWiderSpotifyCard) {
 			setNeedsWiderSpotifyCard(needsWider);
@@ -630,7 +656,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 					transition={{
-						duration: 0.25,
+						duration: 0.35,
 						ease: [0.25, 0.8, 0.25, 1],
 					}}
 					className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-[10px]"
@@ -641,17 +667,17 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						transition={{
-							duration: 0.25,
+							duration: 0.35,
 							ease: [0.25, 0.8, 0.25, 1],
 						}}
 						onClick={onClose}
 					/>
 					<motion.div
-						initial={{ scale: 0.98, opacity: 0 }}
-						animate={{ scale: 1, opacity: 1 }}
-						exit={{ scale: 0.98, opacity: 0 }}
+						initial={{ scale: 0.95, opacity: 0, y: 20 }}
+						animate={{ scale: 1, opacity: 1, y: 0 }}
+						exit={{ scale: 0.95, opacity: 0, y: 20 }}
 						transition={{
-							duration: 0.3,
+							duration: 0.35,
 							ease: [0.25, 0.8, 0.25, 1],
 						}}
 						className={`relative z-10 w-[95%] max-w-lg
@@ -1392,7 +1418,8 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															"--border-color": isCalculatingColor
 																? "transparent"
 																: `color-mix(in srgb, ${dominantColor} var(--border-opacity, 30%), rgb(63, 63, 70))`,
-															transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+															transition:
+																"all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
 														} as any
 													}
 													onMouseEnter={(e) => {

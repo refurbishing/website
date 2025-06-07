@@ -132,23 +132,33 @@ export default function WeatherWidget({
 		<AnimatePresence mode="popLayout">
 			{isOpen && (
 				<motion.div
-					className="fixed inset-0 flex items-center justify-center z-[9999] backdrop-blur-[12px]"
+					className="fixed inset-0 flex items-center justify-center z-[9999] backdrop-blur-[10px]"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 					transition={{
-						duration: 0.25,
+						duration: 0.35,
 						ease: [0.25, 0.8, 0.25, 1],
 					}}
 				>
-					<div className="absolute inset-0 bg-black/60" onClick={onClose} />
+					<motion.div
+						className="absolute inset-0 bg-black bg-opacity-50"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{
+							duration: 0.35,
+							ease: [0.25, 0.8, 0.25, 1],
+						}}
+						onClick={onClose}
+					/>
 					<motion.div
 						className="w-[95%] max-w-lg relative z-10"
-						initial={{ scale: 0.98, opacity: 0 }}
-						animate={{ scale: 1, opacity: 1 }}
-						exit={{ scale: 0.98, opacity: 0 }}
+						initial={{ scale: 0.95, opacity: 0, y: 20 }}
+						animate={{ scale: 1, opacity: 1, y: 0 }}
+						exit={{ scale: 0.95, opacity: 0, y: 20 }}
 						transition={{
-							duration: 0.25,
+							duration: 0.35,
 							ease: [0.25, 0.8, 0.25, 1],
 						}}
 						onClick={(e) => e.stopPropagation()}

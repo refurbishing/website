@@ -48,7 +48,7 @@ const SONGS: Song[] = [
 	{
 		title: "swear to god",
 		artist: "twikipedia",
-	}
+	},
 ];
 
 export default function MusicPlayer() {
@@ -112,7 +112,10 @@ export default function MusicPlayer() {
 		setSongs(SONGS);
 		setCurrentSongIndex(Math.floor(Math.random() * SONGS.length));
 		if ("mediaSession" in navigator) {
-			navigator.mediaSession.setActionHandler("previoustrack", playPreviousSong);
+			navigator.mediaSession.setActionHandler(
+				"previoustrack",
+				playPreviousSong,
+			);
 			navigator.mediaSession.setActionHandler("nexttrack", playNextSong);
 		}
 	}, []);

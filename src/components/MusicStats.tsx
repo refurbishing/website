@@ -99,7 +99,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 	const [error, setError] = useState<string | null>(null);
 	const [activeTab, setActiveTab] = useState<"artists" | "tracks">("artists");
 	const [currentPage, setCurrentPage] = useState(1);
-	const itemsPerPage = 5;
+	const itemsPerPage = 6;
 	const [dominantColors, setDominantColors] = useState<Record<string, string>>(
 		{},
 	);
@@ -130,8 +130,8 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 			if (data.error) {
 				throw new Error(data.error);
 			}
-			setArtists(data.artists.items.slice(0, 10));
-			setTracks(data.tracks.items.slice(0, 10));
+			setArtists(data.artists.items.slice(0, 12));
+			setTracks(data.tracks.items.slice(0, 12));
 		} catch (error) {
 			console.error("Failed to fetch music stats:", error);
 			setError("Failed to load music stats. Please try again later.");
@@ -259,7 +259,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 					transition={{
-						duration: 0.25,
+						duration: 0.35,
 						ease: [0.25, 0.8, 0.25, 1],
 					}}
 					className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-[10px]"
@@ -270,25 +270,29 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						transition={{
-							duration: 0.25,
+							duration: 0.35,
 							ease: [0.25, 0.8, 0.25, 1],
 						}}
 						onClick={onClose}
 					/>
 					<motion.div
-						initial={{ scale: 0.98, opacity: 0 }}
-						animate={{ scale: 1, opacity: 1 }}
-						exit={{ scale: 0.98, opacity: 0 }}
+						initial={{ scale: 0.95, opacity: 0, y: 20 }}
+						animate={{ scale: 1, opacity: 1, y: 0 }}
+						exit={{ scale: 0.95, opacity: 0, y: 20 }}
 						transition={{
-							duration: 0.25,
+							duration: 0.35,
 							ease: [0.25, 0.8, 0.25, 1],
 						}}
-						className="relative z-10 w-[95%] max-w-lg mx-auto"
+						className="relative z-10 w-[95%] max-w-lg sm:max-w-xl md:max-w-2xl mx-auto"
 					>
 						<Card className="rounded-lg border border-zinc-800 relative overflow-hidden bg-zinc-900/90">
 							<CardHeader className="relative z-10 flex justify-between items-center py-4.5 px-6">
-								<Disc3 className="absolute left-4 top-5 w-5 h-5 text-zinc-500" />
-								<button
+								<div className="flex items-center gap-2">
+									<Disc3 className="absolute left-4 top-5 w-5 h-5 text-zinc-500" />
+								</div>
+								<motion.button
+									whileHover={{ scale: 1.1 }}
+									whileTap={{ scale: 0.9 }}
 									onClick={onClose}
 									className="text-zinc-400 hover:text-white transition-colors absolute right-4 top-4"
 								>
@@ -305,11 +309,13 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 											d="M6 18L18 6M6 6l12 12"
 										/>
 									</svg>
-								</button>
+								</motion.button>
 								<div className="flex flex-col items-center mx-auto w-full">
 									<div className="flex gap-4">
-										<button
-											className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
+										<motion.button
+											whileHover={{ scale: 1.02 }}
+											whileTap={{ scale: 0.98 }}
+											className={`px-4 py-2 rounded flex items-center gap-2 transition-all ${
 												activeTab === "artists"
 													? "bg-[#B7B7B7]/15 text-white hover:bg-[#B7B7B7]/25"
 													: "bg-[#B7B7B7]/5 hover:bg-[#B7B7B7]/15"
@@ -320,9 +326,11 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 											<span className="hidden zssm:block">
 												{t("musicStats.top_artists")}
 											</span>
-										</button>
-										<button
-											className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
+										</motion.button>
+										<motion.button
+											whileHover={{ scale: 1.02 }}
+											whileTap={{ scale: 0.98 }}
+											className={`px-4 py-2 rounded flex items-center gap-2 transition-all ${
 												activeTab === "tracks"
 													? "bg-[#B7B7B7]/15 text-white hover:bg-[#B7B7B7]/30"
 													: "bg-[#B7B7B7]/5 hover:bg-[#B7B7B7]/30"
@@ -333,7 +341,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 											<span className="hidden zssm:block">
 												{t("musicStats.top_tracks")}
 											</span>
-										</button>
+										</motion.button>
 									</div>
 									<span className="text-xs text-zinc-500 mt-2 px-2 rounded-xl bg-zinc-800/35">
 										{t("musicStats.since_weeks")}
@@ -341,7 +349,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 								</div>
 							</CardHeader>
 							<div className="w-full h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent" />
-							<CardBody className="relative px-6 py-3">
+							<CardBody className="relative px-6 py-3 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin scrollbar-track-zinc-900 scrollbar-thumb-zinc-700 hover:scrollbar-thumb-zinc-600">
 								{error ? (
 									<div className="flex flex-col items-center justify-center py-8 text-center">
 										<div className="text-red-400 mb-3">
@@ -453,7 +461,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																	target="_blank"
 																	rel="noopener noreferrer"
 																	key={item.position}
-																	className="flex items-center gap-2 group rounded-lg hover:ease-out will-change-transform hover:-translate-y-[1px] py-1.5 mx-2 border-2 [border-style:dashed] border-transparent hover:shadow-[0_8px_16px_-6px_rgba(0,0,0,0.2)] hover:shadow-zinc-900/20"
+																	className="flex items-center gap-2 group rounded-lg hover:ease-out will-change-transform hover:-translate-y-[1px] py-2.5 mx-2 border-2 [border-style:dashed] border-transparent hover:shadow-[0_8px_16px_-6px_rgba(0,0,0,0.2)] hover:shadow-zinc-900/20"
 																	style={{
 																		transition: `
 																			transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
@@ -492,11 +500,17 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																		element.style.borderColor = "transparent";
 																	}}
 																>
-																	<span className="ml-2 text-lg font-bold w-4 flex items-center justify-center text-zinc-400 group-hover:text-[#c6c6c6] transition-colors">
+																	<span className="ml-3 text-lg font-bold w-4 flex items-center justify-center text-zinc-400 group-hover:text-[#c6c6c6] transition-colors">
 																		{item.position}
 																	</span>
 																	<div className="flex items-center gap-3 flex-1 px-1.5 w-full">
-																		<div className="relative w-12 h-12 rounded-full overflow-hidden">
+																		<div className="relative w-12 h-12 rounded-full overflow-hidden transition-transform duration-300 group-hover:scale-105">
+																			<div
+																				className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-50 transition-all duration-300"
+																				style={{
+																					border: `2px solid ${dominantColors[artistKey] || "transparent"}`,
+																				}}
+																			/>
 																			{imageLoadingStates[
 																				`${item.artist.id}-${item.artist.image}`
 																			]?.loading && (
@@ -507,7 +521,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																				alt={item.artist.name}
 																				width={48}
 																				height={48}
-																				className={`rounded-full object-cover transition-opacity duration-300 ease-in-out ${
+																				className={`rounded-full object-cover transition-all duration-300 ease-in-out ${
 																					imageLoadingStates[
 																						`${item.artist.id}-${item.artist.image}`
 																					]?.loaded
@@ -518,10 +532,10 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																			/>
 																		</div>
 																		<div className="flex-1">
-																			<h3 className="font-semibold group-hover:text-[#c6c6c6] transition-colors">
+																			<h3 className="font-semibold group-hover:text-[#c6c6c6] transition-colors truncate max-w-[120px] sm:max-w-[180px] md:max-w-[220px] lg:max-w-[280px]">
 																				{item.artist.name}
 																			</h3>
-																			<p className="text-sm text-gray-500">
+																			<p className="text-sm text-gray-500 truncate max-w-[100px] sm:max-w-[160px] md:max-w-[200px] lg:max-w-[260px]">
 																				{item.artist.genres
 																					.slice(0, 2)
 																					.join("/")}
@@ -533,22 +547,22 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																			</span>
 																			<div className="flex items-center gap-1">
 																				<div
-																					className="w-14 h-1 rounded-full overflow-hidden"
+																					className="w-14 sm:w-24 md:w-28 lg:w-32 h-1 rounded-full overflow-hidden transition-all duration-300"
 																					style={{
 																						backgroundColor: dominantColors[
 																							artistKey
 																						]
 																							? `${dominantColors[artistKey].replace("rgb", "rgba").replace(")", ", 0.1")}`
-																							: "rgb(39, 39, 42)", // fallback to zinc-800
+																							: "rgb(39, 39, 42)",
 																					}}
 																				>
 																					<div
-																						className="h-full rounded-full transition-all duration-150"
+																						className="h-full rounded-full transition-all duration-300"
 																						style={{
-																							width: `${item.artist.spotifyPopularity}%`,
 																							backgroundColor:
 																								dominantColors[artistKey] ||
 																								"transparent",
+																							width: `${item.artist.spotifyPopularity}%`,
 																						}}
 																					>
 																						{!dominantColors[artistKey] && (
@@ -556,7 +570,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																						)}
 																					</div>
 																				</div>
-																				<span className="text-[10px] text-zinc-400 min-w-[2ch]">
+																				<span className="text-[10px] text-zinc-400 min-w-[2ch] transition-all duration-300">
 																					{item.artist.spotifyPopularity}
 																				</span>
 																			</div>
@@ -575,7 +589,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																	target="_blank"
 																	rel="noopener noreferrer"
 																	key={item.position}
-																	className="flex items-center gap-2 group rounded-lg hover:ease-out will-change-transform hover:-translate-y-[1px] py-1.5 mx-2 border-2 [border-style:dashed] border-transparent hover:shadow-[0_8px_16px_-6px_rgba(0,0,0,0.2)] hover:shadow-zinc-900/20"
+																	className="flex items-center gap-2 group rounded-lg hover:ease-out will-change-transform hover:-translate-y-[1px] py-2.5 mx-2 border-2 [border-style:dashed] border-transparent hover:shadow-[0_8px_16px_-6px_rgba(0,0,0,0.2)] hover:shadow-zinc-900/20"
 																	style={{
 																		transition: `
 																			transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
@@ -614,11 +628,17 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																		element.style.borderColor = "transparent";
 																	}}
 																>
-																	<span className="ml-2 text-lg font-bold w-4 flex items-center justify-center text-zinc-500 group-hover:text-[#c6c6c6] transition-colors">
+																	<span className="ml-3 text-lg font-bold w-4 flex items-center justify-center text-zinc-500 group-hover:text-[#c6c6c6] transition-colors">
 																		{item.position}
 																	</span>
 																	<div className="flex items-center gap-3 flex-1 px-1.5 w-full">
-																		<div className="relative w-12 h-12">
+																		<div className="relative w-12 h-12 transition-transform duration-300 group-hover:scale-105">
+																			<div
+																				className="absolute inset-0 rounded opacity-0 group-hover:opacity-50 transition-all duration-300"
+																				style={{
+																					border: `2px solid ${dominantColors[trackKey] || "transparent"}`,
+																				}}
+																			/>
 																			{imageLoadingStates[
 																				`${item.track.id}-${item.track.albums[0]?.image}`
 																			]?.loading && (
@@ -629,7 +649,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																				alt={item.track.name}
 																				width={48}
 																				height={48}
-																				className={`rounded object-cover transition-opacity duration-300 ease-in-out ${
+																				className={`rounded object-cover transition-all duration-300 ease-in-out ${
 																					imageLoadingStates[
 																						`${item.track.id}-${item.track.albums[0]?.image}`
 																					]?.loaded
@@ -640,10 +660,10 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																			/>
 																		</div>
 																		<div className="flex-1">
-																			<h3 className="font-semibold group-hover:text-[#c6c6c6] transition-colors">
+																			<h3 className="font-semibold group-hover:text-[#c6c6c6] transition-colors truncate max-w-[120px] sm:max-w-[180px] md:max-w-[220px] lg:max-w-[280px]">
 																				{item.track.name}
 																			</h3>
-																			<p className="text-sm text-gray-500">
+																			<p className="text-sm text-gray-500 truncate max-w-[100px] sm:max-w-[160px] md:max-w-[200px] lg:max-w-[260px]">
 																				{Array.from(
 																					new Set(
 																						item.track.artists.map(
@@ -664,22 +684,22 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																			</span>
 																			<div className="flex items-center gap-1">
 																				<div
-																					className="w-14 h-1 rounded-full overflow-hidden"
+																					className="w-14 sm:w-24 md:w-28 lg:w-32 h-1 rounded-full overflow-hidden transition-all duration-300"
 																					style={{
 																						backgroundColor: dominantColors[
 																							trackKey
 																						]
 																							? `${dominantColors[trackKey].replace("rgb", "rgba").replace(")", ", 0.1")}`
-																							: "rgb(39, 39, 42)", // fallback to zinc-800
+																							: "rgb(39, 39, 42)",
 																					}}
 																				>
 																					<div
-																						className="h-full rounded-full transition-all duration-150"
+																						className="h-full rounded-full transition-all duration-300"
 																						style={{
-																							width: `${item.track.spotifyPopularity}%`,
 																							backgroundColor:
 																								dominantColors[trackKey] ||
 																								"transparent",
+																							width: `${item.track.spotifyPopularity}%`,
 																						}}
 																					>
 																						{!dominantColors[trackKey] && (
@@ -687,7 +707,7 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 																						)}
 																					</div>
 																				</div>
-																				<span className="text-[10px] text-zinc-400 min-w-[2ch]">
+																				<span className="text-[10px] text-zinc-400 min-w-[2ch] transition-all duration-300">
 																					{item.track.spotifyPopularity}
 																				</span>
 																			</div>
@@ -699,19 +719,23 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 											</motion.div>
 										</AnimatePresence>
 										<div className="flex justify-center items-center mt-3 gap-2">
-											<button
+											<motion.button
+												whileHover={{ scale: 1.05 }}
+												whileTap={{ scale: 0.95 }}
 												onClick={() =>
 													handlePageChange(Math.max(1, currentPage - 1))
 												}
 												disabled={currentPage === 1}
-												className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700/80 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 transition-colors"
+												className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700/80 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 transition-all"
 											>
 												<ArrowLeft className="w-4 h-4" />
-											</button>
+											</motion.button>
 											<span className="text-sm px-2">
 												{currentPage} of {paginationInfo.totalPages}
 											</span>
-											<button
+											<motion.button
+												whileHover={{ scale: 1.05 }}
+												whileTap={{ scale: 0.95 }}
 												onClick={() =>
 													handlePageChange(
 														Math.min(
@@ -721,10 +745,10 @@ export default function MusicStats({ isOpen, onClose }: MusicStatsProps) {
 													)
 												}
 												disabled={currentPage === paginationInfo.totalPages}
-												className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700/80 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 transition-colors"
+												className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700/80 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 transition-all"
 											>
 												<ArrowRight className="w-4 h-4" />
-											</button>
+											</motion.button>
 										</div>
 									</>
 								)}
