@@ -119,17 +119,21 @@ export default function Statistics() {
 			className="mt-10 flex flex-col items-center justify-center min-h-[25vh] py-6"
 		>
 			<motion.div
-				initial={{ opacity: 0, y: 30 }}
-				animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-				transition={{ duration: 0.7, ease: "easeOut" }}
+				initial={{ opacity: 0, y: 40 }}
+				animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+				transition={{
+					duration: 1.1,
+					ease: [0.22, 0.03, 0.26, 1],
+					opacity: { duration: 1.3 },
+				}}
 			>
 				<TextFade
 					words={t("statistics.title")}
 					className="mb-3.5 text-2xl font-bold text-white/90"
-					fullLoadedDuration={2}
-					duration={1.85}
+					fullLoadedDuration={1}
+					duration={1}
 					slideDirection="up"
-					slideDistance={25}
+					slideDistance={30}
 				/>
 			</motion.div>
 

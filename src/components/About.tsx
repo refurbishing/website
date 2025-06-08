@@ -22,24 +22,33 @@ export default function About() {
 		>
 			<div className="flex flex-col items-center">
 				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-					transition={{ duration: 0.7, ease: "easeOut" }}
+					initial={{ opacity: 0, y: 40 }}
+					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+					transition={{
+						duration: 1.1,
+						ease: [0.22, 0.03, 0.26, 1],
+						opacity: { duration: 1.3 },
+					}}
 				>
 					<TextFade
-						fullLoadedDuration={1.9}
-						duration={1.85}
+						fullLoadedDuration={1}
+						duration={1}
 						words={t("aboutMe.title")}
 						className="text-2xl font-bold text-white/90"
 						slideDirection="up"
-						slideDistance={25}
+						slideDistance={30}
 					/>
 				</motion.div>
 
 				<motion.div
-					initial={{ opacity: 0, y: 50 }}
-					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-					transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+					initial={{ opacity: 0, y: 60 }}
+					animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+					transition={{
+						duration: 1.2,
+						ease: [0.22, 0.03, 0.26, 1],
+						delay: 0.15,
+						opacity: { duration: 1.4, delay: 0.15 },
+					}}
 				>
 					<Card className="backdrop-blur-[1.5px] bg-black/5 mt-4 mx-auto py-4 w-[95%] min-w-[320px] max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl px-4 sm:px-6 border border-[#999a9e]/75 rounded-xl relative z-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-[1.02] hover:shadow-[0_0_10px_rgba(35,32,32,15)] hover:border-opacity-60 hover:backdrop-blur-none will-change-transform overflow-hidden origin-center">
 						<video

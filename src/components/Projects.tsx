@@ -58,17 +58,21 @@ export default function Projects() {
 	return (
 		<div id="projects" ref={ref} className="mt-10 flex flex-col items-center">
 			<motion.div
-				initial={{ opacity: 0, y: 30 }}
-				animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-				transition={{ duration: 0.7, ease: "easeOut" }}
+				initial={{ opacity: 0, y: 40 }}
+				animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+				transition={{
+					duration: 1.1,
+					ease: [0.22, 0.03, 0.26, 1],
+					opacity: { duration: 1.3 },
+				}}
 			>
 				<TextFade
-					fullLoadedDuration={2.25}
-					duration={1.85}
+					fullLoadedDuration={1}
+					duration={1}
 					words={t("projects.title")}
 					className="text-2xl font-bold text-white/90"
 					slideDirection="up"
-					slideDistance={25}
+					slideDistance={30}
 				/>
 			</motion.div>
 
@@ -85,10 +89,13 @@ export default function Projects() {
 						initial={{ opacity: 0, y: 35 }}
 						animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
 						transition={{
-							opacity: { duration: 1.2, delay: isInView ? index * 0.25 : 0 },
+							opacity: {
+								duration: 1.2,
+								delay: isInView ? 0.3 + index * 0.25 : 0,
+							},
 							y: {
 								duration: 0.85,
-								delay: isInView ? index * 0.25 : 0,
+								delay: isInView ? 0.3 + index * 0.25 : 0,
 								ease: [0.1, 0.6, 0.2, 1],
 							},
 							ease: "easeInOut",
