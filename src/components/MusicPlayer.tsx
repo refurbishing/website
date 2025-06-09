@@ -433,7 +433,7 @@ export default function MusicPlayer() {
 				>
 					<source src="/assets/banner.mp4" type="video/mp4" />
 				</video>
-				<CardBody className="p-2">
+				<CardBody className="p-2 overflow-hidden">
 					<div className="flex items-start gap-3">
 						{isLoading ? (
 							<div className="skeleton-bg animate-pulse rounded-lg w-12 h-12" />

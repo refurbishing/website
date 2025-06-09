@@ -133,7 +133,7 @@ export default function Technologies() {
 												key={tech.name}
 												href={tech.href}
 												target="_blank"
-												className="hover-effect shrink-0 transition-transform duration-500 ease-in-out"
+												className="hover-effect shrink-0 group"
 											>
 												<motion.div
 													initial={{ opacity: 0 }}
@@ -142,7 +142,7 @@ export default function Technologies() {
 														duration: 0.5,
 														ease: "easeOut",
 													}}
-													className="border-[#aaabaf]/50 flex items-center gap-2 rounded-lg border px-3 py-2 whitespace-nowrap"
+													className="border-[#aaabaf]/50 flex items-center gap-2 rounded-lg border px-3 py-2 whitespace-nowrap transition-all duration-300 ease-in-out group-hover:bg-black/25"
 												>
 													<Icon
 														icon={tech.icon}

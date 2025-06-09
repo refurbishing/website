@@ -1576,7 +1576,31 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																			Math.floor((currentTime / 1000) % 60),
 																		).padStart(2, "0")}
 																	</span>
-																	<div className="w-40 bg-zinc-700/50 rounded-full h-1">
+																	<div
+																		className={`${(() => {
+																			const songLength =
+																				data.spotify.song.length;
+																			const artistLength =
+																				data.spotify.artist?.length || 0;
+																			const albumLength =
+																				data.spotify.album?.length || 0;
+																			const totalLength =
+																				songLength + artistLength + albumLength;
+
+																			if (
+																				totalLength > 120 ||
+																				songLength > 50
+																			) {
+																				return "w-64";
+																			} else if (
+																				totalLength > 80 ||
+																				songLength > 35
+																			) {
+																				return "w-52";
+																			}
+																			return "w-40";
+																		})()} bg-zinc-700/50 rounded-full h-1`}
+																	>
 																		{isCalculatingColor ? (
 																			<div className="h-full w-full animate-pulse bg-gradient-to-r from-zinc-600/50 via-zinc-500/50 to-zinc-600/50 rounded-full" />
 																		) : (

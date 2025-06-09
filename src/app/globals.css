@@ -20,13 +20,17 @@ body {
 @layer utilities {
 	.pause-animation {
 		animation-play-state: paused !important;
-		transition: animation-play-state 0.5s ease-in-out;
+		transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 }
 
+.hover-effect {
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s
+		cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .hover-effect:hover {
-	transform: scale(1.05);
-	transition: transform 0.2s;
+	transform: scale(1.03);
 	background-color: rgba(0, 0, 0, 0.25);
 	border-radius: 0.5rem;
 }
@@ -138,11 +142,13 @@ body {
 
 .animate-slider {
 	animation: slider var(--duration, 30s) linear infinite;
-	transition: animation-play-state 0.5s ease;
+	transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform;
 }
 
 .animate-slider .hover-effect {
-	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform;
 }
 
 .hover-effect:hover > div {
@@ -332,4 +338,13 @@ body {
 	background-size: 200px 200px;
 	animation: twinkle 5s ease-in-out infinite;
 	opacity: 0.5;
+}
+
+@keyframes slider {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
 }
