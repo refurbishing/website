@@ -1521,7 +1521,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																className={`flex items-start gap-2 ${!data.spotify.album_art_url || !data.spotify.track_id ? "justify-center text-center flex" : "justify-between w-full"}`}
 															>
 																<p
-																	className={`text-sm font-medium text-white ${!data.spotify.album_art_url || !data.spotify.track_id ? "text-center px-6" : ""}`}
+																	className={`text-sm font-medium text-white break-words ${!data.spotify.album_art_url || !data.spotify.track_id ? "text-center px-6" : ""}`}
 																>
 																	{data.spotify.song}
 																</p>
@@ -1569,8 +1569,8 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 															<div
 																className={`mt-3 ${!data.spotify.album_art_url || !data.spotify.track_id ? "flex justify-center" : ""}`}
 															>
-																<div className="flex items-center gap-2">
-																	<span className="text-xs text-zinc-500">
+																<div className="flex items-center gap-2 max-w-full overflow-x-hidden">
+																	<span className="text-xs text-zinc-500 flex-shrink-0">
 																		{Math.floor(currentTime / 1000 / 60)}:
 																		{String(
 																			Math.floor((currentTime / 1000) % 60),
@@ -1591,15 +1591,20 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																				totalLength > 120 ||
 																				songLength > 50
 																			) {
-																				return "w-64";
+																				return "w-full sm:w-64";
 																			} else if (
 																				totalLength > 80 ||
 																				songLength > 35
 																			) {
-																				return "w-52";
+																				return "w-full sm:w-52";
 																			}
-																			return "w-40";
-																		})()} bg-zinc-700/50 rounded-full h-1`}
+																			return "w-full sm:w-40";
+																		})()} min-w-[100px] rounded-full h-1`}
+																		style={{
+																			backgroundColor: isCalculatingColor
+																				? "rgb(39 39 42 / 0.5)"
+																				: `color-mix(in srgb, ${dominantColor} 15%, rgb(39 39 42 / 0.5))`
+																		}}
 																	>
 																		{isCalculatingColor ? (
 																			<div className="h-full w-full animate-pulse bg-gradient-to-r from-zinc-600/50 via-zinc-500/50 to-zinc-600/50 rounded-full" />
@@ -1613,7 +1618,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																			/>
 																		)}
 																	</div>
-																	<span className="text-xs text-zinc-500">
+																	<span className="text-xs text-zinc-500 flex-shrink-0">
 																		{Math.floor(
 																			(data.spotify.timestamps.end -
 																				data.spotify.timestamps.start) /
@@ -1625,8 +1630,8 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 																			Math.floor(
 																				((data.spotify.timestamps.end -
 																					data.spotify.timestamps.start) /
-																					1000) %
-																					60,
+																						1000) %
+																						60,
 																			),
 																		).padStart(2, "0")}
 																	</span>
