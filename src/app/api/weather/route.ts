@@ -40,6 +40,15 @@ const getCachedData = () => {
 	if (cache.data) {
 		return NextResponse.json({
 			...cache.data,
+			lastUpdated: new Date(cache.timestamp).toLocaleString("en-US", {
+				month: "long",
+				day: "numeric",
+				year: "numeric",
+				hour: "numeric",
+				minute: "numeric",
+				hour12: true,
+				timeZone: "America/Tegucigalpa",
+			}),
 			cached: true,
 		});
 	}
@@ -72,15 +81,43 @@ export async function GET() {
 		});
 
 		if (!response.ok) {
-			const cachedResponse = getCachedData();
-			if (cachedResponse) return cachedResponse;
-			throw new Error("Weather service unavailable");
+			const cachedData = cache.data;
+			if (cachedData) {
+				return NextResponse.json({
+					...cachedData,
+					lastUpdated: new Date(cache.timestamp).toLocaleString("en-US", {
+						month: "long",
+						day: "numeric",
+						year: "numeric",
+						hour: "numeric",
+						minute: "numeric",
+						hour12: true,
+						timeZone: "America/Tegucigalpa",
+					}),
+					cached: true,
+				});
+			}
+			throw new Error(`Weather service unavailable: ${response.status}`);
 		}
 
 		const contentType = response.headers.get("content-type");
 		if (!contentType || !contentType.includes("application/json")) {
-			const cachedResponse = getCachedData();
-			if (cachedResponse) return cachedResponse;
+			const cachedData = cache.data;
+			if (cachedData) {
+				return NextResponse.json({
+					...cachedData,
+					lastUpdated: new Date(cache.timestamp).toLocaleString("en-US", {
+						month: "long",
+						day: "numeric",
+						year: "numeric",
+						hour: "numeric",
+						minute: "numeric",
+						hour12: true,
+						timeZone: "America/Tegucigalpa",
+					}),
+					cached: true,
+				});
+			}
 			throw new Error("Invalid response from weather service");
 		}
 
@@ -88,15 +125,42 @@ export async function GET() {
 		try {
 			data = await response.json();
 		} catch (jsonError) {
-			const cachedResponse = getCachedData();
-			if (cachedResponse) return cachedResponse;
-			console.error("Invalid JSON response:", jsonError);
+			const cachedData = cache.data;
+			if (cachedData) {
+				return NextResponse.json({
+					...cachedData,
+					lastUpdated: new Date(cache.timestamp).toLocaleString("en-US", {
+						month: "long",
+						day: "numeric",
+						year: "numeric",
+						hour: "numeric",
+						minute: "numeric",
+						hour12: true,
+						timeZone: "America/Tegucigalpa",
+					}),
+					cached: true,
+				});
+			}
 			throw new Error("Invalid JSON response from weather service");
 		}
 
 		if (!data || !data.current_condition || !data.current_condition[0]) {
-			const cachedResponse = getCachedData();
-			if (cachedResponse) return cachedResponse;
+			const cachedData = cache.data;
+			if (cachedData) {
+				return NextResponse.json({
+					...cachedData,
+					lastUpdated: new Date(cache.timestamp).toLocaleString("en-US", {
+						month: "long",
+						day: "numeric",
+						year: "numeric",
+						hour: "numeric",
+						minute: "numeric",
+						hour12: true,
+						timeZone: "America/Tegucigalpa",
+					}),
+					cached: true,
+				});
+			}
 			throw new Error("Invalid weather data format");
 		}
 
@@ -119,7 +183,7 @@ export async function GET() {
 			windDirection: current.winddir16Point,
 			visibility: `${current.visibility} km`,
 			pressure: `${current.pressure} mb`,
-			lastUpdated: new Date().toLocaleString("en-US", {
+			lastUpdated: new Date(now).toLocaleString("en-US", {
 				month: "long",
 				day: "numeric",
 				year: "numeric",
@@ -142,11 +206,26 @@ export async function GET() {
 		});
 	} catch (error) {
 		console.error("Error fetching weather:", error);
+		const cache = global.weatherCache as WeatherCache;
 
-		const cachedResponse = getCachedData();
-		if (cachedResponse) return cachedResponse;
+		if (cache.data) {
+			return NextResponse.json({
+				...cache.data,
+				lastUpdated: new Date(cache.timestamp).toLocaleString("en-US", {
+					month: "long",
+					day: "numeric",
+					year: "numeric",
+					hour: "numeric",
+					minute: "numeric",
+					hour12: true,
+					timeZone: "America/Tegucigalpa",
+				}),
+				cached: true,
+			});
+		}
 
 		try {
+			const now = Date.now();
 			const basicResponse = await fetch(
 				"https://wttr.in/Honduras?format=%t|%C",
 				{
@@ -155,8 +234,22 @@ export async function GET() {
 			);
 
 			if (!basicResponse.ok) {
-				const cachedResponse = getCachedData();
-				if (cachedResponse) return cachedResponse;
+				const cache = global.weatherCache as WeatherCache;
+				if (cache.data) {
+					return NextResponse.json({
+						...cache.data,
+						lastUpdated: new Date(cache.timestamp).toLocaleString("en-US", {
+							month: "long",
+							day: "numeric",
+							year: "numeric",
+							hour: "numeric",
+							minute: "numeric",
+							hour12: true,
+							timeZone: "America/Tegucigalpa",
+						}),
+						cached: true,
+					});
+				}
 				throw new Error("Weather service unavailable");
 			}
 
@@ -166,7 +259,7 @@ export async function GET() {
 			const basicWeatherData = {
 				temp: temp.replace("+", "").trim(),
 				condition: condition.trim(),
-				lastUpdated: new Date().toLocaleString("en-US", {
+				lastUpdated: new Date(now).toLocaleString("en-US", {
 					month: "long",
 					day: "numeric",
 					year: "numeric",
