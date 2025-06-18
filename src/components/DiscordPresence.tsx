@@ -123,16 +123,10 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 		string | null
 	>(null);
 	const currentBannerUrl = useRef<string | null>(null);
-	const isFirstRender = useRef(true);
 	const { language } = useLanguage();
 	const t = (key: string) => getTranslation(language, key);
 
-	useEffect(() => {
-		if (isOpen) {
-			isFirstRender.current = false;
-		}
-	}, [isOpen]);
-
++
 	useEffect(() => {
 		let interval: NodeJS.Timeout;
 
@@ -290,10 +284,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 			}[status] || "text-gray-500";
 
 		const getInitialAnimation = () => {
-			if (isFirstRender.current) {
-				return { scale: 1, opacity: 1 };
-			}
-			return { scale: 0.8, opacity: 0 };
+			return { scale: 1, opacity: 1 };
 		};
 
 		if (SOCKET_CONFIG.MOBILE_INDICATOR_ONLY) {
@@ -409,7 +400,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 			const svgContent = `
 				<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
 					<rect width="512" height="512" fill="#1e1e1e" />
-					<text x="256" y="256" fill="#888888" font-size="256" font-weight="bold" 
+					<text x="256" y="256" fill="#888888" font-size="256" font-weight="bold"
 						font-family="Arial, sans-serif" text-anchor="middle" dominant-baseline="central">
 						${firstLetter}
 					</text>
@@ -673,7 +664,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 						onClick={onClose}
 					/>
 					<motion.div
-						initial={{ scale: 0.95, opacity: 0, y: 20 }}
+						initial={{ scale: 1, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1, y: 0 }}
 						exit={{ scale: 0.95, opacity: 0, y: 20 }}
 						transition={{
@@ -681,7 +672,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 							ease: [0.25, 0.8, 0.25, 1],
 						}}
 						className={`relative z-10 w-[95%] max-w-lg
-                            data-[wider=true]:max-w-2xl 
+                            data-[wider=true]:max-w-2xl
                             data-[overflow=true]:max-w-4xl
                             data-[wider-spotify=true]:max-w-3xl
                             transition-[max-width] duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)]`}
@@ -1031,12 +1022,11 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 											status !== "offline" ? (
 												<motion.div
 													key="nothing-happening"
-													initial={{ opacity: 0 }}
+													initial={{ opacity: 1 }}
 													animate={{
 														opacity: 1,
 														transition: {
 															duration: 0.3,
-															delay: 0.15,
 															ease: [0.32, 0.72, 0, 1],
 														},
 													}}
@@ -1050,11 +1040,10 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 													className={`bg-zinc-800/${bannerUrl ? "40" : "50"} rounded-lg p-3 flex items-center justify-center gap-3 border-2 border-dashed border-transparent min-h-[88px] overflow-hidden`}
 												>
 													<motion.div
-														initial={{ opacity: 0 }}
+														initial={{ opacity: 1 }}
 														animate={{
 															opacity: 1,
 															transition: {
-																delay: 0.2,
 																duration: 0.6,
 																ease: [0.22, 1, 0.36, 1],
 															},
@@ -1097,12 +1086,11 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 											{status === "offline" && (
 												<motion.div
 													key="offline"
-													initial={{ opacity: 0 }}
+													initial={{ opacity: 1 }}
 													animate={{
 														opacity: 1,
 														transition: {
 															duration: 0.3,
-															delay: 0.15,
 															ease: [0.32, 0.72, 0, 1],
 														},
 													}}
@@ -1170,13 +1158,12 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 														key={activity.application_id || activity.name}
 													>
 														<motion.div
-															initial={{ opacity: 0, scale: 0.98 }}
+															initial={{ opacity: 1, scale: 1 }}
 															animate={{
 																opacity: 1,
 																scale: 1,
 																transition: {
 																	duration: 0.3,
-																	delay: index * 0.05,
 																	ease: [0.25, 0.8, 0.25, 1],
 																},
 															}}
@@ -1387,7 +1374,7 @@ export default function UserArea({ isOpen, onClose }: UserAreaProps) {
 											{data.spotify && (
 												<motion.div
 													key="spotify"
-													initial={{ opacity: 0, scale: 0.98 }}
+													initial={{ opacity: 1, scale: 1 }}
 													animate={{
 														opacity: 1,
 														scale: 1,
