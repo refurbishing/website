@@ -58,11 +58,6 @@ export default function Technologies() {
 			icon: "teenyicons:linux-alt-solid",
 			name: "Linux",
 		},
-		{
-			href: "https://www.markdownguide.org",
-			icon: "simple-icons:markdown",
-			name: "Markdown",
-		},
 	];
 
 	return (
