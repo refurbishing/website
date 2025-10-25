@@ -84,7 +84,7 @@ export default function CardComponent() {
 
 		const typewriter = new Typewriter("#typewriter", {
 			cursor: "|",
-			delay: 50,
+			delay: 85,
 			loop: true,
 		});
 
