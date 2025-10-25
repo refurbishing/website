@@ -28,7 +28,9 @@ export default function Home() {
 			<MusicPlayer />
 			<Technologies />
 			<About />
-			<Statistics />
+		{/* uncomment for wakatime & github stats
+			<Statistics /> 
+		*/}
 			<Comissions />
 			<Projects />
 			<Footer />
